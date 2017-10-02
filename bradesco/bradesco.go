@@ -1,6 +1,7 @@
 package bradesco
 
 import (
+	"errors"
 	"fmt"
 	"time"
 
@@ -78,6 +79,7 @@ func (b bankBradesco) RegisterBoleto(boleto *models.BoletoRequest) (models.Bolet
 	ch.To("logseq://?type=response&url="+serviceURL, b.log).To("apierro://")
 	switch t := bod.GetBody().(type) {
 	case *models.BoletoResponse:
+		t.BarCodeNumber = getBarcode(*boleto).toString()
 		return *t, nil
 	case error:
 		return models.BoletoResponse{}, t
@@ -106,7 +108,7 @@ func getBarcode(boleto models.BoletoRequest) (bc barcode) {
 	bc.currencyCode = fmt.Sprintf("%d", models.Real)
 	bc.account = fmt.Sprintf("%07s", boleto.Agreement.Account)
 	bc.agency = fmt.Sprintf("%04s", boleto.Agreement.Agency)
-	bc.dateDueFactor = dateDueFactor(boleto.Title.ExpireDateTime)
+	bc.dateDueFactor, _ = dateDueFactor(boleto.Title.ExpireDateTime)
 	bc.ourNumber = fmt.Sprintf("%011d", boleto.Title.OurNumber)
 	bc.value = fmt.Sprintf("%010d", boleto.Title.AmountInCents)
 	bc.wallet = fmt.Sprintf("%02d", boleto.Agreement.Wallet)
@@ -115,22 +117,20 @@ func getBarcode(boleto models.BoletoRequest) (bc barcode) {
 }
 
 func (bc barcode) toString() string {
-	//example := "237 9 5 7968 0000000199 0001 25 00124466932 1234567 0"
 	return fmt.Sprintf("%s%s%s%s%s%s%s%s%s%s", bc.bankCode, bc.currencyCode, bc.calcCheckDigit(), bc.dateDueFactor, bc.value, bc.agency, bc.wallet, bc.ourNumber, bc.account, bc.zero)
 }
 
 func (bc barcode) calcCheckDigit() string {
 	prevCode := fmt.Sprintf("%s%s%s%s%s%s%s%s%s", bc.bankCode, bc.currencyCode, bc.dateDueFactor, bc.value, bc.agency, bc.wallet, bc.ourNumber, bc.account, bc.zero)
-
-	return "5"
+	return util.Mod11(prevCode)
 }
 
-func dateDueFactor(dateDue time.Time) string {
+func dateDueFactor(dateDue time.Time) (string, error) {
 	var dateDueFixed = time.Date(1997, 10, 7, 0, 0, 0, 0, time.UTC)
 	dif := dateDue.Sub(dateDueFixed)
 	factor := int(dif.Hours() / 24)
 	if factor <= 0 {
-		panic("DateDue must be in the future")
+		return "", errors.New("DateDue must be in the future")
 	}
-	return fmt.Sprintf("%04d", factor)
+	return fmt.Sprintf("%04d", factor), nil
 }
