@@ -363,7 +363,6 @@ func HTML(boleto models.BoletoView, format string) (string, error) {
 		return "", errors.New("boleto not found")
 	}
 	b := tmpl.New()
-
 	boleto.BankLogo = template.HTML(boleto.ConfigBank.Logo)
 	boleto.Format = format
 	bcode, _ := twooffive.Encode(boleto.Barcode, true)

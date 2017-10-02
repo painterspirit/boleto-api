@@ -92,7 +92,10 @@ func NewBoletoView(boleto BoletoRequest, response BoletoResponse) BoletoView {
 	case Caixa:
 		view.Links = response.Links
 	case Bradesco:
-		view.Links = response.Links
+		view.Links = view.CreateLinks()
+		if len(response.Links) > 0 {
+			view.Links = append(view.Links, response.Links[0])
+		}
 	default:
 		view.Links = view.CreateLinks()
 	}
@@ -190,6 +193,8 @@ const (
 
 	// Citibank constante do Citi
 	Citibank = 745
+
+	Real = 9
 )
 
 // BoletoErrorConector é um connector flow para criar um objeto de erro

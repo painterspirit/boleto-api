@@ -1,6 +1,9 @@
 package bradesco
 
 import (
+	"fmt"
+	"time"
+
 	"github.com/PMoneda/flow"
 	"github.com/mundipagg/boleto-api/config"
 	"github.com/mundipagg/boleto-api/log"
@@ -14,6 +17,19 @@ import (
 type bankBradesco struct {
 	validate *models.Validator
 	log      *log.Log
+}
+
+//barcode struct for bradesco
+type barcode struct {
+	bankCode      string
+	currencyCode  string
+	dateDueFactor string
+	value         string
+	agency        string
+	wallet        string
+	ourNumber     string
+	account       string
+	zero          string
 }
 
 //New creates a new Bradesco instance
@@ -83,4 +99,38 @@ func (b bankBradesco) ValidateBoleto(boleto *models.BoletoRequest) models.Errors
 
 func (b bankBradesco) GetBankNumber() models.BankNumber {
 	return models.Bradesco
+}
+
+func getBarcode(boleto models.BoletoRequest) (bc barcode) {
+	bc.bankCode = fmt.Sprintf("%d", models.Bradesco)
+	bc.currencyCode = fmt.Sprintf("%d", models.Real)
+	bc.account = fmt.Sprintf("%07s", boleto.Agreement.Account)
+	bc.agency = fmt.Sprintf("%04s", boleto.Agreement.Agency)
+	bc.dateDueFactor = dateDueFactor(boleto.Title.ExpireDateTime)
+	bc.ourNumber = fmt.Sprintf("%011d", boleto.Title.OurNumber)
+	bc.value = fmt.Sprintf("%010d", boleto.Title.AmountInCents)
+	bc.wallet = fmt.Sprintf("%02d", boleto.Agreement.Wallet)
+	bc.zero = "0"
+	return
+}
+
+func (bc barcode) toString() string {
+	//example := "237 9 5 7968 0000000199 0001 25 00124466932 1234567 0"
+	return fmt.Sprintf("%s%s%s%s%s%s%s%s%s%s", bc.bankCode, bc.currencyCode, bc.calcCheckDigit(), bc.dateDueFactor, bc.value, bc.agency, bc.wallet, bc.ourNumber, bc.account, bc.zero)
+}
+
+func (bc barcode) calcCheckDigit() string {
+	prevCode := fmt.Sprintf("%s%s%s%s%s%s%s%s%s", bc.bankCode, bc.currencyCode, bc.dateDueFactor, bc.value, bc.agency, bc.wallet, bc.ourNumber, bc.account, bc.zero)
+
+	return "5"
+}
+
+func dateDueFactor(dateDue time.Time) string {
+	var dateDueFixed = time.Date(1997, 10, 7, 0, 0, 0, 0, time.UTC)
+	dif := dateDue.Sub(dateDueFixed)
+	factor := int(dif.Hours() / 24)
+	if factor <= 0 {
+		panic("DateDue must be in the future")
+	}
+	return fmt.Sprintf("%04d", factor)
 }
