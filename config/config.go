@@ -89,6 +89,11 @@ func IsRunning() bool {
 	return atomic.LoadUint64(&running) > 0
 }
 
+//IsNotProduction returns true if application is running in DevMode or MockMode
+func IsNotProduction() bool {
+	return cnf.DevMode || cnf.MockMode
+}
+
 //Stop faz a aplicação parar de receber requisições
 func Stop() {
 	atomic.StoreUint64(&running, 1)
