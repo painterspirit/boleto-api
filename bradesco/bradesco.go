@@ -46,7 +46,8 @@ func New() bankBradesco {
 	b.validate.Push(bradescoValidateAgency)
 	b.validate.Push(bradescoValidateAccount)
 	b.validate.Push(bradescoValidateWallet)
-
+	b.validate.Push(bradescoValidateAuth)
+	b.validate.Push(bradescoValidateAgreement)
 	return b
 }
 
@@ -79,7 +80,9 @@ func (b bankBradesco) RegisterBoleto(boleto *models.BoletoRequest) (models.Bolet
 	ch.To("logseq://?type=response&url="+serviceURL, b.log).To("apierro://")
 	switch t := bod.GetBody().(type) {
 	case *models.BoletoResponse:
-		t.BarCodeNumber = getBarcode(*boleto).toString()
+		if !t.HasErrors() {
+			t.BarCodeNumber = getBarcode(*boleto).toString()
+		}
 		return *t, nil
 	case error:
 		return models.BoletoResponse{}, t

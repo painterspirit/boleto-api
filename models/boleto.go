@@ -206,3 +206,8 @@ func BoletoErrorConector(e *flow.ExchangeMessage, u flow.URI, params ...interfac
 	e.SetBody(resp)
 	return nil
 }
+
+//HasErrors verify if Response has any error
+func (b *BoletoResponse) HasErrors() bool {
+	return b.Errors != nil && len(b.Errors) > 0
+}

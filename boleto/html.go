@@ -278,7 +278,7 @@ const boletoForm = `
                     <table>
                         <tr>
                             {{if eq .View.BankNumber "237-2"}}
-                                <td style="border-right: 1px solid #808080;">
+                                <td style="border-right: 1px solid #808080;" id="cel_cip">
                                     <span class="title">Cip</span>
                                     <br/>
                                     <p class="content center" id="wallet">865</p>
