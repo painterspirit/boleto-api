@@ -273,16 +273,30 @@ const boletoForm = `
                     <span class="title">Uso do Banco</span>
                     <br/>
                     <p class="content center">&nbsp;</p>
-                </td>
-                <td width="10%">
-                    <span class="title">Carteira</span>
-                    <br/>
-                    <p class="content center" id="wallet">{{.View.Boleto.Agreement.Wallet}}</p>
+                </td>                
+                <td width="14%">
+                    <table>
+                        <tr>
+                            {{if eq .View.BankNumber "237-2"}}
+                                <td style="border-right: 1px solid #808080;">
+                                    <span class="title">Cip</span>
+                                    <br/>
+                                    <p class="content center" id="wallet">865</p>
+                                </td>
+                            {{end}}
+                            <td>
+                                <span class="title">Carteira</span>
+                                <br/>
+                                <p class="content center" id="wallet">{{.View.Boleto.Agreement.Wallet}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    
                 </td>
                 <td width="10%">
                     <span class="title">Espécie</span>
                     <br/>
-                    <p class="content center">R$</p>
+                    <p class="content center">{{.ConfigBank.Moeda}}</p>
                 </td>
                 <td width="8%" colspan="2">
                     <span class="title">Quantidade</span>

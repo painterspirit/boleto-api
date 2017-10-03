@@ -13,6 +13,7 @@ type ConfigBank struct {
 	Aceite       string
 	Quantidade   string
 	ValorCotacao string
+	Moeda        string
 }
 
 //GetConfig returns boleto configution for each bank
@@ -32,17 +33,17 @@ func GetConfig(number models.BankNumber) ConfigBank {
 }
 
 func configCiti() ConfigBank {
-	return ConfigBank{Logo: template.HTML(LogoCiti), EspecieDoc: "DMI", Aceite: "N", Quantidade: "", ValorCotacao: ""}
+	return ConfigBank{Logo: template.HTML(LogoCiti), EspecieDoc: "DMI", Aceite: "N", Quantidade: "", ValorCotacao: "", Moeda: "R$"}
 }
 
 func configBB() ConfigBank {
-	return ConfigBank{Logo: template.HTML(LogoBB), EspecieDoc: "DM", Aceite: "N", Quantidade: "N", ValorCotacao: ""}
+	return ConfigBank{Logo: template.HTML(LogoBB), EspecieDoc: "DM", Aceite: "N", Quantidade: "N", ValorCotacao: "", Moeda: "R$"}
 }
 
 func configSantander() ConfigBank {
-	return ConfigBank{Logo: template.HTML(LogoSantander), EspecieDoc: "DM", Aceite: "N", Quantidade: "N", ValorCotacao: ""}
+	return ConfigBank{Logo: template.HTML(LogoSantander), EspecieDoc: "DM", Aceite: "N", Quantidade: "N", ValorCotacao: "", Moeda: "R$"}
 }
 
 func configBradesco() ConfigBank {
-	return ConfigBank{Logo: template.HTML(LogoBradesco), EspecieDoc: "DM", Aceite: "N", Quantidade: "N", ValorCotacao: ""}
+	return ConfigBank{Logo: template.HTML(LogoBradesco), EspecieDoc: "Outro", Aceite: "N", Quantidade: "", ValorCotacao: "", Moeda: "Real"}
 }
