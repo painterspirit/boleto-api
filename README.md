@@ -298,6 +298,13 @@ Contributing
 
 To contribute, see [CONTRIBUTING](CONTRIBUTING.md)
 
+
+Using Mongo in Dev
+--------------------
+You can use mongo in dev on Docker by using the following command
+
+     % docker run --name mongo-boleto -p 27017:27017 -d mongo
+
 Source Code Layout
 ---
 
