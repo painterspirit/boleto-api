@@ -1,9 +1,11 @@
 package integrationTests
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
+	"github.com/PMoneda/flow"
 	. "github.com/smartystreets/goconvey/convey"
 
 	"encoding/json"
@@ -166,6 +168,11 @@ func TestRegisterBoletoRequest(t *testing.T) {
 		So(errJSON, ShouldEqual, nil)
 		Convey("Se o boleto foi registrado então ele tem que está disponível no formato HTML", func() {
 			So(len(boleto.Links), ShouldBeGreaterThan, 0)
+			list := flow.NewFlow().From(strings.Replace(boleto.Links[0].Href, "http", "crawler", 1), "#boleto_document_number").GetBody().([]string)
+			if len(list) > 0 {
+				So(list[0], ShouldEqual, fmt.Sprintf("%10s", getModelBody(models.BancoDoBrasil, 200).Title.DocumentNumber))
+			}
+
 			html, st, err := util.Get(boleto.Links[0].Href, "", nil)
 			So(err, ShouldEqual, nil)
 			So(st, ShouldEqual, 200)
