@@ -1,7 +1,6 @@
 package models
 
 import (
-	"html/template"
 	"time"
 
 	"github.com/mundipagg/boleto-api/config"
@@ -45,20 +44,11 @@ type Link struct {
 	Method string `json:"method,omitempty"`
 }
 
-type ConfigBank struct {
-	Logo         string
-	EspecieDoc   string
-	Aceite       string
-	Quantidade   string
-	ValorCotacao string
-}
-
 // BoletoView contem as informações que serão preenchidas no boleto
 type BoletoView struct {
 	ID            string
 	UID           string
 	Format        string        `json:"format,omitempty"`
-	BankLogo      template.HTML `json:"bankLogo,omitempty"`
 	Boleto        BoletoRequest `json:"boleto,omitempty"`
 	BankID        BankNumber    `json:"bankId,omitempty"`
 	CreateDate    time.Time     `json:"createDate,omitempty"`
@@ -68,7 +58,6 @@ type BoletoView struct {
 	Barcode       string        `json:"barcode,omitempty"`
 	Barcode64     string        `json:"barcode64,omitempty"`
 	Links         []Link        `json:"links,omitempty"`
-	ConfigBank    ConfigBank    `json:"configBank,omitempty"`
 }
 
 // NewBoletoView cria um novo objeto view de boleto a partir de um boleto request, codigo de barras e linha digitavel
@@ -86,13 +75,15 @@ func NewBoletoView(boleto BoletoRequest, response BoletoResponse) BoletoView {
 		OurNumber:     response.OurNumber,
 		BankNumber:    boleto.BankNumber.GetBoletoBankNumberAndDigit(),
 		CreateDate:    time.Now(),
-		ConfigBank:    GetConfig(boleto.BankNumber),
 	}
 	switch boleto.BankNumber {
 	case Caixa:
 		view.Links = response.Links
 	case Bradesco:
-		view.Links = response.Links
+		view.Links = view.CreateLinks()
+		if len(response.Links) > 0 {
+			view.Links = append(view.Links, response.Links[0])
+		}
 	default:
 		view.Links = view.CreateLinks()
 	}
@@ -190,6 +181,8 @@ const (
 
 	// Citibank constante do Citi
 	Citibank = 745
+
+	Real = 9
 )
 
 // BoletoErrorConector é um connector flow para criar um objeto de erro
@@ -214,27 +207,7 @@ func BoletoErrorConector(e *flow.ExchangeMessage, u flow.URI, params ...interfac
 	return nil
 }
 
-func GetConfig(number BankNumber) ConfigBank {
-	switch number {
-	case BancoDoBrasil:
-		return configBB()
-	case Santander:
-		return configSantander()
-	case Citibank:
-		return configCiti()
-	default:
-		return ConfigBank{}
-	}
-}
-
-func configCiti() ConfigBank {
-	return ConfigBank{Logo: LogoCiti, EspecieDoc: "DMI", Aceite: "N", Quantidade: "", ValorCotacao: ""}
-}
-
-func configBB() ConfigBank {
-	return ConfigBank{Logo: LogoBB, EspecieDoc: "DM", Aceite: "N", Quantidade: "N", ValorCotacao: ""}
-}
-
-func configSantander() ConfigBank {
-	return ConfigBank{Logo: LogoSantander, EspecieDoc: "DM", Aceite: "N", Quantidade: "N", ValorCotacao: ""}
+//HasErrors verify if Response has any error
+func (b *BoletoResponse) HasErrors() bool {
+	return b.Errors != nil && len(b.Errors) > 0
 }

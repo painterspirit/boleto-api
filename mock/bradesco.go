@@ -47,14 +47,14 @@ func registerBoletoBradesco(c *gin.Context) {
     "boleto": null,
     "status": {
         "codigo": -518,
-        "mensagem": "Erro - A Tag ASSINATURA do Boleto não foi encontrada ou está mal-formada",
-        "detalhes": "Erro - A Tag ASSINATURA do Boleto não foi encontrada ou está mal-formada"
+        "mensagem": "Erro - Mock Bradesco",
+        "detalhes": "Erro - Mock Bradesco"
     }
 }
 `
 	d, _ := ioutil.ReadAll(c.Request.Body)
 	json := string(d)
-	if strings.Contains(json, "200") {
+	if strings.Contains(json, `valor": 200,`) {
 		c.Data(200, "text/json", []byte(tok))
 	} else {
 		c.Data(200, "text/json", []byte(tokErr))

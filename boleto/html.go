@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"encoding/base64"
 	"errors"
-	"html/template"
 
 	"github.com/boombuler/barcode"
 	"github.com/boombuler/barcode/twooffive"
@@ -159,7 +158,7 @@ const templateBoleto = `
                 <span class="align iconFont ion-printer"></span>
                 <span class="align">&nbspImprimir</span>
             </button>
-            <button class="no-print btnDefault print" onclick="window.location='./boleto?fmt=pdf&id={{.ID}}'">
+            <button class="no-print btnDefault print" onclick="window.location='./boleto?fmt=pdf&id={{.View.ID}}'">
                 <span class="align iconFont ion-document-text"></span>
                 <span class="align">&nbspGerar PDF</span>
             </button>
@@ -170,13 +169,12 @@ const templateBoleto = `
         </div>
     </div>
     <br/>
-    {{end}}
+    {{end}}    
     {{template "boletoForm" .}}
-
 	<hr/>
-	{{template "boletoForm" .}}
+    {{template "boletoForm" .}}
 	<div class="left">
-		<img style="margin-left:5mm;" src="data:image/png;base64,{{.Barcode64}}" alt="">
+		<img style="margin-left:5mm;" id="barcode_{{printIfproduction .View.Barcode}}" src="data:image/png;base64,{{.Barcode64}}" alt="">
 		<br/>
 		</div>
     </div>
@@ -191,10 +189,10 @@ const boletoForm = `
         <table cellspacing="0" cellpadding="0">
             <tr class="topLine">
                 <td class="bankLogo">
-                    {{.BankLogo}}					
+                    {{.ConfigBank.Logo}}					
                 </td>
-                <td class="sideBorders center"><span style="font-weight:bold;font-size:0.9em;">{{.BankNumber}}</span></td>
-                <td class="boletoNumber center"><span>{{.DigitableLine}}</span></td>
+                <td class="sideBorders center"><span style="font-weight:bold;font-size:0.9em;">{{.View.BankNumber}}</span></td>
+                <td class="boletoNumber center"><span>{{.View.DigitableLine}}</span></td>
             </tr>
         </table>
         <table cellspacing="0" cellpadding="0" border="1">
@@ -208,7 +206,7 @@ const boletoForm = `
                     <span class="title">Data de Vencimento</span>
                     <br/>
                     <br/>
-                    <p class="content right text" style="font-weight:bold;">{{.Boleto.Title.ExpireDateTime | brdate}}</p>
+                    <p class="content right text" style="font-weight:bold;" id="expire_date">{{.View.Boleto.Title.ExpireDateTime | brdate}}</p>
                 </td>
             </tr>
             <tr>
@@ -217,22 +215,22 @@ const boletoForm = `
                     <br/>
                     <table border="0" style="border:none">
                         <tr>
-                            <td width="60%"><span class="text">{{.Boleto.Recipient.Name}}</span></td>
-                            <td><span class="text"><b>{{.Boleto.Recipient.Document.Type}}</b> {{fmtDoc .Boleto.Recipient.Document}}</span></td>
+                            <td width="60%"><span class="text" id="recipient_name">{{.View.Boleto.Recipient.Name}}</span></td>
+                            <td><span class="text" id="recipient_document"><b>{{.View.Boleto.Recipient.Document.Type}}</b> {{fmtDoc .View.Boleto.Recipient.Document}}</span></td>
                         </tr>
                     </table>
                     <br/>
-                    <span class="text">{{.Boleto.Recipient.Address.Street}}, 
-                    {{.Boleto.Recipient.Address.Number}} - 
-                    {{.Boleto.Recipient.Address.District}}, 
-                    {{.Boleto.Recipient.Address.StateCode}} - 
-                    {{.Boleto.Recipient.Address.ZipCode}}</span>
+                    <span class="text" id="recipient_address">{{.View.Boleto.Recipient.Address.Street}}, 
+                    {{.View.Boleto.Recipient.Address.Number}} - 
+                    {{.View.Boleto.Recipient.Address.District}}, 
+                    {{.View.Boleto.Recipient.Address.StateCode}} - 
+                    {{.View.Boleto.Recipient.Address.ZipCode}}</span>
                 </td>
                 <td width="30%">
                     <span class="title">Agência/Código Beneficiário</span>
                     <br/>
                     <br/>
-                    <p class="content right">{{.Boleto.Agreement.Agency}}/{{.Boleto.Agreement.Account}}</p>
+                    <p class="content right" id="agreement_agency_account">{{.View.Boleto.Agreement.Agency}}/{{.View.Boleto.Agreement.Account}}</p>
                 </td>
             </tr>
 
@@ -240,33 +238,33 @@ const boletoForm = `
                 <td width="15%">
                     <span class="title">Data do Documento</span>
                     <br/>
-                    <p class="content center">{{.Boleto.Title.CreateDate | brdate}}</p>
+                    <p class="content center" id="create_date">{{.View.Boleto.Title.CreateDate | brdate}}</p>
                 </td>
                 <td width="17%" colspan="2">
                     <span class="title">Num. do Documento</span>
                     <br/>
-                    <p class="content center">{{.Boleto.Title.DocumentNumber}}</p>
+                    <p class="content center" id="boleto_document_number">{{.View.Boleto.Title.DocumentNumber}}</p>
                 </td>
                 <td width="10%">
                     <span class="title">Espécie doc</span>
                     <br/>
-                    <p class="content center">{{.ConfigBank.EspecieDoc}}</p>
+                    <p class="content center" id="configbank_especie_doc">{{.ConfigBank.EspecieDoc}}</p>
                 </td>
                 <td width="8%">
                     <span class="title">Aceite</span>
                     <br/>
-                    <p class="content center">{{.ConfigBank.Aceite}}</p>
+                    <p class="content center" id="configbank_aceite" >{{.ConfigBank.Aceite}}</p>
                 </td>
                 <td>
                     <span class="title">Data Processamento</span>
                     <br/>
-                    <p class="content center">{{.Boleto.Title.CreateDate | brdate}}</p>
+                    <p class="content center" id="process_date">{{.View.Boleto.Title.CreateDate | brdate}}</p>
                 </td>
                 <td width="30%">
                     <span class="title">Carteira/Nosso Número</span>
                     <br/>
                     <br/>
-                    <p class="content right">{{.Boleto.Agreement.Wallet}}/{{.Boleto.Title.OurNumber}}</p>
+                    <p class="content right" id="ournumber">{{.View.Boleto.Agreement.Wallet}}/{{.View.Boleto.Title.OurNumber}}</p>
                 </td>
             </tr>
 
@@ -275,38 +273,52 @@ const boletoForm = `
                     <span class="title">Uso do Banco</span>
                     <br/>
                     <p class="content center">&nbsp;</p>
-                </td>
-                <td width="10%">
-                    <span class="title">Carteira</span>
-                    <br/>
-                    <p class="content center">{{.Boleto.Agreement.Wallet}}</p>
+                </td>                
+                <td width="14%">
+                    <table>
+                        <tr>
+                            {{if eq .View.BankNumber "237-2"}}
+                                <td style="border-right: 1px solid #808080;" id="cel_cip">
+                                    <span class="title">Cip</span>
+                                    <br/>
+                                    <p class="content center" id="wallet">865</p>
+                                </td>
+                            {{end}}
+                            <td>
+                                <span class="title">Carteira</span>
+                                <br/>
+                                <p class="content center" id="wallet">{{.View.Boleto.Agreement.Wallet}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    
                 </td>
                 <td width="10%">
                     <span class="title">Espécie</span>
                     <br/>
-                    <p class="content center">R$</p>
+                    <p class="content center">{{.ConfigBank.Moeda}}</p>
                 </td>
                 <td width="8%" colspan="2">
                     <span class="title">Quantidade</span>
                     <br/>
-                    <p class="content center">{{.ConfigBank.Quantidade}}</p>
+                    <p class="content center" id="configbank_quantidade">{{.ConfigBank.Quantidade}}</p>
                 </td>
                 <td>
                     <span class="title">Valor</span>
                     <br/>
-                    <p class="content center">{{.ConfigBank.ValorCotacao}}</p>
+                    <p class="content center" id="configbank_valorCotacao" >{{.ConfigBank.ValorCotacao}}</p>
                 </td>
                 <td width="30%">
                     <span class="title">(=) Valor do Documento</span>
                     <br/>
                     <br/>
-                    <p class="content right">{{fmtNumber .Boleto.Title.AmountInCents}}</p>
+                    <p class="content right" id="amount_in_cents" >{{fmtNumber .View.Boleto.Title.AmountInCents}}</p>
                 </td>
             </tr>
             <tr>
                 <td colspan="6" rowspan="4">
                     <span class="title">Instruções de responsabilidade do BENEFICIÁRIO. Qualquer dúvida sobre este boleto contate o beneficiário.</span>
-                    <p class="content">{{unescapeHtmlString .Boleto.Title.Instructions}}</p>
+                    <p class="content" id="instructions">{{unescapeHtmlString .View.Boleto.Title.Instructions}}</p>
                 </td>
             </tr>
             <tr>
@@ -334,11 +346,11 @@ const boletoForm = `
                 <td colspan="7">
                     <table border="0" style="border:none">
                         <tr>
-                            <td width="60%"><span class="text"><b>Nome do Pagador: </b>&nbsp;{{.Boleto.Buyer.Name}}</span></td>
-                            <td><span class="text"><b>CNPJ/CPF: </b>&nbsp;{{fmtDoc .Boleto.Buyer.Document}}</span></td>
+                            <td width="60%"><span class="text" id="buyer_name"><b>Nome do Pagador: </b>&nbsp;{{.View.Boleto.Buyer.Name}}</span></td>
+                            <td><span class="text" id="buyer_document"><b>CNPJ/CPF: </b>&nbsp;{{fmtDoc .View.Boleto.Buyer.Document}}</span></td>
                         </tr>
                         <tr>
-                            <td><span class="text"><b>Endereço: </b>&nbsp;{{.Boleto.Buyer.Address.Street}}&nbsp;{{.Boleto.Buyer.Address.Number}}, {{.Boleto.Buyer.Address.District}} - {{.Boleto.Buyer.Address.City}}, {{.Boleto.Buyer.Address.StateCode}} - {{.Boleto.Buyer.Address.ZipCode}}</span></td>
+                            <td><span class="text" id="buyer_address"><b>Endereço: </b>&nbsp;{{.View.Boleto.Buyer.Address.Street}}&nbsp;{{.View.Boleto.Buyer.Address.Number}}, {{.View.Boleto.Buyer.Address.District}} - {{.View.Boleto.Buyer.Address.City}}, {{.View.Boleto.Buyer.Address.StateCode}} - {{.View.Boleto.Buyer.Address.ZipCode}}</span></td>
                             <td>&nbsp;</td>
                         </tr>
                         <tr>
@@ -357,23 +369,34 @@ const boletoForm = `
 	{{end}}
 `
 
+type HTMLBoleto struct {
+	View       models.BoletoView
+	ConfigBank ConfigBank
+	Barcode64  string
+	Format     string
+}
+
 //HTML renderiza HTML do boleto
 func HTML(boleto models.BoletoView, format string) (string, error) {
+
 	if boleto.Barcode == "" {
 		return "", errors.New("boleto not found")
 	}
 	b := tmpl.New()
-
-	boleto.BankLogo = template.HTML(boleto.ConfigBank.Logo)
-	boleto.Format = format
+	html := HTMLBoleto{
+		View:       boleto,
+		ConfigBank: GetConfig(boleto.BankID),
+		Format:     format,
+	}
 	bcode, _ := twooffive.Encode(boleto.Barcode, true)
 	orgBounds := bcode.Bounds()
 	orgWidth := orgBounds.Max.X - orgBounds.Min.X
 	img, _ := barcode.Scale(bcode, orgWidth, 50)
 	buf := new(bytes.Buffer)
 	err := png.Encode(buf, img)
-	boleto.Barcode64 = base64.StdEncoding.EncodeToString(buf.Bytes())
-	s, err := b.From(boleto).To(templateBoleto).Transform(boletoForm)
+	html.Barcode64 = base64.StdEncoding.EncodeToString(buf.Bytes())
+
+	s, err := b.From(html).To(templateBoleto).Transform(boletoForm)
 	if err != nil {
 		return "", err
 	}

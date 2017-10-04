@@ -21,7 +21,13 @@ func InstallRestAPI() {
 	}
 	InstallV1(router)
 	router.GET("/boleto", getBoleto)
+	router.GET("/boleto/confirmation", confirmation)
+	router.POST("/boleto/confirmation", confirmation)
 	router.Run(config.Get().APIPort)
+}
+
+func confirmation(c *gin.Context) {
+	c.String(200, "OK")
 }
 
 func checkError(c *gin.Context, err error, l *log.Log) bool {
@@ -43,12 +49,12 @@ func checkError(c *gin.Context, err error, l *log.Log) bool {
 			l.Warn(errResp, v.Error())
 			c.JSON(http.StatusBadRequest, errResp)
 		case models.IServerError:
-			errResp.Errors.Append("MP500", "Erro interno")
+			errResp.Errors.Append("MP500", "Internal Error")
 			l.Fatal(v.Error(), v.Message())
 			c.JSON(http.StatusInternalServerError, errResp)
 		default:
 			l.Fatal(err.Error(), "")
-			errResp.Errors.Append("MP500", "Erro interno")
+			errResp.Errors.Append("MP500", "Internal Error")
 			c.JSON(http.StatusInternalServerError, errResp)
 		}
 		return true
