@@ -43,4 +43,17 @@ func TestShouldRegisterBoletoSantander(t *testing.T) {
 		So(errJSON, ShouldEqual, nil)
 		So(len(boleto.Errors), ShouldBeGreaterThan, 0)
 	})
+
+	Convey("Deve-se retornar uma falha ao registrar boleto devido ao código do convenio invalido no Santander", t, func() {
+		req := getModelBody(models.Santander, 200)
+		req.Agreement.AgreementNumber = 0
+		response, st, err := util.Post("http://localhost:3000/v1/boleto/register", stringify(req), nil)
+		So(err, ShouldEqual, nil)
+		So(st, ShouldEqual, 400)
+		boleto := models.BoletoResponse{}
+		errJSON := json.Unmarshal([]byte(response), &boleto)
+		So(errJSON, ShouldEqual, nil)
+		So(len(boleto.Errors), ShouldBeGreaterThan, 0)
+		So(boleto.Errors[0].Message, ShouldEqual, "O código do convênio deve ser preenchido")
+	})
 }
