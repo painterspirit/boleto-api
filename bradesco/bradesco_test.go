@@ -28,3 +28,20 @@ func TestBarcodeGenerationBradesco(t *testing.T) {
 		So(bc.toString(), ShouldEqual, "23795796800000001990001250012446693212345670")
 	})
 }
+
+func TestRemoveDigitFromAccount(t *testing.T) {
+	bc := barcode{
+		account:       "0005600",
+		bankCode:      "237",
+		currencyCode:  "9",
+		agency:        "2372",
+		dateDueFactor: "7968",
+		ourNumber:     "00124466933",
+		zero:          "0",
+		wallet:        "25",
+		value:         "0000000199",
+	}
+	Convey("deve-se montar identificar e remover o digito da conta", t, func() {
+		So(bc.toString(), ShouldEqual, "23791796800000001992372250012446693300056000")
+	})
+}

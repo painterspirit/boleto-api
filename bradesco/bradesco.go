@@ -125,7 +125,7 @@ func (bc barcode) toString() string {
 
 func (bc barcode) calcCheckDigit() string {
 	prevCode := fmt.Sprintf("%s%s%s%s%s%s%s%s%s", bc.bankCode, bc.currencyCode, bc.dateDueFactor, bc.value, bc.agency, bc.wallet, bc.ourNumber, bc.account, bc.zero)
-	return util.Mod11(prevCode)
+	return util.BarcodeDv(prevCode)
 }
 
 func dateDueFactor(dateDue time.Time) (string, error) {

@@ -145,6 +145,14 @@ const templateBoleto = `
             display: inline-block;
             vertical-align: middle;
         }
+
+        label {
+            -moz-user-select: -moz-none;
+            -khtml-user-select: none;
+            -webkit-user-select: none;            
+            -ms-user-select: none;
+            user-select: none;
+        }
     </style>
     <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 </head>
@@ -192,7 +200,7 @@ const boletoForm = `
                     {{.ConfigBank.Logo}}					
                 </td>
                 <td class="sideBorders center"><span style="font-weight:bold;font-size:0.9em;">{{.View.BankNumber}}</span></td>
-                <td class="boletoNumber center"><span>{{.View.DigitableLine}}</span></td>
+                <td class="boletoNumber center"><label>{{.View.DigitableLine}}</label></td>
             </tr>
         </table>
         <table cellspacing="0" cellpadding="0" border="1">

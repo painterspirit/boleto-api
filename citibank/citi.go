@@ -111,7 +111,7 @@ func (b bankCiti) GetBankNumber() models.BankNumber {
 }
 
 func calculateOurNumber(boleto *models.BoletoRequest) uint {
-	ourNumberWithDigit := strconv.Itoa(int(boleto.Title.OurNumber)) + util.Mod11(strconv.Itoa(int(boleto.Title.OurNumber)))
+	ourNumberWithDigit := strconv.Itoa(int(boleto.Title.OurNumber)) + util.OurNumberDv(strconv.Itoa(int(boleto.Title.OurNumber)))
 	value, _ := strconv.Atoi(ourNumberWithDigit)
 	return uint(value)
 }

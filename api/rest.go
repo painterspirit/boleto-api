@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"net/http/httputil"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mundipagg/boleto-api/config"
@@ -27,6 +28,12 @@ func InstallRestAPI() {
 }
 
 func confirmation(c *gin.Context) {
+	if dump, err := httputil.DumpRequest(c.Request, true); err == nil {
+		l := log.CreateLog()
+		l.BankName = "Bradesco"
+		l.Operation = "BoletoConfirmation"
+		l.Request(string(dump), c.Request.URL.String(), nil)
+	}
 	c.String(200, "OK")
 }
 

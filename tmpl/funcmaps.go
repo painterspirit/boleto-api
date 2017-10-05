@@ -261,7 +261,7 @@ func base64(s string) string {
 }
 
 func calculateOurNumberMod11(number uint) uint {
-	ourNumberWithDigit := strconv.Itoa(int(number)) + util.Mod11(strconv.Itoa(int(number)))
+	ourNumberWithDigit := strconv.Itoa(int(number)) + util.OurNumberDv(strconv.Itoa(int(number)))
 	value, _ := strconv.Atoi(ourNumberWithDigit)
 	return uint(value)
 }
