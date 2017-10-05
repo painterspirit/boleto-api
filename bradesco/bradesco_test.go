@@ -44,8 +44,4 @@ func TestRemoveDigitFromAccount(t *testing.T) {
 	Convey("deve-se montar identificar e remover o digito da conta", t, func() {
 		So(bc.toString(), ShouldEqual, "23791796800000001992372250012446693300056000")
 	})
-
-	//23790796800000001992372250012446693300056000
-	//23791796800000001992372250012446693300056000
-
 }
