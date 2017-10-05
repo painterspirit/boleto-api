@@ -169,11 +169,7 @@ const templateBoleto = `
             <button class="no-print btnDefault print" onclick="window.location='./boleto?fmt=pdf&id={{.View.ID}}'">
                 <span class="align iconFont ion-document-text"></span>
                 <span class="align">&nbspGerar PDF</span>
-            </button>
-            <!--<button class="no-print btnDefault print" onclick="window.location='./boleto/www.google.com'">
-                <span class="align iconFont ion-image"></span>
-                <span class="align">&nbspSalvar como Imagem</span>
-            </button>-->
+            </button>            
         </div>
     </div>
     <br/>
@@ -182,7 +178,7 @@ const templateBoleto = `
 	<hr/>
     {{template "boletoForm" .}}
 	<div class="left">
-		<img style="margin-left:5mm;" id="barcode_{{printIfproduction .View.Barcode}}" src="data:image/png;base64,{{.Barcode64}}" alt="">
+		<img style="margin-left:5mm;" id="barcode_{{printIfNotProduction .View.Barcode}}" src="data:image/png;base64,{{.Barcode64}}" alt="">
 		<br/>
 		</div>
     </div>
@@ -200,7 +196,7 @@ const boletoForm = `
                     {{.ConfigBank.Logo}}					
                 </td>
                 <td class="sideBorders center"><span style="font-weight:bold;font-size:0.9em;">{{.View.BankNumber}}</span></td>
-                <td class="boletoNumber center"><label>{{.View.DigitableLine}}</label></td>
+                <td class="boletoNumber center"><img src="data:image/png;base64,{{.DigitableLine}}" line="{{printIfNotProduction .View.DigitableLine}}"  /></td>
             </tr>
         </table>
         <table cellspacing="0" cellpadding="0" border="1">
@@ -378,10 +374,11 @@ const boletoForm = `
 `
 
 type HTMLBoleto struct {
-	View       models.BoletoView
-	ConfigBank ConfigBank
-	Barcode64  string
-	Format     string
+	View          models.BoletoView
+	ConfigBank    ConfigBank
+	Barcode64     string
+	Format        string
+	DigitableLine string
 }
 
 //HTML renderiza HTML do boleto
@@ -403,7 +400,7 @@ func HTML(boleto models.BoletoView, format string) (string, error) {
 	buf := new(bytes.Buffer)
 	err := png.Encode(buf, img)
 	html.Barcode64 = base64.StdEncoding.EncodeToString(buf.Bytes())
-
+	html.DigitableLine = textToImage(boleto.DigitableLine)
 	s, err := b.From(html).To(templateBoleto).Transform(boletoForm)
 	if err != nil {
 		return "", err
