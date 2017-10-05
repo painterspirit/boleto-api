@@ -51,7 +51,7 @@ var funcMap = template.FuncMap{
 	"formatSingleLine":       formatSingleLine,
 	"diff":                   diff,
 	"mod11dv":                calculateOurNumberMod11,
-	"printIfproduction":      printIfproduction,
+	"printIfNotProduction":   printIfNotProduction,
 }
 
 func GetFuncMaps() template.FuncMap {
@@ -137,7 +137,7 @@ func fmtNumber(n uint64) string {
 	return fmt.Sprintf("%d,%02d", real, cents)
 }
 
-func printIfproduction(obj string) string {
+func printIfNotProduction(obj string) string {
 	if config.IsNotProduction() {
 		return fmt.Sprintf("%s", obj)
 	}

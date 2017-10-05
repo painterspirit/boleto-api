@@ -135,6 +135,10 @@
 			"Rev": "176bf5a6c48e4195cc8dee503981ec47c7f9e7be"
 		},
 		{
+			"ImportPath": "github.com/pbnjay/pixfont",
+			"Rev": "cf49ba5e073f445077b140758ab70e8acc760598"
+		},
+		{
 			"ImportPath": "github.com/smartystreets/assertions",
 			"Comment": "1.6.0-24-gf8459f9",
 			"Rev": "f8459f92181409546d2762c9e9c4bedc23c92d76"
