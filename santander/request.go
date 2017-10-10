@@ -10,7 +10,7 @@ const registerBoleto = `
       <impl:registraTitulo>
          <dto>
             <dtNsu>{{today | brDateWithoutDelimiter }}</dtNsu>
-            <estacao>HYW3</estacao>
+            <estacao>{{.Authentication.Username}}</estacao>
             <nsu>{{santanderNSUPrefix .Title.DocumentNumber}}</nsu>
             <ticket>{{unscape .Authentication.AuthorizationToken}}</ticket>
             <tpAmbiente>{{santanderEnv}}</tpAmbiente>
