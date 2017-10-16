@@ -16,6 +16,8 @@ services:
      - ENABLE_REQUEST_LOG=false
      - ENABLE_PRINT_REQUEST=true
      - MONGODB_URL=10.0.2.15:27017
+     - MONGODB_USER=user
+     - MONGODB_PASSWORD=pass
      - APP_URL=http://localhost:8080/boleto
      - BOLETO_JSON_STORE=/home/upMongo
      - CERT_BOLETO_CRT=/home/mundipagg/boleto_cert/certificate.crt
