@@ -30,6 +30,8 @@ type Config struct {
 	AppURL                     string
 	ElasticURL                 string
 	MongoURL                   string
+	MongoUser                  string
+	MongoPassword              string
 	BoletoJSONFileStore        string
 	DisableLog                 bool
 	CertBoletoPathCrt          string
@@ -72,6 +74,8 @@ func Install(mockMode, devMode, disableLog bool) {
 		DevMode:                    devMode,
 		DisableLog:                 disableLog,
 		MongoURL:                   os.Getenv("MONGODB_URL"),
+		MongoUser:                  os.Getenv("MONGODB_USER"),
+		MongoPassword:              os.Getenv("MONGODB_PASSWORD"),
 		BoletoJSONFileStore:        os.Getenv("BOLETO_JSON_STORE"),
 		CertBoletoPathCrt:          os.Getenv("CERT_BOLETO_CRT"),
 		CertBoletoPathKey:          os.Getenv("CERT_BOLETO_KEY"),
