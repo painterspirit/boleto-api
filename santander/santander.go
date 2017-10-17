@@ -2,6 +2,7 @@ package santander
 
 import (
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -37,7 +38,7 @@ func New() bankSantander {
 
 	t, err := util.BuildTLSTransport(config.Get().CertBoletoPathCrt, config.Get().CertBoletoPathKey, config.Get().CertBoletoPathCa)
 	if err != nil {
-		//TODO
+		fmt.Println(err.Error())
 	}
 	b.transport = t
 
