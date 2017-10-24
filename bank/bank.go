@@ -4,12 +4,13 @@ import (
 	"fmt"
 
 	"github.com/mundipagg/boleto-api/bb"
+	"github.com/mundipagg/boleto-api/bradesco"
 	"github.com/mundipagg/boleto-api/caixa"
 	"github.com/mundipagg/boleto-api/citibank"
+	"github.com/mundipagg/boleto-api/itau"
 	"github.com/mundipagg/boleto-api/log"
 	"github.com/mundipagg/boleto-api/models"
 	"github.com/mundipagg/boleto-api/santander"
-	"github.com/mundipagg/boleto-api/bradesco"
 )
 
 //Bank é a interface que vai oferecer os serviços em comum entre os bancos
@@ -34,6 +35,8 @@ func Get(number models.BankNumber) (Bank, error) {
 		return citibank.New(), nil
 	case models.Santander:
 		return santander.New(), nil
+	case models.Itau:
+		return itau.New(), nil
 	default:
 		return nil, models.NewErrorResponse("MPBankNumber", fmt.Sprintf("Banco %d não existe", number))
 	}

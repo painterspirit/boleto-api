@@ -27,6 +27,7 @@ var funcMap = template.FuncMap{
 	"padLeft":                padLeft,
 	"clearString":            clearString,
 	"toString":               toString,
+	"toString64":             toString64,
 	"fmtDigitableLine":       fmtDigitableLine,
 	"fmtCNPJ":                fmtCNPJ,
 	"fmtCPF":                 fmtCPF,
@@ -50,7 +51,8 @@ var funcMap = template.FuncMap{
 	"formatSingleLine":       formatSingleLine,
 	"diff":                   diff,
 	"mod11dv":                calculateOurNumberMod11,
-	"printIfNotProduction":   printIfNotProduction,
+	"dv":                     mod11,
+	"printIfNotProduction": printIfNotProduction,
 }
 
 func GetFuncMaps() template.FuncMap {
@@ -166,6 +168,10 @@ func toString(number uint) string {
 	return strconv.FormatInt(int64(number), 10)
 }
 
+func toString64(number uint64) string {
+	return strconv.FormatInt(int64(number), 10)
+}
+
 func today() time.Time {
 	return util.BrNow()
 }
@@ -269,4 +275,8 @@ func calculateOurNumberMod11(number uint) uint {
 	ourNumberWithDigit := strconv.Itoa(int(number)) + util.OurNumberDv(strconv.Itoa(int(number)))
 	value, _ := strconv.Atoi(ourNumberWithDigit)
 	return uint(value)
+}
+
+func mod11(number uint) string {
+	return util.OurNumberDv(strconv.Itoa(int(number)))
 }
