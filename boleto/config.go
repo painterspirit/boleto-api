@@ -29,6 +29,8 @@ func GetConfig(number models.BankNumber) ConfigBank {
 		return configBradesco()
 	case models.Caixa:
 		return configCaixa()
+	case models.Itau:
+		return configItau()
 	default:
 		return configBB()
 	}
@@ -48,6 +50,10 @@ func configCaixa() ConfigBank {
 
 func configSantander() ConfigBank {
 	return ConfigBank{Logo: template.HTML(LogoSantander), EspecieDoc: "DM", Aceite: "N", Quantidade: "N", ValorCotacao: "", Moeda: "R$"}
+}
+
+func configItau() ConfigBank {
+	return ConfigBank{Logo: template.HTML(LogoItau), EspecieDoc: "DM", Aceite: "N", Quantidade: "N", ValorCotacao: "", Moeda: "R$"}
 }
 
 func configBradesco() ConfigBank {
