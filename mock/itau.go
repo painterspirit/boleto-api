@@ -1,19 +1,29 @@
 package mock
 
 import (
+	"io/ioutil"
+	"strings"
+
 	"github.com/gin-gonic/gin"
 )
 
 func getTokenItau(c *gin.Context) {
+	b, _ := ioutil.ReadAll(c.Request.Body)
 	const tok = `{
 		"access_token": "5f1cb9512fe587763ea33a3fb31e62cb",
 		"expires_in": 14400,
 		"token_type": "Bearer"
 	}`
-	c.Data(200, "text/json", []byte(tok))
+	if strings.Contains(string(b), `clientId=&`) {
+		c.Data(500, "text/json", []byte(`{"Message":"An error has occurred."}`))
+	} else {
+		c.Data(200, "text/json", []byte(tok))
+	}
+
 }
 
 func registerItau(c *gin.Context) {
+	b, _ := ioutil.ReadAll(c.Request.Body)
 	const resp = `{
 		"beneficiario": {
 			"codigo_banco_beneficiario": "341",
@@ -96,5 +106,15 @@ func registerItau(c *gin.Context) {
 			}
 		]
 	}`
-	c.Data(200, "text/json", []byte(resp))
+	if strings.Contains(string(b), `"valor_cobrado": "0000000000000200"`) {
+		c.Data(200, "text/json", []byte(resp))
+	} else {
+		c.Data(400, "text/json", []byte(`
+			{
+				"codigo":"error_code_mock",
+				"mensagem":"error mock message"	
+			}
+		`))
+	}
+
 }

@@ -8,7 +8,7 @@ const registerItau = `
 ## Content-Type: application/json
 
 {
-    "tipo_ambiente": 1,
+    "tipo_ambiente": {{envItau}},
     "tipo_registro": 1,
     "tipo_cobranca": 1,
     "tipo_produto": "00006",
@@ -19,17 +19,17 @@ const registerItau = `
         "conta_beneficiario": "{{padLeft .Agreement.Account "0" 7}}",
         "digito_verificador_conta_beneficiario": "{{.Agreement.AccountDigit}}"
     },
-    "identificador_titulo_empresa": "{{.Recipient.Name}}",
+    "identificador_titulo_empresa": "{{truncate .Recipient.Name 25}}",
     "uso_banco": "",
     "titulo_aceite": "S",
     "pagador": {
         "cpf_cnpj_pagador": "{{.Buyer.Document.Number}}",
-        "nome_pagador": "{{.Buyer.Name}}",
-        "logradouro_pagador": "{{.Buyer.Address.Street}} {{.Buyer.Address.Number}} {{.Buyer.Address.Complement}}",
-        "bairro_pagador": "{{.Buyer.Address.District}}",
-        "cidade_pagador": "{{.Buyer.Address.City}}",
-        "uf_pagador": "{{.Buyer.Address.StateCode}}",
-        "cep_pagador": "{{.Buyer.Address.ZipCode}}",
+        "nome_pagador": "{{truncate .Buyer.Name 30}}",
+        "logradouro_pagador": "{{truncate .Buyer.Address.Street 40}}",
+        "bairro_pagador": "{{truncate .Buyer.Address.District 15}}",
+        "cidade_pagador": "{{truncate .Buyer.Address.City 20}}",
+        "uf_pagador": "{{truncate .Buyer.Address.StateCode 2}}",
+        "cep_pagador": "{{truncate .Buyer.Address.ZipCode 8}}",
         "grupo_email_pagador": [
             {
                 "email_pagador": ""
@@ -46,7 +46,7 @@ const registerItau = `
     "codigo_barras": "",
     "data_vencimento": "{{enDate .Title.ExpireDateTime "-"}}",
     "valor_cobrado": "{{padLeft (toString64 .Title.AmountInCents) "0" 16}}",
-    "seu_numero": "{{.Title.DocumentNumber}}",
+    "seu_numero": "{{padLeft .Title.DocumentNumber "0" 10}}",
     "especie": "01",
     "data_emissao": "{{enDate (today) "-"}}",
     "data_limite_pagamento": "{{enDate .Title.ExpireDateTime "-"}}",
@@ -75,15 +75,13 @@ const registerItau = `
         "tipo_multa": 3,
         "valor_multa": "",
         "percentual_multa": ""
-    },
-    "grupo_desconto": [
-        {
-            "data_desconto": "{{enDate .Title.ExpireDateTime "-"}}",
-            "tipo_desconto": 2,
-            "valor_desconto": "",
-            "percentual_desconto": "10"
-        }
-    ],
+    },    
+    "grupo_desconto": [{
+        "data_desconto": "",
+        "tipo_desconto": 0,
+        "valor_desconto": "",
+        "percentual_desconto": ""
+    }],    
     "recebimento_divergente": {
         "tipo_autorizacao_recebimento": "3",
         "tipo_valor_percentual_recebimento": "",

@@ -18,6 +18,19 @@ func Config(devMode, mockMode, disableLog bool) {
 	metrics.Install()
 }
 
+func ConfigMock(port string) {
+	os.Setenv("URL_BB_REGISTER_BOLETO", "http://localhost:"+port+"/registrarBoleto")
+	os.Setenv("URL_BB_TOKEN", "http://localhost:"+port+"/oauth/token")
+	os.Setenv("URL_CAIXA", "http://localhost:"+port+"/caixa/registrarBoleto")
+	os.Setenv("URL_CITI", "http://localhost:"+port+"/citi/registrarBoleto")
+	os.Setenv("URL_SANTANDER_TICKET", "tls://localhost:"+port+"/santander/get-ticket")
+	os.Setenv("URL_SANTANDER_REGISTER", "tls://localhost:"+port+"/santander/register")
+	os.Setenv("URL_BRADESCO", "http://localhost:"+port+"/bradesco/registrarBoleto")
+	os.Setenv("URL_ITAU_TICKET", "http://localhost:"+port+"/itau/gerarToken")
+	os.Setenv("URL_ITAU_REGISTER", "http://localhost:"+port+"/itau/registrarBoleto")
+	config.Install(true, true, true)
+}
+
 func configFlags(devMode, mockMode, disableLog bool) {
 	if devMode {
 		os.Setenv("INFLUXDB_HOST", "http://localhost")
@@ -48,18 +61,6 @@ func configFlags(devMode, mockMode, disableLog bool) {
 		os.Setenv("URL_BRADESCO", "https://homolog.meiosdepagamentobradesco.com.br/api/transacao")
 		os.Setenv("URL_ITAU_REGISTER", "https://gerador-boletos.itau.com.br/router-gateway-app/public/codigo_barras/registro")
 		os.Setenv("URL_ITAU_TICKET", "https://oauth.itau.com.br/identity/connect/token")
-
-		if mockMode {
-			os.Setenv("URL_BB_REGISTER_BOLETO", "http://localhost:9091/registrarBoleto")
-			os.Setenv("URL_BB_TOKEN", "http://localhost:9091/oauth/token")
-			os.Setenv("URL_CAIXA", "http://localhost:9091/caixa/registrarBoleto")
-			os.Setenv("URL_CITI", "http://localhost:9091/citi/registrarBoleto")
-			os.Setenv("URL_SANTANDER_TICKET", "tls://localhost:9091/santander/get-ticket")
-			os.Setenv("URL_SANTANDER_REGISTER", "tls://localhost:9091/santander/register")
-			os.Setenv("URL_BRADESCO", "http://localhost:9091/bradesco/registrarBoleto")
-			os.Setenv("URL_ITAU_TICKET", "http://localhost:9091/itau/gerarToken")
-			os.Setenv("URL_ITAU_REGISTER", "http://localhost:9091/itau/registrarBoleto")
-		}
 	}
 	config.Install(mockMode, devMode, disableLog)
 }

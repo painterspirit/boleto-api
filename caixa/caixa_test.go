@@ -89,7 +89,7 @@ func TestShouldProcessBoleto(t *testing.T) {
 		t.Fail()
 	}
 	bank := New()
-	go mock.Run()
+	go mock.Run("9094")
 	time.Sleep(2 * time.Second)
 	Convey("deve-se processar um boleto Caixa com sucesso", t, func() {
 		output, err := bank.ProcessBoleto(input)
@@ -97,6 +97,24 @@ func TestShouldProcessBoleto(t *testing.T) {
 		So(output.BarCodeNumber, ShouldNotBeEmpty)
 		So(output.DigitableLine, ShouldNotBeEmpty)
 		So(output.Errors, ShouldBeEmpty)
+	})
+	input.Title.AmountInCents = 400
+	Convey("deve-se tratar erro no boleto Caixa", t, func() {
+		output, err := bank.ProcessBoleto(input)
+		So(err, ShouldBeNil)
+		So(output.BarCodeNumber, ShouldBeEmpty)
+		So(output.DigitableLine, ShouldBeEmpty)
+		So(output.Errors, ShouldNotBeEmpty)
+	})
+
+	input.Title.AmountInCents = 200
+	input.Title.Instructions = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+	Convey("deve-se tratar erro no boleto Caixa", t, func() {
+		output, err := bank.ProcessBoleto(input)
+		So(err, ShouldBeNil)
+		So(output.BarCodeNumber, ShouldBeEmpty)
+		So(output.DigitableLine, ShouldBeEmpty)
+		So(output.Errors, ShouldNotBeEmpty)
 	})
 }
 

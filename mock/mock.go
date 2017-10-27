@@ -1,9 +1,11 @@
 package mock
 
 import "github.com/gin-gonic/gin"
+import "github.com/mundipagg/boleto-api/env"
 
 //Run sobe uma aplicação web para mockar a integração com os Bancos
-func Run() {
+func Run(port string) {
+	env.ConfigMock(port)
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.New()
 	router.Use(gin.Recovery())
@@ -16,6 +18,5 @@ func Run() {
 	router.POST("/bradesco/registrarBoleto", registerBoletoBradesco)
 	router.POST("/itau/gerarToken", getTokenItau)
 	router.POST("/itau/registrarBoleto", registerItau)
-
-	router.Run(":9091")
+	router.Run(":" + port)
 }
