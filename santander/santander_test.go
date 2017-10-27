@@ -1,4 +1,4 @@
-package itau
+package santander
 
 import (
 	"testing"
@@ -13,35 +13,35 @@ import (
 
 const baseMockJSON = `
 {
-	"BankNumber": 341,
+	"BankNumber": 33,
 	"Agreement": {
-		"Wallet":109,
-		"Agency":"0407",
-		"Account":"55292",
-		"AccountDigit":"6"
+		"AgreementNumber": 11111111,		
+		"Agency":"5555",
+		"Account":"55555"
 	},
 	"Title": {
-		"ExpireDate": "2017-12-31",
-		"AmountInCents": 200			
+		"ExpireDate": "2035-08-01",
+		"AmountInCents": 200,
+		"OurNumber":10000000004		
 	},
 	"Buyer": {
 		"Name": "TESTE",
 		"Document": {
-			"Type": "CNPJ",
-			"Number": "00001234567890"
-		}
+			"Type": "CPF",
+			"Number": "12345678903"
+		}		
 	},
 	"Recipient": {
 		"Name": "TESTE",
 		"Document": {
 			"Type": "CNPJ",
-			"Number": "00123456789067"
-		}
+			"Number": "55555555555555"
+		}		
 	}
 }
 `
 
-func TestRegiterBoletoItau(t *testing.T) {
+func TestShouldProcessBoletoSantander(t *testing.T) {
 	env.Config(true, true, true)
 	input := new(models.BoletoRequest)
 	if err := util.FromJSON(baseMockJSON, input); err != nil {
@@ -50,12 +50,11 @@ func TestRegiterBoletoItau(t *testing.T) {
 	bank := New()
 	go mock.Run()
 	time.Sleep(2 * time.Second)
-	Convey("deve-se processar um boleto itau com sucesso", t, func() {
+	Convey("deve-se processar um boleto santander com sucesso", t, func() {
 		output, err := bank.ProcessBoleto(input)
 		So(err, ShouldBeNil)
 		So(output.BarCodeNumber, ShouldNotBeEmpty)
 		So(output.DigitableLine, ShouldNotBeEmpty)
 		So(output.Errors, ShouldBeEmpty)
 	})
-
 }

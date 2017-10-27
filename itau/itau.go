@@ -27,6 +27,7 @@ func New() bankItau {
 	b.validate.Push(validations.ValidateExpireDate)
 	b.validate.Push(validations.ValidateBuyerDocumentNumber)
 	b.validate.Push(validations.ValidateRecipientDocumentNumber)
+	b.validate.Push(itauValidateAccount)
 	return b
 }
 
