@@ -54,6 +54,7 @@ var funcMap = template.FuncMap{
 	"mod11dv":                calculateOurNumberMod11,
 	"dv":                     mod11,
 	"printIfNotProduction": printIfNotProduction,
+	"envItau":              envItau,
 }
 
 func GetFuncMaps() template.FuncMap {
@@ -65,6 +66,13 @@ func santanderNSUPrefix(number string) string {
 		return "TST" + number
 	}
 	return number
+}
+
+func envItau() int {
+	if config.Get().DevMode {
+		return 1
+	}
+	return 2
 }
 
 func diff(a string, b string) bool {
