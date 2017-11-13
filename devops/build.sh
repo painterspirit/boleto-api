@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "O usuario que esta executando o script: $USER"
 #export GOPATH="/home/mundipagg/go"
-#export CGO_ENABLED=0
+export CGO_ENABLED=0
 PROJECTPATH="$GOPATH/src/github.com/mundipagg/boleto-api"
 echo "Changing directory to path $PROJECTPATH"
 ls -la $PROJECTPATH
