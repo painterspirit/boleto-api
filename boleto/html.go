@@ -322,7 +322,7 @@ const boletoForm = `
             <tr>
                 <td colspan="6" rowspan="4">
                     <span class="title">Instruções de responsabilidade do BENEFICIÁRIO. Qualquer dúvida sobre este boleto contate o beneficiário.</span>
-                    <p class="content" id="instructions">{{unescapeHtmlString .View.Boleto.Title.Instructions}}</p>
+                    <p class="content" id="instructions">{{unescapeHtmlString .View.Boleto.Title.Instructions }}</p>
                 </td>
             </tr>
             <tr>

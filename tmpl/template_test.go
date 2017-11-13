@@ -126,3 +126,17 @@ func TestTrim(t *testing.T) {
 		So(trim(d), ShouldEqual, "hue br festa")
 	})
 }
+
+func TestSanitizeHtml(t *testing.T) {
+	Convey("O texto não deve conter HTML tags", t, func() {
+		d := "<b>hu3 br festa</b>"
+		So(sanitizeHtmlString(d), ShouldEqual, "hu3 br festa")
+	})
+}
+
+func TestUnscapeHtml(t *testing.T) {
+	Convey("A string não deve ter caracteres Unicode", t, func() {
+		d := "&#243;"
+		So(unescapeHtmlString(d), ShouldEqual, "ó")
+	})
+}

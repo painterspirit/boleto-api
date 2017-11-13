@@ -2,6 +2,7 @@ package tmpl
 
 import (
 	"bytes"
+	"html"
 	"html/template"
 	"strings"
 	"time"
@@ -9,8 +10,6 @@ import (
 	"strconv"
 
 	"fmt"
-
-	"html"
 
 	"github.com/kennygrant/sanitize"
 	"github.com/mundipagg/boleto-api/config"
@@ -89,8 +88,13 @@ func unscape(s string) template.HTML {
 	return template.HTML(s)
 }
 
+func sanitizeHtmlString(s string) string {
+	return sanitize.HTML(s)
+}
+
 func unescapeHtmlString(s string) template.HTML {
-	return template.HTML(html.UnescapeString(s))
+	str := sanitizeHtmlString(s)
+	return template.HTML(html.UnescapeString(str))
 }
 
 func trimLeft(s string, caract string) string {
