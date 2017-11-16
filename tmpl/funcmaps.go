@@ -93,7 +93,7 @@ func sanitizeHtmlString(s string) string {
 }
 
 func unescapeHtmlString(s string) string {
-	str := template.HTML(html.UnescapeString(s))
+	str := html.UnescapeString(s)
 	return sanitizeHtmlString(string(str))
 }
 
