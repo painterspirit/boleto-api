@@ -89,12 +89,13 @@ func unscape(s string) template.HTML {
 }
 
 func sanitizeHtmlString(s string) string {
-	return sanitize.HTML(s)
+	str := html.UnescapeString(s)
+	return sanitize.HTML(str)
 }
 
 func unescapeHtmlString(s string) template.HTML {
-	str := sanitizeHtmlString(s)
-	return template.HTML(html.UnescapeString(str))
+	c := sanitizeHtmlString(s)
+	return template.HTML(html.UnescapeString(c))
 }
 
 func trimLeft(s string, caract string) string {
