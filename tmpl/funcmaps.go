@@ -92,9 +92,9 @@ func sanitizeHtmlString(s string) string {
 	return sanitize.HTML(s)
 }
 
-func unescapeHtmlString(s string) template.HTML {
-	str := sanitizeHtmlString(s)
-	return template.HTML(html.UnescapeString(str))
+func unescapeHtmlString(s string) string {
+	str := template.HTML(html.UnescapeString(s))
+	return sanitizeHtmlString(string(str))
 }
 
 func trimLeft(s string, caract string) string {
