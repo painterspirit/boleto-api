@@ -6,7 +6,7 @@ RUN mkdir -p "/home/mundipagg/boleto_cert"
 
 ENV GOROOT="/home/mundipagg/"
 
-COPY time "/home/mundipagg/time"
+COPY time "/home/mundipagg/lib/time"
 
 ADD boleto-api /home/mundipagg/
 RUN chmod +x /home/mundipagg/boleto-api
