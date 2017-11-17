@@ -36,9 +36,4 @@ services:
         container_name: "mongodb"        
         ports:
             - 27017:27017
-        command: mongod --smallfiles --logpath=/dev/null
-  pdfapi:
-    image: pmoneda/pdfapi:latest
-    container_name: "pdfapi"
-    ports:
-        - 8089:8080
+        command: mongod --smallfiles --logpath=/dev/null  

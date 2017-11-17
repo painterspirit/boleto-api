@@ -234,7 +234,7 @@ const boletoForm = `
                     <span class="title">Agência/Código Beneficiário</span>
                     <br/>
                     <br/>
-                    <p class="content right" id="agreement_agency_account">{{.View.Boleto.Agreement.Agency}}/{{.View.Boleto.Agreement.Account}}</p>
+                    <p class="content right" id="agreement_agency_account">{{.View.Boleto.Agreement.Agency}}/{{if eq .View.BankNumber "033-7"}}{{.View.Boleto.Agreement.AgreementNumber}}{{else}}{{.View.Boleto.Agreement.Account}}{{end}}</p>
                 </td>
             </tr>
 
@@ -273,6 +273,19 @@ const boletoForm = `
             </tr>
 
             <tr>
+                {{if eq .View.BankNumber "033-7"}}
+                <td width="29%" colspan="2">
+                    <table>
+                        <tr>                            
+                            <td>
+                                <span class="title">Carteira</span>
+                                <br/>
+                                <p class="content center" id="wallet">COBRANCA SIMPLES RCR</p>
+                            </td>
+                        </tr>
+                    </table>                
+                </td>
+                {{else}}
                 <td width="15%">
                     <span class="title">Uso do Banco</span>
                     <br/>
@@ -297,6 +310,7 @@ const boletoForm = `
                     </table>
                     
                 </td>
+                {{end}}
                 <td width="10%">
                     <span class="title">Espécie</span>
                     <br/>
@@ -322,7 +336,7 @@ const boletoForm = `
             <tr>
                 <td colspan="6" rowspan="4">
                     <span class="title">Instruções de responsabilidade do BENEFICIÁRIO. Qualquer dúvida sobre este boleto contate o beneficiário.</span>
-                    <p class="content" id="instructions">{{unescapeHtmlString .View.Boleto.Title.Instructions }}</p>
+                    <p class="content" id="instructions">{{.View.Boleto.Title.Instructions }}</p>
                 </td>
             </tr>
             <tr>
