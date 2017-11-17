@@ -33,10 +33,5 @@ services:
      - URL_CITI_BOLETO=#{CONF_URL_CITI_BOLETO}#
      - URL_SANTANDER_TICKET=#{CONF_URL_SANTANDER_TICKET}#
      - URL_SANTANDER_REGISTER=#{CONF_URL_SANTANDER_REGISTER}#
-     - URL_BRADESCO=#{CONF_URL_BRADESCO}#
-  pdfapi:
-    image: pmoneda/pdfapi:latest
-    container_name: "pdfapi"
-    ports:
-        - 8089:8080    
+     - URL_BRADESCO=#{CONF_URL_BRADESCO}#  
   

@@ -2,6 +2,8 @@ package util
 
 import (
 	"time"
+	
+	"github.com/mundipagg/boleto-api/log"
 )
 
 func Duration(callback func()) (duration time.Duration) {
@@ -15,6 +17,8 @@ func Duration(callback func()) (duration time.Duration) {
 func BrNow() time.Time {
 	z, err := time.LoadLocation("America/Sao_Paulo")
 	if err != nil {
+		lg := log.CreateLog()
+		lg.Warn(err.Error(), "Could not get Timezone")
 		return time.Now()
 	}
 	t := time.Now()
@@ -25,6 +29,8 @@ func BrNow() time.Time {
 func NycNow() time.Time {
 	z, err := time.LoadLocation("America/New_York")
 	if err != nil {
+		lg := log.CreateLog()
+		lg.Warn(err.Error(), "Could not get Timezone")
 		return time.Now()
 	}
 	t := time.Now()
