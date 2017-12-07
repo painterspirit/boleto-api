@@ -201,12 +201,12 @@ const boletoForm = `
         </table>
         <table cellspacing="0" cellpadding="0" border="1">
             <tr>
-                <td width="70%" colspan="6">
+                <td width="80%" colspan="6">
                     <span class="title">Local de Pagamento</span>
                     <br/>
                     <span class="text">ATÉ O VENCIMENTO EM QUALQUER BANCO OU CORRESPONDENTE NÃO BANCÁRIO</span>
                 </td>
-                <td width="30%">
+                <td width="20%">
                     <span class="title">Data de Vencimento</span>
                     <br/>
                     <br/>
@@ -214,7 +214,7 @@ const boletoForm = `
                 </td>
             </tr>
             <tr>
-                <td width="70%" colspan="6">
+                <td width="80%" colspan="6">
                     <span class="title">Nome do Beneficiário / CNPJ / CPF / Endereço:</span>
                     <br/>
                     <table border="0" style="border:none">
@@ -230,7 +230,7 @@ const boletoForm = `
                     {{.View.Boleto.Recipient.Address.StateCode}} - 
                     {{.View.Boleto.Recipient.Address.ZipCode}}</span>
                 </td>
-                <td width="30%">
+                <td width="20%">
                     <span class="title">Agência/Código Beneficiário</span>
                     <br/>
                     <br/>
@@ -239,7 +239,7 @@ const boletoForm = `
             </tr>
 
             <tr>
-                <td width="15%">
+                <td width="20%">
                     <span class="title">Data do Documento</span>
                     <br/>
                     <p class="content center" id="create_date">{{.View.Boleto.Title.CreateDate | brdate}}</p>
@@ -286,7 +286,7 @@ const boletoForm = `
                     </table>                
                 </td>
                 {{else}}
-                <td width="15%">
+                <td width="20%">
                     <span class="title">Uso do Banco</span>
                     <br/>
                     <p class="content center">&nbsp;</p>
