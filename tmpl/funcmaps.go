@@ -67,13 +67,6 @@ func santanderNSUPrefix(number string) string {
 	return number
 }
 
-func envItau() int {
-	if config.Get().DevMode {
-		return 1
-	}
-	return 2
-}
-
 func diff(a string, b string) bool {
 	return a != b
 }
