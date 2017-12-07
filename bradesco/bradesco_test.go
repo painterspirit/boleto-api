@@ -75,15 +75,23 @@ func TestRegiterBoleto(t *testing.T) {
 		t.Fail()
 	}
 	bank := New()
-	go mock.Run()
+	go mock.Run("9093")
 	time.Sleep(2 * time.Second)
-	output, err := bank.ProcessBoleto(input)
-	Convey("deve-se processar um boleto Bradesco com sucesso", t, func() {
 
+	Convey("deve-se processar um boleto Bradesco com sucesso", t, func() {
+		output, err := bank.ProcessBoleto(input)
 		So(err, ShouldBeNil)
 		So(output.BarCodeNumber, ShouldNotBeEmpty)
 		So(output.DigitableLine, ShouldNotBeEmpty)
 		So(output.Errors, ShouldBeEmpty)
+	})
+	input.Title.AmountInCents = 400
+	Convey("deve-se processar um boleto Bradesco com sucesso", t, func() {
+		output, err := bank.ProcessBoleto(input)
+		So(err, ShouldBeNil)
+		So(output.BarCodeNumber, ShouldBeEmpty)
+		So(output.DigitableLine, ShouldBeEmpty)
+		So(output.Errors, ShouldNotBeEmpty)
 	})
 }
 

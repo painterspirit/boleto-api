@@ -116,7 +116,7 @@ type BankNumber int
 // IsBankNumberValid verifica se o banco enviado existe
 func (b BankNumber) IsBankNumberValid() bool {
 	switch b {
-	case BancoDoBrasil, Itau, Santander, Caixa, Bradesco:
+	case BancoDoBrasil, Itau, Santander, Caixa, Bradesco, Citibank:
 		return true
 	default:
 		return false

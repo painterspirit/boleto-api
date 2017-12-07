@@ -54,7 +54,7 @@ func TestShouldProcessBoleto(t *testing.T) {
 		t.Fail()
 	}
 	bank := New()
-	go mock.Run()
+	go mock.Run("9095")
 	time.Sleep(2 * time.Second)
 	output, err := bank.ProcessBoleto(input)
 	Convey("deve-se processar um boleto citibank com sucesso", t, func() {

@@ -76,7 +76,7 @@ func TestRegiterBoleto(t *testing.T) {
 		t.Fail()
 	}
 	bank := New()
-	go mock.Run()
+	go mock.Run("9092")
 	time.Sleep(2 * time.Second)
 	Convey("deve-se processar um boleto BB com sucesso", t, func() {
 		output, err := bank.ProcessBoleto(input)
@@ -85,7 +85,23 @@ func TestRegiterBoleto(t *testing.T) {
 		So(output.DigitableLine, ShouldNotBeEmpty)
 		So(output.Errors, ShouldBeEmpty)
 	})
-
+	input.Title.AmountInCents = 400
+	Convey("deve-se tratar um boleto BB com erro", t, func() {
+		output, err := bank.ProcessBoleto(input)
+		So(err, ShouldBeNil)
+		So(output.BarCodeNumber, ShouldBeEmpty)
+		So(output.DigitableLine, ShouldBeEmpty)
+		So(output.Errors, ShouldNotBeEmpty)
+	})
+	input.Title.AmountInCents = 200
+	input.Agreement.Account = ""
+	Convey("deve-se tratar um boleto BB com erro na conta", t, func() {
+		output, err := bank.ProcessBoleto(input)
+		So(err, ShouldBeNil)
+		So(output.BarCodeNumber, ShouldBeEmpty)
+		So(output.DigitableLine, ShouldBeEmpty)
+		So(output.Errors, ShouldNotBeEmpty)
+	})
 }
 
 func TestShouldCalculateAgencyDigitFromBb(t *testing.T) {
