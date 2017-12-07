@@ -8,22 +8,14 @@ const registerItau = `
 ## Content-Type: application/json
 
 {
-<<<<<<< HEAD
     "tipo_ambiente": {{itauEnv}},
-=======
-    "tipo_ambiente": {{envItau}},
->>>>>>> abf3eea4d23f5e043d670dae74627bef4aba106b
     "tipo_registro": 1,
     "tipo_cobranca": 1,
     "tipo_produto": "00006",
     "subproduto": "00008",
     "beneficiario": {
         "cpf_cnpj_beneficiario": "{{.Recipient.Document.Number}}",
-<<<<<<< HEAD
         "agencia_beneficiario": "{{padLeft .Agreement.Agency "0" 4}}",
-=======
-        "agencia_beneficiario": "{{.Agreement.Agency}}",
->>>>>>> abf3eea4d23f5e043d670dae74627bef4aba106b
         "conta_beneficiario": "{{padLeft .Agreement.Account "0" 7}}",
         "digito_verificador_conta_beneficiario": "{{.Agreement.AccountDigit}}"
     },
@@ -33,11 +25,7 @@ const registerItau = `
     "pagador": {
         "cpf_cnpj_pagador": "{{.Buyer.Document.Number}}",
         "nome_pagador": "{{truncate .Buyer.Name 30}}",
-<<<<<<< HEAD
-        "logradouro_pagador": " {{truncate (concat .Buyer.Address.Street " " .Buyer.Address.Number " " .Buyer.Address.Complement) 40 }}",        
-=======
-        "logradouro_pagador": "{{truncate .Buyer.Address.Street 40}}",
->>>>>>> abf3eea4d23f5e043d670dae74627bef4aba106b
+        "logradouro_pagador": "{{truncate (concat .Buyer.Address.Street " " .Buyer.Address.Number " " .Buyer.Address.Complement) 40 }}",        
         "bairro_pagador": "{{truncate .Buyer.Address.District 15}}",
         "cidade_pagador": "{{truncate .Buyer.Address.City 20}}",
         "uf_pagador": "{{truncate .Buyer.Address.StateCode 2}}",
@@ -54,11 +42,7 @@ const registerItau = `
         "quantidade_moeda": ""
     },
     "nosso_numero": "{{padLeft (toString .Title.OurNumber) "0" 8}}",
-<<<<<<< HEAD
     "digito_verificador_nosso_numero": "{{mod10dv (toString .Title.OurNumber) (padLeft .Agreement.Agency "0" 4) (padLeft .Agreement.Account "0" 7) .Agreement.Wallet}}",
-=======
-    "digito_verificador_nosso_numero": "{{dv .Title.OurNumber}}",
->>>>>>> abf3eea4d23f5e043d670dae74627bef4aba106b
     "codigo_barras": "",
     "data_vencimento": "{{enDate .Title.ExpireDateTime "-"}}",
     "valor_cobrado": "{{padLeft (toString64 .Title.AmountInCents) "0" 16}}",
