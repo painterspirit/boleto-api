@@ -310,8 +310,3 @@ func itauEnv() string {
 	}
 	return "2"
 }
-
-func mod11(number uint) string {
-	return util.OurNumberDv(strconv.Itoa(int(number)))
-
-}
