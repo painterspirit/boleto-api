@@ -8,23 +8,23 @@ const registerItau = `
 ## Content-Type: application/json
 
 {
-    "tipo_ambiente": 1,
+    "tipo_ambiente": {{itauEnv}},
     "tipo_registro": 1,
     "tipo_cobranca": 1,
     "tipo_produto": "00006",
     "subproduto": "00008",
     "beneficiario": {
         "cpf_cnpj_beneficiario": "{{.Recipient.Document.Number}}",
-        "agencia_beneficiario": "{{.Agreement.Agency}}",
+        "agencia_beneficiario": "{{padLeft .Agreement.Agency "0" 4}}",
         "conta_beneficiario": "{{padLeft .Agreement.Account "0" 7}}",
         "digito_verificador_conta_beneficiario": "{{.Agreement.AccountDigit}}"
     },
-    "identificador_titulo_empresa": "{{.Recipient.Name}}",
+    "identificador_titulo_empresa": "{{truncate .Recipient.Name 25}}",
     "uso_banco": "",
     "titulo_aceite": "S",
     "pagador": {
         "cpf_cnpj_pagador": "{{.Buyer.Document.Number}}",
-        "nome_pagador": "{{.Buyer.Name}}",
+        "nome_pagador": "{{truncate .Buyer.Name 30}}",
         "logradouro_pagador": "{{.Buyer.Address.Street}} {{.Buyer.Address.Number}} {{.Buyer.Address.Complement}}",
         "bairro_pagador": "{{.Buyer.Address.District}}",
         "cidade_pagador": "{{.Buyer.Address.City}}",
@@ -42,7 +42,7 @@ const registerItau = `
         "quantidade_moeda": ""
     },
     "nosso_numero": "{{padLeft (toString .Title.OurNumber) "0" 8}}",
-    "digito_verificador_nosso_numero": "{{dv .Title.OurNumber}}",
+    "digito_verificador_nosso_numero": "{{mod10dv (toString .Title.OurNumber) (padLeft .Agreement.Agency "0" 4) (padLeft .Agreement.Account "0" 7) .Agreement.Wallet}}",
     "codigo_barras": "",
     "data_vencimento": "{{enDate .Title.ExpireDateTime "-"}}",
     "valor_cobrado": "{{padLeft (toString64 .Title.AmountInCents) "0" 16}}",

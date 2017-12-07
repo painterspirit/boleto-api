@@ -2,9 +2,91 @@ package bb
 
 import (
 	"testing"
+	"time"
 
+	"github.com/mundipagg/boleto-api/env"
+	"github.com/mundipagg/boleto-api/mock"
+	"github.com/mundipagg/boleto-api/models"
 	"github.com/mundipagg/boleto-api/test"
+	"github.com/mundipagg/boleto-api/util"
+	. "github.com/smartystreets/goconvey/convey"
 )
+
+const baseMockJSON = `
+{
+	
+	"BankNumber": 1,
+	"Authentication": {
+		"Username": "xxx",
+		"Password": "xxx"
+	},
+	"Agreement": {
+		"AgreementNumber": 5555555,
+		"WalletVariation": 19,
+		"Wallet":17,
+		"Agency":"5555",
+		"Account":"55555"
+	},
+	"Title": {
+		"ExpireDate": "2029-10-01",
+		"AmountInCents": 200,
+		"OurNumber": 1,
+		"Instructions": "Senhor caixa, não receber após o vencimento",
+		"DocumentNumber": "123456"
+	},
+	"Buyer": {
+		"Name": "TESTE",
+		"Document": {
+			"Type": "CNPJ",
+			"Number": "55555555550140"
+		},
+		"Address": {
+			"Street": "Teste",
+			"Number": "123",
+			"Complement": "Apto",
+			"ZipCode": "55555555",
+			"City": "Rio de Janeiro",
+			"District": "Teste",
+			"StateCode": "RJ"
+		}
+	},
+	"Recipient": {
+		"Name": "TESTE",
+		"Document": {
+			"Type": "CNPJ",
+			"Number": "55555555555555"
+		},
+		"Address": {
+			"Street": "TESTE",
+			"Number": "555",
+			"Complement": "Teste",
+			"ZipCode": "0455555",
+			"City": "São Paulo",
+			"District": "",
+			"StateCode": "SP"
+		}
+	}
+}
+`
+
+func TestRegiterBoleto(t *testing.T) {
+	env.Config(true, true, true)
+	input := new(models.BoletoRequest)
+	if err := util.FromJSON(baseMockJSON, input); err != nil {
+		t.Fail()
+	}
+	bank := New()
+	go mock.Run()
+	time.Sleep(2 * time.Second)
+	Convey("deve-se processar um boleto BB com sucesso", t, func() {
+		output, err := bank.ProcessBoleto(input)
+		So(err, ShouldBeNil)
+		So(output.BarCodeNumber, ShouldNotBeEmpty)
+		So(output.DigitableLine, ShouldNotBeEmpty)
+		So(output.Errors, ShouldBeEmpty)
+	})
+
+}
 
 func TestShouldCalculateAgencyDigitFromBb(t *testing.T) {
 	test.ExpectTrue(bbAgencyDigitCalculator("0137") == "6", t)

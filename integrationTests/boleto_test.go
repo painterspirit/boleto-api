@@ -210,6 +210,7 @@ func TestRegisterBoletoRequest(t *testing.T) {
 					So(strings.Contains(boleto.Errors[0].Message, "Conta inválida, deve conter até"), ShouldBeTrue)
 				}
 				assert(models.BancoDoBrasil)
+				assert(models.Itau)
 			})
 
 			Convey("O tipo de documento do comprador deve ser CPF ou CNPJ", func() {
@@ -229,6 +230,7 @@ func TestRegisterBoletoRequest(t *testing.T) {
 				assert(models.Caixa)
 				assert(models.Citibank)
 				assert(models.Santander)
+				assert(models.Itau)
 			})
 
 			Convey("O CPF deve ser válido", func() {
@@ -249,6 +251,7 @@ func TestRegisterBoletoRequest(t *testing.T) {
 				assert(models.Caixa)
 				assert(models.Citibank)
 				assert(models.Santander)
+				assert(models.Itau)
 
 			})
 

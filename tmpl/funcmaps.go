@@ -51,8 +51,9 @@ var funcMap = template.FuncMap{
 	"formatSingleLine":       formatSingleLine,
 	"diff":                   diff,
 	"mod11dv":                calculateOurNumberMod11,
-	"dv":                     mod11,
-	"printIfNotProduction": printIfNotProduction,
+	"mod10dv":                mod10Itau,
+	"printIfNotProduction":   printIfNotProduction,
+	"itauEnv":                itauEnv,
 }
 
 func GetFuncMaps() template.FuncMap {
@@ -272,11 +273,33 @@ func base64(s string) string {
 }
 
 func calculateOurNumberMod11(number uint) uint {
-	ourNumberWithDigit := strconv.Itoa(int(number)) + util.OurNumberDv(strconv.Itoa(int(number)))
+	ourNumberWithDigit := strconv.Itoa(int(number)) + util.OurNumberDv(strconv.Itoa(int(number)), util.MOD11)
 	value, _ := strconv.Atoi(ourNumberWithDigit)
 	return uint(value)
 }
 
-func mod11(number uint) string {
-	return util.OurNumberDv(strconv.Itoa(int(number)))
+func mod10Itau(number string, agency string, account string, wallet uint16) string {
+
+	var buffer bytes.Buffer
+
+	if wallet == 126 || wallet == 131 || wallet == 146 || wallet == 168 {
+
+		buffer.WriteString(strconv.FormatUint(uint64(wallet), 10))
+		buffer.WriteString(number)
+
+		return util.OurNumberDv(buffer.String(), util.MOD10)
+	} else {
+		buffer.WriteString(agency)
+		buffer.WriteString(account)
+		buffer.WriteString(strconv.FormatUint(uint64(wallet), 10))
+		buffer.WriteString(number)
+		return util.OurNumberDv(buffer.String(), util.MOD10)
+	}
+}
+
+func itauEnv() string {
+	if config.Get().DevMode {
+		return "1"
+	}
+	return "2"
 }

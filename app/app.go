@@ -7,8 +7,8 @@ import (
 	"github.com/PMoneda/flow"
 	"github.com/mundipagg/boleto-api/api"
 	"github.com/mundipagg/boleto-api/config"
+	"github.com/mundipagg/boleto-api/env"
 	"github.com/mundipagg/boleto-api/log"
-	"github.com/mundipagg/boleto-api/metrics"
 	"github.com/mundipagg/boleto-api/mock"
 	"github.com/mundipagg/boleto-api/models"
 	"github.com/mundipagg/boleto-api/robot"
@@ -29,13 +29,12 @@ func NewParams() *Params {
 
 //Run starts boleto api Application
 func Run(params *Params) {
-	configFlags(params.DevMode, params.MockMode, params.DisableLog)
-	installflowConnectors()
+	env.Config(params.DevMode, params.MockMode, params.DisableLog)
 	robot.GoRobots()
 	if config.Get().MockMode {
 		go mock.Run()
 	}
-	metrics.Install()
+
 	installLog()
 	api.InstallRestAPI()
 

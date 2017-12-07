@@ -4,9 +4,88 @@ import (
 	"testing"
 	"time"
 
+	"github.com/mundipagg/boleto-api/env"
+	"github.com/mundipagg/boleto-api/mock"
 	"github.com/mundipagg/boleto-api/models"
+	"github.com/mundipagg/boleto-api/util"
 	. "github.com/smartystreets/goconvey/convey"
 )
+
+const baseMockJSON = `
+{
+    "BankNumber": 237,
+     "Authentication": {
+        "Username": "55555555555",
+        "Password": "55555555555555555"
+    },
+    "Agreement": {
+        "AgreementNumber": 55555555,
+        "Wallet": 25,
+        "Agency":"5555",
+        "Account":"55555"
+    },
+    "Title": {
+        "ExpireDate": "2029-08-01",
+        "AmountInCents": 200,
+        "OurNumber": 12446688,
+        "Instructions": "Senhor caixa, não receber após o vencimento",
+        "DocumentNumber": "1234566"
+    },
+    "Buyer": {
+        "Name": "Luke Skywalker",
+        "Document": {
+            "Type": "CPF",
+            "Number": "01234567890"
+        },
+        "Address": {
+            "Street": "Mos Eisley Cantina",
+            "Number": "123",
+            "Complement": "Apto",
+            "ZipCode": "20001000",
+            "City": "Tatooine",
+            "District": "Tijuca",
+            "StateCode": "RJ"
+        }
+    },
+    "Recipient": {
+      "Name": "TESTE",
+        "Document": {
+            "Type": "CNPJ",
+            "Number": "00555555000109"
+        },
+
+        "Address": {
+            "Street": "TESTE",
+            "Number": "111",
+            "Complement": "TESTE",
+            "ZipCode": "11111111",
+            "City": "Teste",
+            "District": "",
+            "StateCode": "SP"
+        }
+
+    }
+}
+`
+
+func TestRegiterBoleto(t *testing.T) {
+	env.Config(true, true, true)
+	input := new(models.BoletoRequest)
+	if err := util.FromJSON(baseMockJSON, input); err != nil {
+		t.Fail()
+	}
+	bank := New()
+	go mock.Run()
+	time.Sleep(2 * time.Second)
+	output, err := bank.ProcessBoleto(input)
+	Convey("deve-se processar um boleto Bradesco com sucesso", t, func() {
+
+		So(err, ShouldBeNil)
+		So(output.BarCodeNumber, ShouldNotBeEmpty)
+		So(output.DigitableLine, ShouldNotBeEmpty)
+		So(output.Errors, ShouldBeEmpty)
+	})
+}
 
 func TestBarcodeGenerationBradesco(t *testing.T) {
 	//example := "23795796800000001990001250012446693212345670"
