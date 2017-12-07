@@ -67,6 +67,13 @@ func santanderNSUPrefix(number string) string {
 	return number
 }
 
+func envItau() int {
+	if config.Get().DevMode {
+		return 1
+	}
+	return 2
+}
+
 func diff(a string, b string) bool {
 	return a != b
 }
@@ -302,4 +309,9 @@ func itauEnv() string {
 		return "1"
 	}
 	return "2"
+}
+
+func mod11(number uint) string {
+	return util.OurNumberDv(strconv.Itoa(int(number)))
+
 }
