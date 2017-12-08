@@ -2,7 +2,8 @@ package models
 
 // Authentication autenticação para entrada na API do banco
 type Authentication struct {
-	Username           string `json:"username,omitempty"`
-	Password           string `json:"password,omitempty"`
-	AuthorizationToken string `json:"authenticationToken,omitempty"`
+	Username           string `json:"Username,omitempty"`
+	Password           string `json:"Password,omitempty"`
+	AuthorizationToken string `json:"AuthorizationToken,omitempty"`
+	AccessKey          string `json:"AccessKey,omitempty"`
 }

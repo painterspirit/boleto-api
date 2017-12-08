@@ -2,13 +2,121 @@ package caixa
 
 import (
 	"testing"
-
-	"github.com/mundipagg/boleto-api/models"
-
 	"time"
 
+	"github.com/mundipagg/boleto-api/env"
+	"github.com/mundipagg/boleto-api/mock"
+	"github.com/mundipagg/boleto-api/models"
+	"github.com/mundipagg/boleto-api/util"
 	. "github.com/smartystreets/goconvey/convey"
 )
+
+const baseMockJSON = `
+{
+	
+	"BankNumber": 104,
+
+	"Agreement": {
+
+		"AgreementNumber": 555555,
+
+		"Agency":"5555"
+
+	},
+
+	"Title": {
+
+		"ExpireDate": "2029-08-30",
+
+		"AmountInCents": 200,
+
+		"OurNumber": 0,
+
+		"Instructions": "Mensagem",
+
+		"DocumentNumber": "NPC160517"
+
+	},
+
+	"Buyer": {
+
+		"Name": "TESTE PAGADOR 001",
+
+		"Document": {
+
+			"Type": "CPF",
+
+			"Number": "57962014849"
+
+		},
+
+		"Address": {
+
+			"Street": "SAUS QUADRA 03",
+
+			"Number": "",
+
+			"Complement": "",
+
+			"ZipCode": "20520051",
+
+			"City": "Rio de Janeiro",
+
+			"District": "Tijuca",
+
+			"StateCode": "RJ"
+
+		}
+
+	},
+	"Recipient": {
+
+		"Document": {
+
+			"Type": "CNPJ",
+
+			"Number": "00555555000109"
+
+		}
+	}
+}
+`
+
+func TestShouldProcessBoleto(t *testing.T) {
+	env.Config(true, true, true)
+	input := new(models.BoletoRequest)
+	if err := util.FromJSON(baseMockJSON, input); err != nil {
+		t.Fail()
+	}
+	bank := New()
+	go mock.Run("9094")
+	time.Sleep(2 * time.Second)
+	Convey("deve-se processar um boleto Caixa com sucesso", t, func() {
+		output, err := bank.ProcessBoleto(input)
+		So(err, ShouldBeNil)
+		So(output.BarCodeNumber, ShouldNotBeEmpty)
+		So(output.DigitableLine, ShouldNotBeEmpty)
+		So(output.Errors, ShouldBeEmpty)
+	})
+	input.Title.AmountInCents = 400
+	Convey("deve-se tratar erro no boleto Caixa", t, func() {
+		output, err := bank.ProcessBoleto(input)
+		So(err, ShouldBeNil)
+		So(output.BarCodeNumber, ShouldBeEmpty)
+		So(output.DigitableLine, ShouldBeEmpty)
+		So(output.Errors, ShouldNotBeEmpty)
+	})
+
+	input.Title.AmountInCents = 200
+	input.Title.Instructions = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+	Convey("deve-se tratar erro no boleto Caixa", t, func() {
+		output, err := bank.ProcessBoleto(input)
+		So(err, ShouldBeNil)
+		So(output.BarCodeNumber, ShouldBeEmpty)
+		So(output.DigitableLine, ShouldBeEmpty)
+		So(output.Errors, ShouldNotBeEmpty)
+	})
+}
 
 func TestGetCaixaCheckSumInfo(t *testing.T) {
 	boleto := models.BoletoRequest{

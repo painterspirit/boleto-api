@@ -30,8 +30,6 @@ const responseCaixa = `
 </soapenv:Envelope>
 `
 
-//LvWr1op5Ayibn6jsCQ3/2bW4KwThVAlLK5ftxABlq20=
-//
 const incluiBoleto = `
 
 ## SOAPAction:IncluiBoleto

@@ -4,6 +4,13 @@ import (
 	"strconv"
 )
 
+type ModFunc int
+
+const (
+	MOD10 ModFunc = 1 + iota
+	MOD11
+)
+
 //mod11 calculate Mod11 DV from string
 func mod11(valueSequence string) int {
 	digit := 0
@@ -30,9 +37,46 @@ func mod11(valueSequence string) int {
 	return digit
 }
 
+//mod10 calculate Mod10 DV from string
+func mod10(valueSequence string) int {
+	sum := 0
+
+	multiplyByTwo := true
+
+	for i := len(valueSequence) - 1; i >= 0; i-- {
+		c := string(valueSequence[i])
+
+		num, _ := strconv.Atoi(c)
+
+		if multiplyByTwo {
+			num = num * 2
+			sum += (num / 10) + (num % 10)
+			multiplyByTwo = false
+		} else {
+			sum += num
+			multiplyByTwo = true
+		}
+	}
+
+	remainder := sum % 10
+
+	if remainder == 0 {
+		return 0
+	}
+
+	return 10 - remainder
+}
+
 //OurNumberDv calculate DV from OurNumber
-func OurNumberDv(valueSequence string) string {
-	digit := mod11(valueSequence)
+func OurNumberDv(valueSequence string, modFunc ModFunc) string {
+	digit := 0
+
+	if modFunc == MOD10 {
+		digit = mod10(valueSequence)
+	} else if modFunc == MOD11 {
+		digit = mod11(valueSequence)
+	}
+
 	if digit > 9 {
 		digit = 0
 	}
