@@ -84,7 +84,7 @@ func configFlags(devMode, mockMode, disableLog bool) {
 		os.Setenv("URL_SANTANDER_REGISTER", "https://ymbcash.santander.com.br/ymbsrv/CobrancaEndpointService")
 		os.Setenv("URL_BRADESCO", "https://homolog.meiosdepagamentobradesco.com.br/api/transacao")
 		os.Setenv("URL_ITAU_REGISTER", "https://gerador-boletos.itau.com.br/router-gateway-app/public/codigo_barras/registro")
-		os.Setenv("URL_ITAU_TOKEN", "https://oauth.itau.com.br/identity/connect/token")
+		os.Setenv("URL_ITAU_TICKET", "https://oauth.itau.com.br/identity/connect/token")
 		if mockMode {
 			os.Setenv("URL_BB_REGISTER_BOLETO", "http://localhost:9091/registrarBoleto")
 			os.Setenv("URL_BB_TOKEN", "http://localhost:9091/oauth/token")
@@ -93,7 +93,7 @@ func configFlags(devMode, mockMode, disableLog bool) {
 			os.Setenv("URL_SANTANDER_TICKET", "tls://localhost:9091/santander/get-ticket")
 			os.Setenv("URL_SANTANDER_REGISTER", "tls://localhost:9091/santander/register")
 			os.Setenv("URL_BRADESCO", "http://localhost:9091/bradesco/registrarBoleto")
-			os.Setenv("URL_ITAU_TOKEN", "http://localhost:9091/itau/gerarToken")
+			os.Setenv("URL_ITAU_TICKET", "http://localhost:9091/itau/gerarToken")
 			os.Setenv("URL_ITAU_REGISTER", "http://localhost:9091/itau/registrarBoleto")
 		}
 	}
