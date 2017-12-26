@@ -18,6 +18,7 @@ import (
 )
 
 var (
+	env          string
 	processID    = os.Getpid()
 	totalProcs   = runtime.NumCPU()
 	devMode      = flag.Bool("dev", false, "-dev To run in dev mode")
@@ -54,29 +55,32 @@ func createPIDfile() {
 func main() {
 	flag.Parse()
 	runtime.GOMAXPROCS(runtime.NumCPU())
+
 	if *mockOnly {
 		w := make(chan int)
 		config.Install(true, true, true)
 		robot.GoRobots()
 		<-w
 	} else {
-		logo1()
 		params := app.NewParams()
 		if *airPlaneMode {
 			params.DevMode = true
 			params.DisableLog = true
 			params.MockMode = true
+			env = strconv.FormatBool(params.DevMode)
 		} else {
 			params.DevMode = *devMode
 			params.DisableLog = *disableLog
 			params.MockMode = *mockMode
+			env = strconv.FormatBool(params.DevMode)
 		}
+		logo1(env)
 		app.Run(params)
 	}
 
 }
 
-func logo1() {
+func logo1(env string) {
 	l := `
 $$$$$$$\            $$\            $$\                $$$$$$\            $$\ 
 $$  __$$\           $$ |           $$ |              $$  __$$\           \__|
@@ -92,4 +96,5 @@ $$$$$$$  |\$$$$$$  |$$ |\$$$$$$$\  \$$$$  |\$$$$$$  |$$ |  $$ |$$$$$$$  |$$ |
 	`
 	fmt.Println(l)
 	fmt.Println("Version: " + config.Get().Version)
+	fmt.Println("DevMode: " + env)
 }
