@@ -55,7 +55,6 @@ func createPIDfile() {
 func main() {
 	flag.Parse()
 	runtime.GOMAXPROCS(runtime.NumCPU())
-
 	if *mockOnly {
 		w := make(chan int)
 		config.Install(true, true, true)
@@ -74,13 +73,13 @@ func main() {
 			params.MockMode = *mockMode
 			env = strconv.FormatBool(params.DevMode)
 		}
-		logo1(env)
+		logol(env)
 		app.Run(params)
 	}
 
 }
 
-func logo1(env string) {
+func logol(env string) {
 	l := `
 $$$$$$$\            $$\            $$\                $$$$$$\            $$\ 
 $$  __$$\           $$ |           $$ |              $$  __$$\           \__|
