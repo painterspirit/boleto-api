@@ -73,13 +73,13 @@ func main() {
 			params.MockMode = *mockMode
 			env = strconv.FormatBool(params.DevMode)
 		}
-		logol(env)
+		logo(env)
 		app.Run(params)
 	}
 
 }
 
-func logol(env string) {
+func logo(env string) {
 	l := `
 $$$$$$$\            $$\            $$\                $$$$$$\            $$\ 
 $$  __$$\           $$ |           $$ |              $$  __$$\           \__|
