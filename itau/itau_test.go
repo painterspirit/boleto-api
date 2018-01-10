@@ -26,7 +26,7 @@ const baseMockJSON = `
 		"AccountDigit":"6"
 	},
 	"Title": {
-		"ExpireDate": "2017-12-31",
+		"ExpireDate": "2999-12-31",
 		"AmountInCents": 200			
 	},
 	"Buyer": {
