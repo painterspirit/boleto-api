@@ -19,7 +19,7 @@ jobs:
           name: Testing
           command: go test $(go list ./... | grep -v /vendor/) -v   
   deploy:
-    working_directory: devops/
+    working_directory: /go/src/github.com/mundipagg/boleto-api
     docker:
       - image: docker:17.05.0-ce-git
         environment:
@@ -29,7 +29,7 @@ jobs:
       - deploy:
           name: Push application Docker image
           command: |
-            cd app
+            cd devops/
             docker build -t ${DOCKER_ACCOUNT}/${PROJECT_NAME} .
             docker login ${DOCKER_ACCOUNT} -u ${DOCKER_USER} -p ${DOCKER_PASS}
             docker tag ${DOCKER_ACCOUNT}/${PROJECT_NAME} "${DOCKER_ACCOUNT}/${PROJECT_NAME}:${CIRCLE_BRANCH}"
