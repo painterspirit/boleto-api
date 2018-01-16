@@ -26,8 +26,8 @@ jobs:
     working_directory: devops/
     docker:
       - image: docker:17.05.0-ce-git
-         environment:
-           PROJECT_NAME: one/boleto-api
+        environment:
+          PROJECT_NAME: one/boleto-api
     steps:
       - setup_remote_docker
       - deploy:
