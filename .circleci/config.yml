@@ -23,16 +23,16 @@ jobs:
       #only:
         #- master
         #- develop
-   working_directory: devops/
-   docker:
-     - image: docker:17.05.0-ce-git
-       environment:
+    working_directory: devops/
+    docker:
+      - image: docker:17.05.0-ce-git
+         environment:
          PROJECT_NAME: one/boleto-api
-   steps:
-     - setup_remote_docker
-     - deploy:
-         name: Push application Docker image
-         command: |
+    steps:
+      - setup_remote_docker
+      - deploy:
+          name: Push application Docker image
+          command: |
             cd app
             docker build -t ${DOCKER_ACCOUNT}/${PROJECT_NAME} .
             docker login ${DOCKER_ACCOUNT} -u ${DOCKER_USER} -p ${DOCKER_PASS}
