@@ -19,10 +19,6 @@ jobs:
           name: Testing
           command: go test $(go list ./... | grep -v /vendor/) -v   
   publish:
-    #branches:
-      #only:
-        #- master
-        #- develop
     working_directory: devops/
     docker:
       - image: docker:17.05.0-ce-git
