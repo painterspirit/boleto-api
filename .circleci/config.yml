@@ -23,9 +23,9 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - devops/*
+            - devops/
   deploy:
-    working_directory: /app
+    working_directory: /app/devops
     docker:
       - image: docker:17.05.0-ce-git
         environment:
