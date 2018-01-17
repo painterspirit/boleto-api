@@ -8,7 +8,6 @@ jobs:
 
     steps:
       - checkout
-
       - run:
           name: Get dependencies
           command: go get -t -d -v ./...
@@ -19,7 +18,7 @@ jobs:
           name: Testing
           command: go test $(go list ./... | grep -v /vendor/) -v   
   deploy:
-    working_directory: /go/src/github.com/mundipagg/boleto-api/devops
+    working_directory: /go/src/github.com/mundipagg/boleto-api/
     docker:
       - image: docker:17.05.0-ce-git
         environment:
