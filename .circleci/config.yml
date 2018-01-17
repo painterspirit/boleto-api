@@ -15,7 +15,7 @@ jobs:
           name: Building
           command: go build -v
       - run: 
-          name: Move artefacts
+          name: Move artifacts
           command: mv boleto-api devops/
       - run: 
           name: Testing
@@ -24,7 +24,7 @@ jobs:
           root: .
           paths:
             - devops/
-  deploy:
+  publish:
     working_directory: /app/devops
     docker:
       - image: docker:17.05.0-ce-git
@@ -39,17 +39,19 @@ jobs:
           command: |
             ls -la
             docker build -t ${DOCKER_ACCOUNT}/${PROJECT_NAME} .
-            #docker tag ${DOCKER_ACCOUNT}/${PROJECT_NAME} "${DOCKER_ACCOUNT}/${PROJECT_NAME}:${CIRCLE_BRANCH}"
+            docker tag ${DOCKER_ACCOUNT}/${PROJECT_NAME} "${DOCKER_ACCOUNT}/${PROJECT_NAME}:${CIRCLE_BRANCH}"
             docker tag ${DOCKER_ACCOUNT}/${PROJECT_NAME} "${DOCKER_ACCOUNT}/${PROJECT_NAME}:${CIRCLE_SHA1:0:8}"
             docker login ${DOCKER_ACCOUNT} -u ${DOCKER_USER} -p ${DOCKER_PASS}
             docker push "${DOCKER_ACCOUNT}/${PROJECT_NAME}"
 
 workflows:
   version: 2
-  build_and_deploy:
+  build_test_publish_deploy:
     jobs:
       - build
       - deploy:
           requires:
             - build
-          
+          filters:
+            branches:
+              only: master, develop
