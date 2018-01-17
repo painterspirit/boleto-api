@@ -15,14 +15,15 @@ jobs:
           name: Building
           command: go build -v
       - run: 
+          name: Move artefacts
+          command: mv boleto-api devops/
+      - run: 
           name: Testing
           command: go test $(go list ./... | grep -v /vendor/) -v
       - persist_to_workspace:
           root: .
           paths:
-            - boleto-api
-            - Dockerfile
-            - devops/time       
+            - devops/
   deploy:
     working_directory: /app
     docker:
