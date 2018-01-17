@@ -39,7 +39,7 @@ jobs:
           command: |
             ls -la
             docker build -t ${DOCKER_ACCOUNT}/${PROJECT_NAME} .
-            #docker tag ${DOCKER_ACCOUNT}/${PROJECT_NAME} "${DOCKER_ACCOUNT}/${PROJECT_NAME}:${CIRCLE_BRANCH}"
+            docker tag ${DOCKER_ACCOUNT}/${PROJECT_NAME} "${DOCKER_ACCOUNT}/${PROJECT_NAME}:${CIRCLE_BRANCH}"
             docker tag ${DOCKER_ACCOUNT}/${PROJECT_NAME} "${DOCKER_ACCOUNT}/${PROJECT_NAME}:${CIRCLE_SHA1:0:8}"
             docker login ${DOCKER_ACCOUNT} -u ${DOCKER_USER} -p ${DOCKER_PASS}
             docker push "${DOCKER_ACCOUNT}/${PROJECT_NAME}"
@@ -49,7 +49,7 @@ jobs:
       - run:
           name: Send deployment webhook to Rancher
           command: |
-            if [ "${CIRCLE_BRANCH}" == "feature/circleci" ]; then
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
               curl -X POST \
                 ${RANCHER_PROD_DEPLOY_URL} \
                 -H 'Content-Type: application/json' \
@@ -84,9 +84,9 @@ workflows:
       - publish:
           requires:
             - build
-          #filters:
-            #branches:
-              #only: master, develop
+          filters:
+            branches:
+              only: master, develop
       - hold:
           type: approval
           requires:
