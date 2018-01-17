@@ -16,9 +16,15 @@ jobs:
           command: go build -v
       - run: 
           name: Testing
-          command: go test $(go list ./... | grep -v /vendor/) -v   
+          command: go test $(go list ./... | grep -v /vendor/) -v
+      - persist_to_workspace:
+          root: /
+          paths:
+            - boleto-api
+            - Dockerfile
+            - devops/time       
   deploy:
-    working_directory: /go/src/github.com/mundipagg/boleto-api/
+    working_directory: /
     docker:
       - image: docker:17.05.0-ce-git
         environment:
@@ -26,7 +32,7 @@ jobs:
     steps:
       - setup_remote_docker
       - attach_workspace:
-          at: /go/src/github.com/mundipagg/boleto-api/
+          at: /
       - deploy:
           name: Push application Docker image
           command: |
