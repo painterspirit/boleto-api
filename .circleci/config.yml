@@ -92,6 +92,9 @@ workflows:
           requires:
             - build
             - publish
+          filters:
+            branches:
+              only: master, develop
       - deploy:
           requires:
             - hold
