@@ -44,6 +44,7 @@ jobs:
             docker login ${DOCKER_ACCOUNT} -u ${DOCKER_USER} -p ${DOCKER_PASS}
             docker push "${DOCKER_ACCOUNT}/${PROJECT_NAME}"
   deploy:
+    machine: true
     steps:
       - run:
           name: Send deployment webhook to Rancher
