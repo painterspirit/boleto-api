@@ -84,15 +84,18 @@ workflows:
             - build
           filters:
             branches:
-              only: master, develop
+              only: 
+                - master
+                - develop
       - hold:
           type: approval
           requires:
-            - build
             - publish
           filters:
             branches:
-              only: master, develop
+              only: 
+                - master
+                - develop
       - deploy:
           requires:
             - hold
