@@ -3,6 +3,10 @@ jobs:
   build:
     docker:
       - image: golang:1.8
+    environment:
+      - GOOS: "linux"
+      - GOARCH: "amd64"
+      - CGO_ENABLED: "0"
     
     working_directory: /go/src/github.com/mundipagg/boleto-api
 
