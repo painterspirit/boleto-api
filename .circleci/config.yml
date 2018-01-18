@@ -60,7 +60,7 @@ jobs:
                         "tag": "master"
                         },
                         "repository": {
-                        "repo_name": "${DOCKER_ACCOUNT}/${PROJECT_NAME}"
+                        "repo_name": "'"${DOCKER_ACCOUNT}/${PROJECT_NAME}"'"
                         }
               }'
             fi
@@ -73,7 +73,7 @@ jobs:
                         "tag": "develop"
                         },
                         "repository": {
-                        "repo_name": "${DOCKER_ACCOUNT}/${PROJECT_NAME}"
+                        "repo_name": "'"${DOCKER_ACCOUNT}/${PROJECT_NAME}"'"
                         }
               }'
             fi
