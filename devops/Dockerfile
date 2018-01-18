@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.7
 
 RUN mkdir -p "/home/mundipagg/"
 RUN mkdir -p "/home/mundipagg/boleto_ssh"
