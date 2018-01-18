@@ -30,7 +30,7 @@ func InstallRestAPI() {
 func confirmation(c *gin.Context) {
 	if dump, err := httputil.DumpRequest(c.Request, true); err == nil {
 		l := log.CreateLog()
-		l.BankName = "Bradesco"
+		l.BankName = "BradescoShopFacil"
 		l.Operation = "BoletoConfirmation"
 		l.Request(string(dump), c.Request.URL.String(), nil)
 	}
