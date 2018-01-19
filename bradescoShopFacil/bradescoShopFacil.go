@@ -20,7 +20,7 @@ type bankBradescoShopFacil struct {
 	log      *log.Log
 }
 
-//barcode struct for bradesco
+//barcode struct for bradescoShopFacil
 type barcode struct {
 	bankCode      string
 	currencyCode  string
@@ -33,7 +33,7 @@ type barcode struct {
 	zero          string
 }
 
-//New creates a new Bradesco instance
+//New creates a new BradescoShopFacil instance
 func New() bankBradescoShopFacil {
 	b := bankBradescoShopFacil{
 		validate: models.NewValidator(),
