@@ -1,6 +1,6 @@
-package bradesco
+package bradescoShopFacil
 
-const registerBradesco = `
+const registerBradescoShopFacil = `
 ## Content-Type:application/json
 ## Authorization:Basic {{base64 (concat .Authentication.Username ":" .Authentication.Password)}}
 {
@@ -71,7 +71,7 @@ const registerBradesco = `
 }
 `
 
-const responseBradesco = `
+const responseBradescoShopFacil = `
 {
     "boleto": {
         "linha_digitavel_formatada": "{{digitableLine}}",
@@ -84,10 +84,10 @@ const responseBradesco = `
 }
 `
 
-func getRequestBradesco() string {
-	return registerBradesco
+func getRequestBradescoShopFacil() string {
+	return registerBradescoShopFacil
 }
 
-func getResponseBradesco() string {
-	return responseBradesco
+func getResponseBradescoShopFacil() string {
+	return responseBradescoShopFacil
 }

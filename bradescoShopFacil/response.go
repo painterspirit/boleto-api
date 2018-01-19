@@ -1,4 +1,4 @@
-package bradesco
+package bradescoShopFacil
 
 var apiResponse = `
 {
@@ -20,6 +20,6 @@ var apiResponse = `
 }
 `
 
-func getAPIResponseBradesco() string {
+func getAPIResponseBradescoShopFacil() string {
 	return apiResponse
 }

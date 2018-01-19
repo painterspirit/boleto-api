@@ -30,7 +30,7 @@ services:
      - URL_CITI_BOLETO=https://ebillpayer.uat.brazil.citigroup.com/ebillpayer/jspInformaDadosConsulta.jsp
      - URL_SANTANDER_TICKET=https://ymbdlb.santander.com.br/dl-ticket-services/TicketEndpointService
      - URL_SANTANDER_REGISTER=https://ymbcashhml.santander.com.br:443/ymbsrv/CobrancaEndpointService
-     - URL_BRADESCO=https://homolog.meiosdepagamentobradesco.com.br/api/transacao
+     - URL_BRADESCO_SHOPFACIL=https://homolog.meiosdepagamentobradesco.com.br/api/transacao
      - URL_ITAU_REGISTER=https://gerador-boletos.itau.com.br/router-gateway-app/public/codigo_barras/registro
      - URL_ITAU_TICKET=https://oauth.itau.com.br/identity/connect/token
   mongodb:

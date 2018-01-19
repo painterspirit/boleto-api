@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/mundipagg/boleto-api/bb"
-	"github.com/mundipagg/boleto-api/bradesco"
+	"github.com/mundipagg/boleto-api/bradescoShopFacil"
 	"github.com/mundipagg/boleto-api/caixa"
 	"github.com/mundipagg/boleto-api/citibank"
 	"github.com/mundipagg/boleto-api/itau"
@@ -27,8 +27,8 @@ func Get(number models.BankNumber) (Bank, error) {
 	switch number {
 	case models.BancoDoBrasil:
 		return bb.New(), nil
-	case models.Bradesco:
-		return bradesco.New(), nil
+	case models.BradescoShopFacil:
+		return bradescoShopFacil.New(), nil
 	case models.Caixa:
 		return caixa.New(), nil
 	case models.Citibank:

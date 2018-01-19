@@ -1,11 +1,11 @@
-package bradesco
+package bradescoShopFacil
 
 import (
 	"github.com/mundipagg/boleto-api/models"
 	"github.com/mundipagg/boleto-api/validations"
 )
 
-func bradescoValidateAgency(b interface{}) error {
+func bradescoShopFacilValidateAgency(b interface{}) error {
 	switch t := b.(type) {
 	case *models.BoletoRequest:
 		err := t.Agreement.IsAgencyValid()
@@ -18,7 +18,7 @@ func bradescoValidateAgency(b interface{}) error {
 	}
 }
 
-func bradescoValidateAccount(b interface{}) error {
+func bradescoShopFacilValidateAccount(b interface{}) error {
 	switch t := b.(type) {
 	case *models.BoletoRequest:
 		if t.Agreement.Account == "" {
@@ -30,11 +30,11 @@ func bradescoValidateAccount(b interface{}) error {
 	}
 }
 
-func bradescoValidateWallet(b interface{}) error {
+func bradescoShopFacilValidateWallet(b interface{}) error {
 	switch t := b.(type) {
 	case *models.BoletoRequest:
 		if t.Agreement.Wallet != 25 && t.Agreement.Wallet != 26 {
-			return models.NewErrorResponse("MP400", "a carteira deve ser 25 ou 26 para o Bradesco")
+			return models.NewErrorResponse("MP400", "a carteira deve ser 25 ou 26 para o BradescoShopFacil")
 		}
 		return nil
 	default:
@@ -42,7 +42,7 @@ func bradescoValidateWallet(b interface{}) error {
 	}
 }
 
-func bradescoValidateAuth(b interface{}) error {
+func bradescoShopFacilValidateAuth(b interface{}) error {
 	switch t := b.(type) {
 	case *models.BoletoRequest:
 		if t.Authentication.Username == "" || t.Authentication.Password == "" {
@@ -54,7 +54,7 @@ func bradescoValidateAuth(b interface{}) error {
 	}
 }
 
-func bradescoValidateAgreement(b interface{}) error {
+func bradescoShopFacilValidateAgreement(b interface{}) error {
 	switch t := b.(type) {
 	case *models.BoletoRequest:
 		if t.Agreement.AgreementNumber == 0 {

@@ -11,7 +11,7 @@ Currently, we support the following banks:
 * Caixa
 * Citi
 * Santander 
-* Bradesco
+* BradescoShopFacil
 * Itaú (alpha)
 
 The integration order will follow the list above but we may have changes considering our clients demands.

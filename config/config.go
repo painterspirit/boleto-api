@@ -40,7 +40,7 @@ type Config struct {
 	CertBoletoPathCa           string
 	URLTicketSantander         string
 	URLRegisterBoletoSantander string
-	URLBradesco                string
+	URLBradescoShopFacil       string
 	URLTicketItau              string
 	URLRegisterBoletoItau      string
 }
@@ -88,7 +88,7 @@ func Install(mockMode, devMode, disableLog bool) {
 		URLRegisterBoletoSantander: os.Getenv("URL_SANTANDER_REGISTER"),
 		URLTicketItau:              os.Getenv("URL_ITAU_TICKET"),
 		URLRegisterBoletoItau:      os.Getenv("URL_ITAU_REGISTER"),
-		URLBradesco:                os.Getenv("URL_BRADESCO"),
+		URLBradescoShopFacil:       os.Getenv("URL_BRADESCO_SHOPFACIL"),
 		InfluxDBHost:               os.Getenv("INFLUXDB_HOST"),
 		InfluxDBPort:               os.Getenv("INFLUXDB_PORT"),
 	}

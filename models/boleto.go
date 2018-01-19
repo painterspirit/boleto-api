@@ -77,7 +77,7 @@ func NewBoletoView(boleto BoletoRequest, response BoletoResponse) BoletoView {
 		CreateDate:    time.Now(),
 	}
 	switch boleto.BankNumber {
-	case Bradesco:
+	case BradescoShopFacil:
 		view.Links = view.CreateLinks()
 		if len(response.Links) > 0 {
 			view.Links = append(view.Links, response.Links[0])
@@ -116,7 +116,7 @@ type BankNumber int
 // IsBankNumberValid verifica se o banco enviado existe
 func (b BankNumber) IsBankNumberValid() bool {
 	switch b {
-	case BancoDoBrasil, Itau, Santander, Caixa, Bradesco, Citibank:
+	case BancoDoBrasil, Itau, Santander, Caixa, BradescoShopFacil, Citibank:
 		return true
 	default:
 		return false
@@ -134,7 +134,7 @@ func (b BankNumber) GetBoletoBankNumberAndDigit() string {
 		return "033-7"
 	case Itau:
 		return "341-7"
-	case Bradesco:
+	case BradescoShopFacil:
 		return "237-2"
 	default:
 		return ""
@@ -152,8 +152,8 @@ func (b BankNumber) BankName() string {
 		return "Santander"
 	case Caixa:
 		return "Caixa"
-	case Bradesco:
-		return "Bradesco"
+	case BradescoShopFacil:
+		return "BradescoShopFacil"
 	case Citibank:
 		return "Citibank"
 	default:
@@ -171,8 +171,8 @@ const (
 	// Itau constante do Itau
 	Itau = 341
 
-	// Bradesco constante do Bradesco
-	Bradesco = 237
+	// BradescoShopFacil constante do BradescoShopFacil
+	BradescoShopFacil = 237
 
 	// Caixa constante do Caixa
 	Caixa = 104

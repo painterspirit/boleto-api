@@ -1,4 +1,4 @@
-package bradesco
+package bradescoShopFacil
 
 import (
 	"errors"
@@ -15,12 +15,12 @@ import (
 	"github.com/mundipagg/boleto-api/validations"
 )
 
-type bankBradesco struct {
+type bankBradescoShopFacil struct {
 	validate *models.Validator
 	log      *log.Log
 }
 
-//barcode struct for bradesco
+//barcode struct for bradescoShopFacil
 type barcode struct {
 	bankCode      string
 	currencyCode  string
@@ -33,9 +33,9 @@ type barcode struct {
 	zero          string
 }
 
-//New creates a new Bradesco instance
-func New() bankBradesco {
-	b := bankBradesco{
+//New creates a new BradescoShopFacil instance
+func New() bankBradescoShopFacil {
+	b := bankBradescoShopFacil{
 		validate: models.NewValidator(),
 		log:      log.CreateLog(),
 	}
@@ -43,26 +43,26 @@ func New() bankBradesco {
 	b.validate.Push(validations.ValidateExpireDate)
 	b.validate.Push(validations.ValidateBuyerDocumentNumber)
 	b.validate.Push(validations.ValidateRecipientDocumentNumber)
-	b.validate.Push(bradescoValidateAgency)
-	b.validate.Push(bradescoValidateAccount)
-	b.validate.Push(bradescoValidateWallet)
-	b.validate.Push(bradescoValidateAuth)
-	b.validate.Push(bradescoValidateAgreement)
+	b.validate.Push(bradescoShopFacilValidateAgency)
+	b.validate.Push(bradescoShopFacilValidateAccount)
+	b.validate.Push(bradescoShopFacilValidateWallet)
+	b.validate.Push(bradescoShopFacilValidateAuth)
+	b.validate.Push(bradescoShopFacilValidateAgreement)
 	return b
 }
 
 //Log retorna a referencia do log
-func (b bankBradesco) Log() *log.Log {
+func (b bankBradescoShopFacil) Log() *log.Log {
 	return b.log
 }
 
-func (b bankBradesco) RegisterBoleto(boleto *models.BoletoRequest) (models.BoletoResponse, error) {
+func (b bankBradescoShopFacil) RegisterBoleto(boleto *models.BoletoRequest) (models.BoletoResponse, error) {
 	timing := metrics.GetTimingMetrics()
 	r := flow.NewFlow()
-	serviceURL := config.Get().URLBradesco
-	from := getResponseBradesco()
-	to := getAPIResponseBradesco()
-	bod := r.From("message://?source=inline", boleto, getRequestBradesco(), tmpl.GetFuncMaps())
+	serviceURL := config.Get().URLBradescoShopFacil
+	from := getResponseBradescoShopFacil()
+	to := getAPIResponseBradescoShopFacil()
+	bod := r.From("message://?source=inline", boleto, getRequestBradescoShopFacil(), tmpl.GetFuncMaps())
 	bod.To("logseq://?type=request&url="+serviceURL, b.log)
 	duration := util.Duration(func() {
 		bod.To(serviceURL, map[string]string{"method": "POST", "insecureSkipVerify": "true"})
@@ -90,7 +90,7 @@ func (b bankBradesco) RegisterBoleto(boleto *models.BoletoRequest) (models.Bolet
 	return models.BoletoResponse{}, models.NewInternalServerError("MP500", "Internal Error")
 }
 
-func (b bankBradesco) ProcessBoleto(boleto *models.BoletoRequest) (models.BoletoResponse, error) {
+func (b bankBradescoShopFacil) ProcessBoleto(boleto *models.BoletoRequest) (models.BoletoResponse, error) {
 	errs := b.ValidateBoleto(boleto)
 	if len(errs) > 0 {
 		return models.BoletoResponse{Errors: errs}, nil
@@ -98,16 +98,16 @@ func (b bankBradesco) ProcessBoleto(boleto *models.BoletoRequest) (models.Boleto
 	return b.RegisterBoleto(boleto)
 }
 
-func (b bankBradesco) ValidateBoleto(boleto *models.BoletoRequest) models.Errors {
+func (b bankBradescoShopFacil) ValidateBoleto(boleto *models.BoletoRequest) models.Errors {
 	return models.Errors(b.validate.Assert(boleto))
 }
 
-func (b bankBradesco) GetBankNumber() models.BankNumber {
-	return models.Bradesco
+func (b bankBradescoShopFacil) GetBankNumber() models.BankNumber {
+	return models.BradescoShopFacil
 }
 
 func getBarcode(boleto models.BoletoRequest) (bc barcode) {
-	bc.bankCode = fmt.Sprintf("%d", models.Bradesco)
+	bc.bankCode = fmt.Sprintf("%d", models.BradescoShopFacil)
 	bc.currencyCode = fmt.Sprintf("%d", models.Real)
 	bc.account = fmt.Sprintf("%07s", boleto.Agreement.Account)
 	bc.agency = fmt.Sprintf("%04s", boleto.Agreement.Agency)

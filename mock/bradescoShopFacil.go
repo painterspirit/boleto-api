@@ -7,7 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func registerBoletoBradesco(c *gin.Context) {
+func registerBoletoBradescoShopFacil(c *gin.Context) {
 
 	const tok = `
 {
@@ -47,8 +47,8 @@ func registerBoletoBradesco(c *gin.Context) {
     "boleto": null,
     "status": {
         "codigo": -518,
-        "mensagem": "Erro - Mock Bradesco",
-        "detalhes": "Erro - Mock Bradesco"
+        "mensagem": "Erro - Mock BradescoShopFacil",
+        "detalhes": "Erro - Mock BradescoShopFacil"
     }
 }
 `
