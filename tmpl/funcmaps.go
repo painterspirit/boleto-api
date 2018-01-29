@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"html"
 	"html/template"
+	"regexp"
 	"strings"
 	"time"
 
@@ -54,10 +55,10 @@ var funcMap = template.FuncMap{
 	"mod10dv":                mod10Itau,
 	"printIfNotProduction":   printIfNotProduction,
 	"itauEnv":                itauEnv,
-<<<<<<< HEAD
 	"extractNumbers":         extractNumbers,
-=======
->>>>>>> b70dcc7... change funcmaps
+	"splitValues":            splitValues,
+	"brDateDelimiter":        brDateDelimiter,
+	"brDateDelimiterTime":    brDateDelimiterTime,
 }
 
 func GetFuncMaps() template.FuncMap {
@@ -307,12 +308,35 @@ func itauEnv() string {
 	}
 	return "2"
 }
-<<<<<<< HEAD
 
 func extractNumbers(value string) string {
 	re := regexp.MustCompile("(\\D+)")
 	sanitizeValue := re.ReplaceAllString(string(value), "")
 	return sanitizeValue
 }
-=======
->>>>>>> b70dcc7... change funcmaps
+
+func splitValues(value string, init int, end int) string {
+	return value[init:end]
+}
+
+func brDateDelimiter(date string, del string) string {
+	layout := "2006-01-02"
+	d, err := time.Parse(layout, date)
+	if err != nil {
+		return date
+	}
+
+	return d.Format("02" + del + "01" + del + "2006")
+}
+
+func brDateDelimiterTime(date time.Time, del string) string {
+	layout := "2006-01-02 00:00:00 +0000 UTC"
+
+	d, err := time.Parse(layout, date.String())
+
+	if err != nil {
+		return date.String()
+	}
+
+	return d.Format("02" + del + "01" + del + "2006")
+}

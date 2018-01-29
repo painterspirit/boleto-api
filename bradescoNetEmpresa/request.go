@@ -3,22 +3,22 @@ package bradescoNetEmpresa
 const registerBradescoNetEmpresa = `
 ## Content-Type:application/json
 {
-    {{if (eq .Buyer.Document.Type "CNPJ")}}
-        "nuCPFCNPJ": "{{splitValues .Recipient.Document.Number 0 8}}",    
+    {{if (eq .Recipient.Document.Type "CNPJ")}}
+        "nuCPFCNPJ": "{{splitValues (extractNumbers .Recipient.Document.Number) 0 8}}",    
     {{else}}
-         "nuCPFCNPJ": "{{splitValues .Recipient.Document.Number 0 9}}",	
+         "nuCPFCNPJ": "{{splitValues (extractNumbers .Recipient.Document.Number) 0 9}}",	
 	{{end}}
     
-	{{if (eq .Buyer.Document.Type "CNPJ")}}
-        "filialCPFCNPJ": "{{splitValues .Recipient.Document.Number 8 12}}",    
+	{{if (eq .Recipient.Document.Type "CNPJ")}}
+        "filialCPFCNPJ": "{{splitValues (extractNumbers .Recipient.Document.Number) 8 12}}",    
     {{else}}
             "filialCPFCNPJ": "0",	
 	{{end}}
 	
-    {{if (eq .Buyer.Document.Type "CNPJ")}}
-        "ctrlCPFCNPJ": "{{splitValues .Recipient.Document.Number 12 14}}",
+    {{if (eq .Recipient.Document.Type "CNPJ")}}
+        "ctrlCPFCNPJ": "{{splitValues (extractNumbers .Recipient.Document.Number) 12 14}}",
     {{else}}
-        "ctrlCPFCNPJ": "{{splitValues .Recipient.Document.Number 9 11}}",	
+        "ctrlCPFCNPJ": "{{splitValues (extractNumbers .Recipient.Document.Number) 9 11}}",	
     {{end}}	
     "cdTipoAcesso": "2",
     "clubBanco": "2269651",
@@ -36,7 +36,7 @@ const registerBradescoNetEmpresa = `
     "dtVencimentoTitulo": "{{brDateDelimiter .Title.ExpireDate "."}}",
     "tpVencimento": "0",
     "vlNominalTitulo": "{{.Title.AmountInCents}}",
-    "cdEspecieTitulo": "03",
+    "cdEspecieTitulo": "02",
     "tpProtestoAutomaticoNegativacao": "0",
     "prazoProtestoAutomaticoNegativacao": "0",
     "controleParticipante": "",
@@ -67,8 +67,8 @@ const registerBradescoNetEmpresa = `
     "logradouroPagador": "{{.Buyer.Address.Street}}",
     "nuLogradouroPagador": "{{.Buyer.Address.Number}}",
     "complementoLogradouroPagador": "{{.Buyer.Address.Complement}}",
-    "cepPagador": "{{splitValues (sanitizeValues .Buyer.Address.ZipCode) 0 5}}",
-    "complementoCepPagador": "{{splitValues (sanitizeValues .Buyer.Address.ZipCode) 5 8}}",
+    "cepPagador": "{{splitValues (extractNumbers .Buyer.Address.ZipCode) 0 5}}",
+    "complementoCepPagador": "{{splitValues (extractNumbers .Buyer.Address.ZipCode) 5 8}}",
     "bairroPagador": "{{.Buyer.Address.District}}",
     "municipioPagador": "{{.Buyer.Address.City}}",
     "ufPagador": "{{.Buyer.Address.StateCode}}",
@@ -77,7 +77,7 @@ const registerBradescoNetEmpresa = `
     {{else}}
         "cdIndCpfcnpjPagador": "2",
     {{end}}
-    "nuCpfcnpjPagador": "{{sanitizeValues .Buyer.Document.Number}}",
+    "nuCpfcnpjPagador": "{{extractNumbers .Buyer.Document.Number}}",
     "endEletronicoPagador": "",
     "nomeSacadorAvalista": "",
     "logradouroSacadorAvalista": "",
