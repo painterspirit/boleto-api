@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"html"
 	"html/template"
-	"regexp"
 	"strings"
 	"time"
 
@@ -55,7 +54,10 @@ var funcMap = template.FuncMap{
 	"mod10dv":                mod10Itau,
 	"printIfNotProduction":   printIfNotProduction,
 	"itauEnv":                itauEnv,
+<<<<<<< HEAD
 	"extractNumbers":         extractNumbers,
+=======
+>>>>>>> b70dcc7... change funcmaps
 }
 
 func GetFuncMaps() template.FuncMap {
@@ -305,9 +307,12 @@ func itauEnv() string {
 	}
 	return "2"
 }
+<<<<<<< HEAD
 
 func extractNumbers(value string) string {
 	re := regexp.MustCompile("(\\D+)")
 	sanitizeValue := re.ReplaceAllString(string(value), "")
 	return sanitizeValue
 }
+=======
+>>>>>>> b70dcc7... change funcmaps
