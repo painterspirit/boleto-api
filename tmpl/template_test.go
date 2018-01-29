@@ -140,3 +140,13 @@ func TestUnscapeHtml(t *testing.T) {
 		So(unescapeHtmlString(d), ShouldEqual, "ó")
 	})
 }
+
+func TestSanitizeCep(t *testing.T) {
+	zipCodeWithSeparator := extractNumbers("25368-100")
+	zipCodeWithoutSeparator := extractNumbers("25368100")
+
+	Convey("o zipcode deve conter apenas números", t, func() {
+		So(zipCodeWithSeparator, ShouldEqual, "25368100")
+		So(zipCodeWithoutSeparator, ShouldEqual, "25368100")
+	})
+}
