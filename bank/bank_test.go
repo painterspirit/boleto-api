@@ -20,6 +20,7 @@ func TestShouldExecuteBBStrategy(t *testing.T) {
 		assert(models.Citibank)
 		assert(models.Santander)
 		assert(models.BradescoShopFacil)
+		assert(models.BradescoNetEmpresa)
 		assert(models.Itau)
 		assert(models.Caixa)
 

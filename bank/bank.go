@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/mundipagg/boleto-api/bb"
+	"github.com/mundipagg/boleto-api/bradescoNetEmpresa"
 	"github.com/mundipagg/boleto-api/bradescoShopFacil"
 	"github.com/mundipagg/boleto-api/caixa"
 	"github.com/mundipagg/boleto-api/citibank"
@@ -31,6 +32,8 @@ func Get(number models.BankNumber) (Bank, error) {
 		return bradescoShopFacil.New(), nil
 	case models.Caixa:
 		return caixa.New(), nil
+	case models.BradescoNetEmpresa:
+		return bradescoNetEmpresa.New(), nil
 	case models.Citibank:
 		return citibank.New(), nil
 	case models.Santander:

@@ -28,6 +28,7 @@ func ConfigMock(port string) {
 	os.Setenv("URL_BRADESCO_SHOPFACIL", "http://localhost:"+port+"/bradescoshopfacil/registrarBoleto")
 	os.Setenv("URL_ITAU_TICKET", "http://localhost:"+port+"/itau/gerarToken")
 	os.Setenv("URL_ITAU_REGISTER", "http://localhost:"+port+"/itau/registrarBoleto")
+	os.Setenv("URL_BRADESCO_NET_EMPRESA", "http://localhost:"+port+"/bradesconetempresa/registrarBoleto")
 	config.Install(true, true, true)
 }
 
@@ -38,8 +39,8 @@ func configFlags(devMode, mockMode, disableLog bool) {
 		os.Setenv("API_PORT", "3000")
 		os.Setenv("API_VERSION", "0.0.1")
 		os.Setenv("ENVIROMENT", "Development")
-		os.Setenv("SEQ_URL", "http://localhost:5341")   // http://stglog.mundipagg.com/ 192.168.8.119:5341
-		os.Setenv("SEQ_API_KEY", "4jZzTybZ9bUHtJiPdh6") //4jZzTybZ9bUHtJiPdh6
+		os.Setenv("SEQ_URL", "http://localhost:5341")
+		os.Setenv("SEQ_API_KEY", "4jZzTybZ9bUHtJiPdh6")
 		os.Setenv("ENABLE_REQUEST_LOG", "false")
 		os.Setenv("ENABLE_PRINT_REQUEST", "true")
 		os.Setenv("URL_BB_REGISTER_BOLETO", "https://cobranca.homologa.bb.com.br:7101/registrarBoleto")
@@ -56,11 +57,14 @@ func configFlags(devMode, mockMode, disableLog bool) {
 		os.Setenv("CERT_BOLETO_CRT", "C:\\cert_boleto_api\\certificate.crt")
 		os.Setenv("CERT_BOLETO_KEY", "C:\\cert_boleto_api\\mundi.key")
 		os.Setenv("CERT_BOLETO_CA", "C:\\cert_boleto_api\\ca-cert.ca")
+		os.Setenv("CERT_ICP_BOLETO_KEY", "C:\\cert_boleto_api\\ICP_PKey.key")
+		os.Setenv("CERT_ICP_BOLETO_CHAIN_CA", "C:\\cert_boleto_api\\ICP_cadeiaCerts.pem")
 		os.Setenv("URL_SANTANDER_TICKET", "https://ymbdlb.santander.com.br/dl-ticket-services/TicketEndpointService")
 		os.Setenv("URL_SANTANDER_REGISTER", "https://ymbcash.santander.com.br/ymbsrv/CobrancaEndpointService")
 		os.Setenv("URL_BRADESCO_SHOPFACIL", "https://homolog.meiosdepagamentobradesco.com.br/api/transacao")
 		os.Setenv("URL_ITAU_REGISTER", "https://gerador-boletos.itau.com.br/router-gateway-app/public/codigo_barras/registro")
 		os.Setenv("URL_ITAU_TICKET", "https://oauth.itau.com.br/identity/connect/token")
+		os.Setenv("URL_BRADESCO_NET_EMPRESA", "https://cobranca.bradesconetempresa.b.br/ibpjregistrotitulows/registrotitulohomologacao")
 	}
 	config.Install(mockMode, devMode, disableLog)
 }
