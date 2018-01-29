@@ -15,7 +15,7 @@ const registerBradescoShopFacil = `
         "nome": "{{.Buyer.Name}}",
         "documento": "{{.Buyer.Document.Number}}",
         "endereco": {
-            "cep": "{{.Buyer.Address.ZipCode}}",
+            "cep": "{{extractNumbers .Buyer.Address.ZipCode}}",
             "logradouro": "{{.Buyer.Address.Street}}",
             "numero": "{{.Buyer.Address.Number}}",
             "complemento": "{{.Buyer.Address.Complement}}",

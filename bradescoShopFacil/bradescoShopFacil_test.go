@@ -41,7 +41,7 @@ const baseMockJSON = `
             "Street": "Mos Eisley Cantina",
             "Number": "123",
             "Complement": "Apto",
-            "ZipCode": "20001000",
+            "ZipCode": "20001-000",
             "City": "Tatooine",
             "District": "Tijuca",
             "StateCode": "RJ"
