@@ -21,8 +21,9 @@ func bradescoNetEmpresaValidateAgency(b interface{}) error {
 func bradescoNetEmpresaValidateAccount(b interface{}) error {
 	switch t := b.(type) {
 	case *models.BoletoRequest:
-		if t.Agreement.Account == "" {
-			return models.NewErrorResponse("MP400", "a conta deve ser preenchida")
+		err := t.Agreement.IsAccountValid(7)
+		if err != nil {
+			return models.NewErrorResponse("MP400", err.Error())
 		}
 		return nil
 	default:

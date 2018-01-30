@@ -59,6 +59,7 @@ var funcMap = template.FuncMap{
 	"splitValues":            splitValues,
 	"brDateDelimiter":        brDateDelimiter,
 	"brDateDelimiterTime":    brDateDelimiterTime,
+	"toString16":             toString16,
 }
 
 func GetFuncMaps() template.FuncMap {
@@ -171,6 +172,10 @@ func fmtDoc(doc models.Document) string {
 }
 
 func toString(number uint) string {
+	return strconv.FormatInt(int64(number), 10)
+}
+
+func toString16(number uint16) string {
 	return strconv.FormatInt(int64(number), 10)
 }
 

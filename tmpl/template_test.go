@@ -31,6 +31,8 @@ func TestFormatDigitableLine(t *testing.T) {
 func TestTruncate(t *testing.T) {
 	Convey("Deve-se truncar uma string", t, func() {
 		s := "00000000000000000000"
+		b := "Rua de teste para o truncate"
+		So(truncateString(b, 20), ShouldEqual, "Rua de teste para o ")
 		So(truncateString(s, 5), ShouldEqual, "00000")
 		So(truncateString(s, 50), ShouldEqual, "00000000000000000000")
 		So(truncateString("", 50), ShouldEqual, "")

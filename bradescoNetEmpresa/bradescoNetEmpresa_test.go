@@ -48,6 +48,7 @@ const baseMockJSON = `
         },
         "buyer": {
             "name": "Usuario Teste",
+            "email": "p@p.com",
             "document": {
                 "type": "CNPJ",
                 "number": "29.799.428/0001-28"
