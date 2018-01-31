@@ -22,8 +22,7 @@ const registerBradescoNetEmpresa = `
     {{end}}	
     "cdTipoAcesso": "2",
     "clubBanco": "2269651",
-    "cdTipoContrato": "48",
-    "nuSequenciaContrato": "0",
+    "cdTipoContrato": "48",    
     "idProduto": "{{padLeft (toString16 .Agreement.Wallet) "0" 2}}",
     "nuNegociacao": "{{.Agreement.Agency}}0000000{{.Agreement.Account}}",
     "cdBanco": "237",    

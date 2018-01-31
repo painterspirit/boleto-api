@@ -21,8 +21,8 @@ services:
      - CERT_BOLETO_CRT=/home/mundipagg/boleto_cert/certificate.crt
      - CERT_BOLETO_KEY=/home/mundipagg/boleto_cert/mundi.key
      - CERT_BOLETO_CA=/home/mundipagg/boleto_cert/ca-cert.ca
-		 - CERT_ICP_BOLETO_KEY=/home/mundipagg/boleto_cert/ICP_PKey.key
-		 - CERT_ICP_BOLETO_CHAIN_CA=/home/mundipagg/boleto_cert/ICP_cadeiaCerts.pem
+     - CERT_ICP_BOLETO_KEY=/home/mundipagg/boleto_cert/ICP_PKey.key
+     - CERT_ICP_BOLETO_CHAIN_CA=/home/mundipagg/boleto_cert/ICP_cadeiaCerts.pem
      - INFLUXDB_HOST=http://10.0.2.15
      - INFLUXDB_PORT=8086
      - URL_BB_REGISTER_BOLETO=https://cobranca.desenv.bb.com.br:7101/registrarBoleto
