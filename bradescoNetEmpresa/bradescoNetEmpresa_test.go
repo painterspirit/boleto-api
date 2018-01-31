@@ -73,7 +73,7 @@ func TestRegisterBoleto(t *testing.T) {
 		t.Fail()
 	}
 	bank := New()
-	go mock.Run("9093")
+	go mock.Run("9098")
 	time.Sleep(2 * time.Second)
 
 	Convey("Deve-se processar um boleto BradescoNetEmpresa com sucesso", t, func() {
