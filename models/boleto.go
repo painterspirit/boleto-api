@@ -134,7 +134,7 @@ func (b BankNumber) GetBoletoBankNumberAndDigit() string {
 		return "033-7"
 	case Itau:
 		return "341-7"
-	case BradescoShopFacil:
+	case BradescoShopFacil, BradescoNetEmpresa:
 		return "237-2"
 	default:
 		return ""
