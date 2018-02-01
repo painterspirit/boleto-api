@@ -140,7 +140,7 @@ func (b bankBradescoNetEmpresa) GetBankNameIntegration() string {
 }
 
 func getBarcode(boleto models.BoletoRequest) (bc barcode) {
-	bc.bankCode = fmt.Sprintf("%d", models.BradescoShopFacil)
+	bc.bankCode = fmt.Sprintf("%d", models.Bradesco)
 	bc.currencyCode = fmt.Sprintf("%d", models.Real)
 	bc.account = fmt.Sprintf("%07s", boleto.Agreement.Account)
 	bc.agency = fmt.Sprintf("%04s", boleto.Agreement.Agency)
