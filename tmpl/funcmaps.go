@@ -56,6 +56,10 @@ var funcMap = template.FuncMap{
 	"printIfNotProduction":   printIfNotProduction,
 	"itauEnv":                itauEnv,
 	"extractNumbers":         extractNumbers,
+	"splitValues":            splitValues,
+	"brDateDelimiter":        brDateDelimiter,
+	"brDateDelimiterTime":    brDateDelimiterTime,
+	"toString16":             toString16,
 }
 
 func GetFuncMaps() template.FuncMap {
@@ -168,6 +172,10 @@ func fmtDoc(doc models.Document) string {
 }
 
 func toString(number uint) string {
+	return strconv.FormatInt(int64(number), 10)
+}
+
+func toString16(number uint16) string {
 	return strconv.FormatInt(int64(number), 10)
 }
 
@@ -310,4 +318,30 @@ func extractNumbers(value string) string {
 	re := regexp.MustCompile("(\\D+)")
 	sanitizeValue := re.ReplaceAllString(string(value), "")
 	return sanitizeValue
+}
+
+func splitValues(value string, init int, end int) string {
+	return value[init:end]
+}
+
+func brDateDelimiter(date string, del string) string {
+	layout := "2006-01-02"
+	d, err := time.Parse(layout, date)
+	if err != nil {
+		return date
+	}
+
+	return d.Format("02" + del + "01" + del + "2006")
+}
+
+func brDateDelimiterTime(date time.Time, del string) string {
+	layout := "2006-01-02 00:00:00 +0000 UTC"
+
+	d, err := time.Parse(layout, date.String())
+
+	if err != nil {
+		return date.String()
+	}
+
+	return d.Format("02" + del + "01" + del + "2006")
 }

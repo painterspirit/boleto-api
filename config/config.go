@@ -8,41 +8,44 @@ import (
 
 //Config é a estrutura que tem todas as configurações da aplicação
 type Config struct {
-	InfluxDBHost               string
-	InfluxDBPort               string
-	APIPort                    string
-	PdfAPIURL                  string
-	Version                    string
-	SEQUrl                     string
-	SEQAPIKey                  string
-	EnableRequestLog           bool
-	EnablePrintRequest         bool
-	Environment                string
-	SEQDomain                  string
-	ApplicationName            string
-	URLBBRegisterBoleto        string
-	URLCaixaRegisterBoleto     string
-	URLBBToken                 string
-	URLCitiBoleto              string
-	URLCiti                    string
-	MockMode                   bool
-	DevMode                    bool
-	HTTPOnly                   bool
-	AppURL                     string
-	ElasticURL                 string
-	MongoURL                   string
-	MongoUser                  string
-	MongoPassword              string
-	BoletoJSONFileStore        string
-	DisableLog                 bool
-	CertBoletoPathCrt          string
-	CertBoletoPathKey          string
-	CertBoletoPathCa           string
-	URLTicketSantander         string
-	URLRegisterBoletoSantander string
-	URLBradescoShopFacil       string
-	URLTicketItau              string
-	URLRegisterBoletoItau      string
+	InfluxDBHost                  string
+	InfluxDBPort                  string
+	APIPort                       string
+	PdfAPIURL                     string
+	Version                       string
+	SEQUrl                        string
+	SEQAPIKey                     string
+	EnableRequestLog              bool
+	EnablePrintRequest            bool
+	Environment                   string
+	SEQDomain                     string
+	ApplicationName               string
+	URLBBRegisterBoleto           string
+	URLCaixaRegisterBoleto        string
+	URLBBToken                    string
+	URLCitiBoleto                 string
+	URLCiti                       string
+	MockMode                      bool
+	DevMode                       bool
+	HTTPOnly                      bool
+	AppURL                        string
+	ElasticURL                    string
+	MongoURL                      string
+	MongoUser                     string
+	MongoPassword                 string
+	BoletoJSONFileStore           string
+	DisableLog                    bool
+	CertBoletoPathCrt             string
+	CertBoletoPathKey             string
+	CertBoletoPathCa              string
+	CertICP_PathPkey              string
+	CertICP_PathChainCertificates string
+	URLTicketSantander            string
+	URLRegisterBoletoSantander    string
+	URLBradescoShopFacil          string
+	URLBradescoNetEmpresa         string
+	URLTicketItau                 string
+	URLRegisterBoletoItau         string
 }
 
 var cnf Config
@@ -57,40 +60,43 @@ func Get() Config {
 func Install(mockMode, devMode, disableLog bool) {
 	atomic.StoreUint64(&running, 0)
 	cnf = Config{
-		APIPort:                    ":" + os.Getenv("API_PORT"),
-		PdfAPIURL:                  os.Getenv("PDF_API"),
-		Version:                    os.Getenv("API_VERSION"),
-		SEQUrl:                     os.Getenv("SEQ_URL"),                        //Pegar o SEQ de dev
-		SEQAPIKey:                  os.Getenv("SEQ_API_KEY"),                    //Staging Key:
-		EnableRequestLog:           os.Getenv("ENABLE_REQUEST_LOG") == "true",   // Log a cada request no SEQ
-		EnablePrintRequest:         os.Getenv("ENABLE_PRINT_REQUEST") == "true", // Imprime algumas informacoes da request no console
-		Environment:                os.Getenv("ENVIRONMENT"),
-		SEQDomain:                  "One",
-		ApplicationName:            "BoletoOnline",
-		URLBBRegisterBoleto:        os.Getenv("URL_BB_REGISTER_BOLETO"),
-		URLCaixaRegisterBoleto:     os.Getenv("URL_CAIXA"),
-		URLBBToken:                 os.Getenv("URL_BB_TOKEN"),
-		URLCitiBoleto:              os.Getenv("URL_CITI_BOLETO"),
-		URLCiti:                    os.Getenv("URL_CITI"),
-		MockMode:                   mockMode,
-		AppURL:                     os.Getenv("APP_URL"),
-		ElasticURL:                 os.Getenv("ELASTIC_URL"),
-		DevMode:                    devMode,
-		DisableLog:                 disableLog,
-		MongoURL:                   os.Getenv("MONGODB_URL"),
-		MongoUser:                  os.Getenv("MONGODB_USER"),
-		MongoPassword:              os.Getenv("MONGODB_PASSWORD"),
-		BoletoJSONFileStore:        os.Getenv("BOLETO_JSON_STORE"),
-		CertBoletoPathCrt:          os.Getenv("CERT_BOLETO_CRT"),
-		CertBoletoPathKey:          os.Getenv("CERT_BOLETO_KEY"),
-		CertBoletoPathCa:           os.Getenv("CERT_BOLETO_CA"),
-		URLTicketSantander:         os.Getenv("URL_SANTANDER_TICKET"),
-		URLRegisterBoletoSantander: os.Getenv("URL_SANTANDER_REGISTER"),
-		URLTicketItau:              os.Getenv("URL_ITAU_TICKET"),
-		URLRegisterBoletoItau:      os.Getenv("URL_ITAU_REGISTER"),
-		URLBradescoShopFacil:       os.Getenv("URL_BRADESCO_SHOPFACIL"),
-		InfluxDBHost:               os.Getenv("INFLUXDB_HOST"),
-		InfluxDBPort:               os.Getenv("INFLUXDB_PORT"),
+		APIPort:                       ":" + os.Getenv("API_PORT"),
+		PdfAPIURL:                     os.Getenv("PDF_API"),
+		Version:                       os.Getenv("API_VERSION"),
+		SEQUrl:                        os.Getenv("SEQ_URL"),                        //Pegar o SEQ de dev
+		SEQAPIKey:                     os.Getenv("SEQ_API_KEY"),                    //Staging Key:
+		EnableRequestLog:              os.Getenv("ENABLE_REQUEST_LOG") == "true",   // Log a cada request no SEQ
+		EnablePrintRequest:            os.Getenv("ENABLE_PRINT_REQUEST") == "true", // Imprime algumas informacoes da request no console
+		Environment:                   os.Getenv("ENVIRONMENT"),
+		SEQDomain:                     "One",
+		ApplicationName:               "BoletoOnline",
+		URLBBRegisterBoleto:           os.Getenv("URL_BB_REGISTER_BOLETO"),
+		URLCaixaRegisterBoleto:        os.Getenv("URL_CAIXA"),
+		URLBBToken:                    os.Getenv("URL_BB_TOKEN"),
+		URLCitiBoleto:                 os.Getenv("URL_CITI_BOLETO"),
+		URLCiti:                       os.Getenv("URL_CITI"),
+		MockMode:                      mockMode,
+		AppURL:                        os.Getenv("APP_URL"),
+		ElasticURL:                    os.Getenv("ELASTIC_URL"),
+		DevMode:                       devMode,
+		DisableLog:                    disableLog,
+		MongoURL:                      os.Getenv("MONGODB_URL"),
+		MongoUser:                     os.Getenv("MONGODB_USER"),
+		MongoPassword:                 os.Getenv("MONGODB_PASSWORD"),
+		BoletoJSONFileStore:           os.Getenv("BOLETO_JSON_STORE"),
+		CertBoletoPathCrt:             os.Getenv("CERT_BOLETO_CRT"),
+		CertBoletoPathKey:             os.Getenv("CERT_BOLETO_KEY"),
+		CertBoletoPathCa:              os.Getenv("CERT_BOLETO_CA"),
+		CertICP_PathPkey:              os.Getenv("CERT_ICP_BOLETO_KEY"),
+		CertICP_PathChainCertificates: os.Getenv("CERT_ICP_BOLETO_CHAIN_CA"),
+		URLTicketSantander:            os.Getenv("URL_SANTANDER_TICKET"),
+		URLRegisterBoletoSantander:    os.Getenv("URL_SANTANDER_REGISTER"),
+		URLTicketItau:                 os.Getenv("URL_ITAU_TICKET"),
+		URLRegisterBoletoItau:         os.Getenv("URL_ITAU_REGISTER"),
+		URLBradescoShopFacil:          os.Getenv("URL_BRADESCO_SHOPFACIL"),
+		URLBradescoNetEmpresa:         os.Getenv("URL_BRADESCO_NET_EMPRESA"),
+		InfluxDBHost:                  os.Getenv("INFLUXDB_HOST"),
+		InfluxDBPort:                  os.Getenv("INFLUXDB_PORT"),
 	}
 }
 

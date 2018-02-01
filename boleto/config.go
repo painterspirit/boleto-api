@@ -27,6 +27,8 @@ func GetConfig(number models.BankNumber) ConfigBank {
 		return configCiti()
 	case models.BradescoShopFacil:
 		return configBradescoShopFacil()
+	case models.BradescoNetEmpresa:
+		return configBradescoNetEmpresa()
 	case models.Caixa:
 		return configCaixa()
 	case models.Itau:
@@ -58,4 +60,8 @@ func configItau() ConfigBank {
 
 func configBradescoShopFacil() ConfigBank {
 	return ConfigBank{Logo: template.HTML(LogoBradesco), EspecieDoc: "Outro", Aceite: "N", Quantidade: "", ValorCotacao: "", Moeda: "Real"}
+}
+
+func configBradescoNetEmpresa() ConfigBank {
+	return ConfigBank{Logo: template.HTML(LogoBradesco), EspecieDoc: "DM", Aceite: "N", Quantidade: "", ValorCotacao: "", Moeda: "Real"}
 }

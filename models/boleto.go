@@ -116,7 +116,7 @@ type BankNumber int
 // IsBankNumberValid verifica se o banco enviado existe
 func (b BankNumber) IsBankNumberValid() bool {
 	switch b {
-	case BancoDoBrasil, Itau, Santander, Caixa, BradescoShopFacil, Citibank:
+	case BancoDoBrasil, Itau, Santander, Caixa, BradescoShopFacil, BradescoNetEmpresa, Citibank:
 		return true
 	default:
 		return false
@@ -134,7 +134,7 @@ func (b BankNumber) GetBoletoBankNumberAndDigit() string {
 		return "033-7"
 	case Itau:
 		return "341-7"
-	case BradescoShopFacil:
+	case BradescoShopFacil, BradescoNetEmpresa:
 		return "237-2"
 	default:
 		return ""
@@ -154,6 +154,8 @@ func (b BankNumber) BankName() string {
 		return "Caixa"
 	case BradescoShopFacil:
 		return "BradescoShopFacil"
+	case BradescoNetEmpresa:
+		return "BradescoNetEmpresa"
 	case Citibank:
 		return "Citibank"
 	default:
@@ -173,6 +175,9 @@ const (
 
 	// BradescoShopFacil constante do BradescoShopFacil
 	BradescoShopFacil = 237
+
+	// BradescoNetEmpresa constante do BradescoNetEmpresa
+	BradescoNetEmpresa = 238 // <-----Não esquece de mexer nisso pelo amor de Deus
 
 	// Caixa constante do Caixa
 	Caixa = 104

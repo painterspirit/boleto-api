@@ -7,6 +7,10 @@
 	],
 	"Deps": [
 		{
+			"ImportPath": "github.com/fullsailor/pkcs7",
+			"Rev": "a009d8d7de53d9503c797cb8ec66fa3b21eed209"
+		},
+		{
 			"ImportPath": "github.com/Jeffail/gabs",
 			"Comment": "1.0-8-g9cef256",
 			"Rev": "9cef256b595a9e616eb6aec1da446529b7705613"
