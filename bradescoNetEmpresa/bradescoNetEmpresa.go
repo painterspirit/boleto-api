@@ -90,7 +90,6 @@ func (b bankBradescoNetEmpresa) RegisterBoleto(boleto *models.BoletoRequest) (mo
 	ch.When(flow.Header("status").IsEqualTo("200"))
 	ch.To("transform://?format=json", from, to, tmpl.GetFuncMaps())
 	ch.To("unmarshall://?format=json", new(models.BoletoResponse))
-
 	ch.Otherwise()
 	ch.To("logseq://?type=response&url="+serviceURL, b.log).To("apierro://")
 
@@ -100,12 +99,6 @@ func (b bankBradescoNetEmpresa) RegisterBoleto(boleto *models.BoletoRequest) (mo
 			t.BarCodeNumber = getBarcode(*boleto).toString()
 		}
 		return *t, nil
-
-		//response := util.ParseJSON(t, new(models.BoletoResponse)).(*models.BoletoResponse)
-		//return *response, nil
-	//case models.BoletoResponse:
-	//return t, nil
-
 	case error:
 		return models.BoletoResponse{}, t
 	}
