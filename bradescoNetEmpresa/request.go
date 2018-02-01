@@ -68,8 +68,7 @@ const responseBradescoNetEmpresaJson = `{{.contentJson}}`
 const reponseBradescoNetEmpresa = `
 {
     "cdErro": "{{returnCode}}",
-    "msgErro": "{{returnMessage}}",
-    "cdBarras": "{{barcodeNumber}}",
+    "msgErro": "{{returnMessage}}",    
     "linhaDigitavel": "{{digitableLine}}"
 }
 `
