@@ -5,9 +5,7 @@
 *.so
 *.dylib
 boleto-api
-*
 .pid
-*
 .exe
 debug
 

@@ -100,3 +100,7 @@ func (b bankCaixa) getAuthToken(info string) string {
 func (b bankCaixa) GetBankNumber() models.BankNumber {
 	return models.Caixa
 }
+
+func (b bankCaixa) GetBankNameIntegration() string {
+	return "Caixa"
+}

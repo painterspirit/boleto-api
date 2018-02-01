@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/mundipagg/boleto-api/bank"
 	"github.com/mundipagg/boleto-api/config"
 	"github.com/mundipagg/boleto-api/log"
 	"github.com/mundipagg/boleto-api/metrics"
@@ -52,12 +53,18 @@ func ParseBoleto() gin.HandlerFunc {
 			businessMetrics.Push("json_error", 1)
 			return
 		}
+		bank, err := bank.Get(boleto)
+		if checkError(c, err, log.CreateLog()) {
+			c.Set("error", err)
+			return
+		}
+		c.Set("bank", bank)
 		d, errFmt := time.Parse("2006-01-02", boleto.Title.ExpireDate)
 		boleto.Title.ExpireDateTime = d
 		if errFmt != nil {
 			e := models.NewFormatError(errFmt.Error())
 			checkError(c, e, log.CreateLog())
-			businessMetrics.Push(boleto.BankNumber.BankName()+"-bad-request", 1)
+			businessMetrics.Push(bank.GetBankNameIntegration()+"-bad-request", 1)
 			return
 		}
 		l := log.CreateLog()
@@ -65,13 +72,13 @@ func ParseBoleto() gin.HandlerFunc {
 		l.Operation = "RegisterBoleto"
 		l.Recipient = boleto.Recipient.Name
 		l.RequestKey = boleto.RequestKey
-		l.BankName = boleto.BankNumber.BankName()
+		l.BankName = bank.GetBankNameIntegration()
 		l.Request(boleto, c.Request.URL.RequestURI(), util.HeaderToMap(c.Request.Header))
 		c.Set("boleto", boleto)
 		c.Next()
 		resp, _ := c.Get("boletoResponse")
 		l.Response(resp, c.Request.URL.RequestURI())
-		tag := boleto.BankNumber.BankName() + "-status"
+		tag := bank.GetBankNameIntegration() + "-status"
 		businessMetrics.Push(tag, c.Writer.Status())
 	}
 }

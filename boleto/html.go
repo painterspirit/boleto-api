@@ -396,25 +396,25 @@ type HTMLBoleto struct {
 }
 
 //HTML renderiza HTML do boleto
-func HTML(boleto models.BoletoView, format string) (string, error) {
+func HTML(boletoView models.BoletoView, format string) (string, error) {
 
-	if boleto.Barcode == "" {
+	if boletoView.Barcode == "" {
 		return "", errors.New("boleto not found")
 	}
 	b := tmpl.New()
 	html := HTMLBoleto{
-		View:       boleto,
-		ConfigBank: GetConfig(boleto.BankID),
+		View:       boletoView,
+		ConfigBank: GetConfig(boletoView.Boleto),
 		Format:     format,
 	}
-	bcode, _ := twooffive.Encode(boleto.Barcode, true)
+	bcode, _ := twooffive.Encode(boletoView.Barcode, true)
 	orgBounds := bcode.Bounds()
 	orgWidth := orgBounds.Max.X - orgBounds.Min.X
 	img, _ := barcode.Scale(bcode, orgWidth, 50)
 	buf := new(bytes.Buffer)
 	err := png.Encode(buf, img)
 	html.Barcode64 = base64.StdEncoding.EncodeToString(buf.Bytes())
-	html.DigitableLine = textToImage(boleto.DigitableLine)
+	html.DigitableLine = textToImage(boletoView.DigitableLine)
 	s, err := b.From(html).To(templateBoleto).Transform(boletoForm)
 	if err != nil {
 		return "", err

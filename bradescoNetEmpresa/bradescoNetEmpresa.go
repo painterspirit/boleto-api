@@ -132,7 +132,11 @@ func (b bankBradescoNetEmpresa) ValidateBoleto(boleto *models.BoletoRequest) mod
 }
 
 func (b bankBradescoNetEmpresa) GetBankNumber() models.BankNumber {
-	return models.BradescoNetEmpresa
+	return models.Bradesco
+}
+
+func (b bankBradescoNetEmpresa) GetBankNameIntegration() string {
+	return "BradescoNetEmpresa"
 }
 
 func getBarcode(boleto models.BoletoRequest) (bc barcode) {
