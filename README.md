@@ -3,6 +3,7 @@
 [![CircleCI](https://circleci.com/gh/mundipagg/boleto-api/tree/master.svg?style=svg)](https://circleci.com/gh/mundipagg/boleto-api/tree/master)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b85953cc9fa84b56822e7e5d91203e91)](https://www.codacy.com/app/mundipagg/boleto-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mundipagg/boleto-api&amp;utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/b9ad683e9d8f87034339/maintainability)](https://codeclimate.com/github/mundipagg/boleto-api/maintainability)
 
 What is the Online Registered "Boleto" API?
 --------------
