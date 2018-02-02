@@ -114,7 +114,11 @@ func getBoleto(c *gin.Context) {
 		c.Writer.WriteString(s)
 	} else {
 		c.Header("Content-Type", "application/pdf")
-		if buf, err := toPdf(s); err != nil {
+
+		buf, err := toPdf(s)
+
+		if err != nil {
+			c.Header("Content-Type", "application/json")
 			checkError(c, models.NewInternalServerError(err.Error(), "internal error"), log.CreateLog())
 			c.Abort()
 		} else {
