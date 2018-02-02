@@ -13,7 +13,7 @@ import (
 
 const baseMockJSON = `
 {
-    "bankNumber": 238,
+    "bankNumber": 237,
    "authentication": {
             "Username": "",
             "Password": ""

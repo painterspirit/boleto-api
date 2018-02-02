@@ -103,11 +103,11 @@ func (b bankBradescoShopFacil) ValidateBoleto(boleto *models.BoletoRequest) mode
 }
 
 func (b bankBradescoShopFacil) GetBankNumber() models.BankNumber {
-	return models.BradescoShopFacil
+	return models.Bradesco
 }
 
 func getBarcode(boleto models.BoletoRequest) (bc barcode) {
-	bc.bankCode = fmt.Sprintf("%d", models.BradescoShopFacil)
+	bc.bankCode = fmt.Sprintf("%d", models.Bradesco)
 	bc.currencyCode = fmt.Sprintf("%d", models.Real)
 	bc.account = fmt.Sprintf("%07s", boleto.Agreement.Account)
 	bc.agency = fmt.Sprintf("%04s", boleto.Agreement.Agency)
@@ -136,4 +136,8 @@ func dateDueFactor(dateDue time.Time) (string, error) {
 		return "", errors.New("DateDue must be in the future")
 	}
 	return fmt.Sprintf("%04d", factor), nil
+}
+
+func (b bankBradescoShopFacil) GetBankNameIntegration() string {
+	return "BradescoShopFacil"
 }

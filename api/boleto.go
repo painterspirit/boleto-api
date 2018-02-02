@@ -23,21 +23,22 @@ import (
 
 //Regista um boleto em um determinado banco
 func registerBoleto(c *gin.Context) {
-	_boleto, _ := c.Get("boleto")
-	boleto := _boleto.(models.BoletoRequest)
-	bank, err := bank.Get(boleto.BankNumber)
-	if checkError(c, err, log.CreateLog()) {
+	if _, hasErr := c.Get("error"); hasErr{
 		return
 	}
+	_boleto, _ := c.Get("boleto")
+	_bank, _ := c.Get("bank")
+	boleto := _boleto.(models.BoletoRequest)
+	bank := _bank.(bank.Bank)
 	lg := bank.Log()
 	lg.Operation = "RegisterBoleto"
 	lg.NossoNumero = boleto.Title.OurNumber
 	lg.Recipient = boleto.Recipient.Name
 	lg.RequestKey = boleto.RequestKey
-	lg.BankName = bank.GetBankNumber().BankName()
+	lg.BankName = bank.GetBankNameIntegration()
 
-	repo, err := db.GetDB()
-	if checkError(c, err, lg) {
+	repo, errDb := db.GetDB()
+	if checkError(c, errDb, lg) {
 		return
 	}
 	resp, errR := bank.ProcessBoleto(&boleto)
@@ -52,7 +53,7 @@ func registerBoleto(c *gin.Context) {
 			st = http.StatusBadRequest
 		}
 	} else {
-		boView := models.NewBoletoView(boleto, resp)
+		boView := models.NewBoletoView(boleto, resp, bank.GetBankNameIntegration())
 		resp.ID = boView.ID
 		resp.Links = boView.Links
 		errMongo := repo.SaveBoleto(boView)

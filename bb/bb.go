@@ -126,3 +126,7 @@ func (b bankBB) ValidateBoleto(boleto *models.BoletoRequest) models.Errors {
 func (b bankBB) GetBankNumber() models.BankNumber {
 	return models.BancoDoBrasil
 }
+
+func (b bankBB) GetBankNameIntegration() string {
+	return "BancoDoBrasil"
+}

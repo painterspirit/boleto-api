@@ -98,7 +98,7 @@ func TestRegiterBoleto(t *testing.T) {
 func TestBarcodeGenerationBradescoShopFacil(t *testing.T) {
 	//example := "23795796800000001990001250012446693212345670"
 	boleto := models.BoletoRequest{}
-	boleto.BankNumber = models.BradescoShopFacil
+	boleto.BankNumber = models.Bradesco
 	boleto.Agreement = models.Agreement{
 		Account: "1234567",
 		Agency:  "1",

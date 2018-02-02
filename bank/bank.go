@@ -3,15 +3,8 @@ package bank
 import (
 	"fmt"
 
-	"github.com/mundipagg/boleto-api/bb"
-	"github.com/mundipagg/boleto-api/bradescoNetEmpresa"
-	"github.com/mundipagg/boleto-api/bradescoShopFacil"
-	"github.com/mundipagg/boleto-api/caixa"
-	"github.com/mundipagg/boleto-api/citibank"
-	"github.com/mundipagg/boleto-api/itau"
 	"github.com/mundipagg/boleto-api/log"
 	"github.com/mundipagg/boleto-api/models"
-	"github.com/mundipagg/boleto-api/santander"
 )
 
 //Bank é a interface que vai oferecer os serviços em comum entre os bancos
@@ -20,27 +13,26 @@ type Bank interface {
 	RegisterBoleto(*models.BoletoRequest) (models.BoletoResponse, error)
 	ValidateBoleto(*models.BoletoRequest) models.Errors
 	GetBankNumber() models.BankNumber
+	GetBankNameIntegration() string
 	Log() *log.Log
 }
 
 //Get retorna estrategia de acordo com o banco ou erro caso o banco não exista
-func Get(number models.BankNumber) (Bank, error) {
-	switch number {
+func Get(boleto models.BoletoRequest) (Bank, error) {
+	switch boleto.BankNumber {
 	case models.BancoDoBrasil:
-		return bb.New(), nil
-	case models.BradescoShopFacil:
-		return bradescoShopFacil.New(), nil
+		return getIntegrationBB(boleto)
+	case models.Bradesco:
+		return getIntegrationBradesco(boleto)
 	case models.Caixa:
-		return caixa.New(), nil
-	case models.BradescoNetEmpresa:
-		return bradescoNetEmpresa.New(), nil
+		return getIntegrationCaixa(boleto)
 	case models.Citibank:
-		return citibank.New(), nil
+		return getIntegrationCitibank(boleto)
 	case models.Santander:
-		return santander.New(), nil
+		return getIntegrationSantander(boleto)
 	case models.Itau:
-		return itau.New(), nil
+		return getIntegrationItau(boleto)
 	default:
-		return nil, models.NewErrorResponse("MPBankNumber", fmt.Sprintf("Banco %d não existe", number))
+		return nil, models.NewErrorResponse("MPBankNumber", fmt.Sprintf("Banco %d não existe", boleto.BankNumber))
 	}
 }

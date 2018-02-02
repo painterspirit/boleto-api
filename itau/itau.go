@@ -125,3 +125,7 @@ func (b bankItau) ValidateBoleto(boleto *models.BoletoRequest) models.Errors {
 func (b bankItau) GetBankNumber() models.BankNumber {
 	return models.Itau
 }
+
+func (b bankItau) GetBankNameIntegration() string {
+	return "Itau"
+}

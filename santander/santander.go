@@ -137,3 +137,7 @@ func calculateOurNumber(boleto *models.BoletoRequest) uint {
 	value, _ := strconv.Atoi(ourNumberWithDigit)
 	return uint(value)
 }
+
+func (b bankSantander) GetBankNameIntegration() string {
+	return "Santander"
+}

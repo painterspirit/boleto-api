@@ -132,7 +132,7 @@ func TestBoleto(t *testing.T) {
 			BarCodeNumber: "1234",
 			DigitableLine: "12345",
 		}
-		b := NewBoletoView(BoletoRequest{}, resp)
+		b := NewBoletoView(BoletoRequest{}, resp, "BradescoShopFacil")
 		So(b.UID, ShouldNotBeEmpty)
 		So(b.Barcode, ShouldEqual, "1234")
 		So(b.DigitableLine, ShouldEqual, "12345")
