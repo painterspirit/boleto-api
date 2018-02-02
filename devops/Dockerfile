@@ -7,7 +7,7 @@ RUN mkdir -p "/home/mundipagg/boleto_cert"
 ENV GOROOT="/home/mundipagg/"
 
 COPY time "/home/mundipagg/lib/time"
-
+RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 ADD boleto-api /home/mundipagg/
 RUN chmod +x /home/mundipagg/boleto-api
 RUN mkdir  -p "/home/upMongo"
