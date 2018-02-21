@@ -57,7 +57,7 @@ const incluiBoleto = `
                   <VALOR>{{toFloatStr .Title.AmountInCents}}</VALOR>
                   <TIPO_ESPECIE>99</TIPO_ESPECIE>
                   <FLAG_ACEITE>S</FLAG_ACEITE>
-                  <DATA_EMISSAO>2017-05-16</DATA_EMISSAO>
+                  <DATA_EMISSAO>{{enDate today "-"}}</DATA_EMISSAO>
                   <JUROS_MORA>
                      <TIPO>ISENTO</TIPO>
                      <VALOR>0</VALOR>
