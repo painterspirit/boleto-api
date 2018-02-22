@@ -71,7 +71,7 @@ func (b bankCaixa) ProcessBoleto(boleto *models.BoletoRequest) (models.BoletoRes
 		return models.BoletoResponse{Errors: errs}, nil
 	}
 	checkSum := b.getCheckSumCode(*boleto)
-	//fmt.Println(checkSum)
+
 	boleto.Authentication.AuthorizationToken = b.getAuthToken(checkSum)
 	return b.RegisterBoleto(boleto)
 }
