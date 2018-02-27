@@ -67,7 +67,7 @@ const requestTicket = `
                 </entry>
                 <entry>
                     <key>PAGADOR.NUM-DOC</key>
-                    <value>{{.Buyer.Document.Number}}</value>
+                    <value>{{extractNumbers .Buyer.Document.Number}}</value>
                 </entry>
                 <entry>
                     <key>PAGADOR.NOME</key>
@@ -91,7 +91,7 @@ const requestTicket = `
                 </entry>
                 <entry>
                     <key>PAGADOR.CEP</key>
-                    <value>{{clearString (truncate .Buyer.Address.ZipCode 8)}}</value>
+                    <value>{{truncate (extractNumbers .Buyer.Address.ZipCode) 8}}</value>
                 </entry>
                 <entry>
                     <key>TITULO.NOSSO-NUMERO</key>
