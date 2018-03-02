@@ -83,16 +83,20 @@ func (b bankItau) RegisterBoleto(input *models.BoletoRequest) (models.BoletoResp
 	})
 	timing.Push("itau-register-boleto-time", duration.Seconds())
 	exec.To("logseq://?type=response&url="+itauURL, b.log)
+
 	ch := exec.Choice()
 	ch.When(Header("status").IsEqualTo("200"))
 	ch.To("transform://?format=json", fromResponse, toAPI, tmpl.GetFuncMaps())
 	ch.To("unmarshall://?format=json", new(models.BoletoResponse))
-	ch.When(Header("status").IsEqualTo("401"))
-	ch.To("transform://?format=json", fromResponse, toAPI, tmpl.GetFuncMaps())
-	ch.To("unmarshall://?format=json", new(models.BoletoResponse))
-	ch.When(Header("status").IsEqualTo("400"))
-	ch.To("transform://?format=json", fromResponseError, toAPI, tmpl.GetFuncMaps())
-	ch.To("unmarshall://?format=json", new(models.BoletoResponse))
+
+	headerMap := exec.GetHeader()
+
+	if status, exist := headerMap["status"]; exist && status != "200" {
+		ch.When(Header("status").IsEqualTo(status))
+		ch.To("transform://?format=json", fromResponseError, toAPI, tmpl.GetFuncMaps())
+		ch.To("unmarshall://?format=json", new(models.BoletoResponse))
+	}
+
 	ch.Otherwise()
 	ch.To("logseq://?type=response&url="+itauURL, b.log).To("apierro://")
 	switch t := exec.GetBody().(type) {

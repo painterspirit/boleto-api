@@ -308,10 +308,7 @@ func mod10Itau(number string, agency string, account string, wallet uint16) stri
 }
 
 func itauEnv() string {
-	if config.Get().DevMode {
-		return "1"
-	}
-	return "2"
+	return config.Get().ItauEnv
 }
 
 func extractNumbers(value string) string {
