@@ -11,7 +11,7 @@ const registerBoleto = `
          <dto>
             <dtNsu>{{today | brDateWithoutDelimiter }}</dtNsu>
             <estacao>{{.Authentication.Username}}</estacao>
-            <nsu>{{santanderNSUPrefix .Title.DocumentNumber}}</nsu>
+            <nsu>{{santanderNSUPrefix (padLeft (toString .Title.OurNumber) "0" 13)}}</nsu>
             <ticket>{{unscape .Authentication.AuthorizationToken}}</ticket>
             <tpAmbiente>{{santanderEnv}}</tpAmbiente>
          </dto>
