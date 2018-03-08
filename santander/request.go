@@ -135,7 +135,7 @@ const requestTicket = `
                 </entry>                
                 <entry>
                     <key>MENSAGEM</key>
-                    <value>{{truncate .Title.Instructions 100}}</value>
+                    <value>{{clearString (truncate .Title.Instructions 100)}}</value>
                 </entry>
             </dados>
             <expiracao>600</expiracao>
