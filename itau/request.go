@@ -14,7 +14,7 @@ const registerItau = `
     "tipo_produto": "00006",
     "subproduto": "00008",
     "beneficiario": {
-        "cpf_cnpj_beneficiario": "{{.Recipient.Document.Number}}",
+        "cpf_cnpj_beneficiario": "{{extractNumbers .Recipient.Document.Number}}",
         "agencia_beneficiario": "{{padLeft .Agreement.Agency "0" 4}}",
         "conta_beneficiario": "{{padLeft .Agreement.Account "0" 7}}",
         "digito_verificador_conta_beneficiario": "{{.Agreement.AccountDigit}}"
@@ -23,13 +23,13 @@ const registerItau = `
     "uso_banco": "",
     "titulo_aceite": "S",
     "pagador": {
-        "cpf_cnpj_pagador": "{{.Buyer.Document.Number}}",
+        "cpf_cnpj_pagador": "{{extractNumbers .Buyer.Document.Number}}",
         "nome_pagador": "{{truncate .Buyer.Name 30}}",
         "logradouro_pagador": "{{truncate (concat .Buyer.Address.Street " " .Buyer.Address.Number " " .Buyer.Address.Complement) 40 }}",        
         "bairro_pagador": "{{truncate .Buyer.Address.District 15}}",
         "cidade_pagador": "{{truncate .Buyer.Address.City 20}}",
         "uf_pagador": "{{truncate .Buyer.Address.StateCode 2}}",
-        "cep_pagador": "{{truncate .Buyer.Address.ZipCode 8}}",
+        "cep_pagador": "{{truncate (extractNumbers .Buyer.Address.ZipCode) 8}}",
         "grupo_email_pagador": [
             {
                 "email_pagador": ""

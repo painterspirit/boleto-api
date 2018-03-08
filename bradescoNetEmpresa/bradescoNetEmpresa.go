@@ -49,7 +49,6 @@ func New() bankBradescoNetEmpresa {
 	b.validate.Push(bradescoNetEmpresaValidateAgency)
 	b.validate.Push(bradescoNetEmpresaValidateAccount)
 	b.validate.Push(bradescoNetEmpresaValidateWallet)
-	b.validate.Push(bradescoNetEmpresaValidateAgreement)
 	return b
 }
 
