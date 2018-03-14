@@ -21,9 +21,9 @@ var dbName = "Boleto"
 //CreateMongo cria uma nova intancia de conexão com o mongodb
 func CreateMongo() (DB, error) {
 	db := new(mongoDb)
-	/*if config.Get().MockMode {
+	if config.Get().MockMode {
 		dbName = "boletoapi_mock"
-	}*/
+	}
 	return db, nil
 }
 
