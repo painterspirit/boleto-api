@@ -41,7 +41,7 @@ const incluiBoleto = `
          <sib:HEADER>
             <VERSAO>1.0</VERSAO>
             <AUTENTICACAO>{{unscape .Authentication.AuthorizationToken}}</AUTENTICACAO>
-            <USUARIO_SERVICO>SGCBS02P</USUARIO_SERVICO>
+            <USUARIO_SERVICO>{{caixaEnv}}</USUARIO_SERVICO>
             <OPERACAO>INCLUI_BOLETO</OPERACAO>
             <SISTEMA_ORIGEM>SIGCB</SISTEMA_ORIGEM>
             <UNIDADE>{{.Agreement.Agency}}</UNIDADE>

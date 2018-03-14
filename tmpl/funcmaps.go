@@ -308,6 +308,10 @@ func itauEnv() string {
 	return config.Get().ItauEnv
 }
 
+func caixaEnv() string {
+	return config.Get().CaixaEnv
+}
+
 func extractNumbers(value string) string {
 	re := regexp.MustCompile("(\\D+)")
 	sanitizeValue := re.ReplaceAllString(string(value), "")

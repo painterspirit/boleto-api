@@ -30,6 +30,7 @@ func New() bankCaixa {
 	b.validate.Push(validations.ValidateRecipientDocumentNumber)
 	b.validate.Push(caixaValidateAgency)
 	b.validate.Push(validateInstructions)
+	b.validate.Push(validadeOurNumber)
 	return b
 }
 
@@ -43,6 +44,7 @@ func (b bankCaixa) RegisterBoleto(boleto *models.BoletoRequest) (models.BoletoRe
 	urlCaixa := config.Get().URLCaixaRegisterBoleto
 	from := getResponseCaixa()
 	to := getAPIResponseCaixa()
+
 	bod := r.From("message://?source=inline", boleto, getRequestCaixa(), tmpl.GetFuncMaps())
 	bod = bod.To("logseq://?type=request&url="+urlCaixa, b.log)
 	duration := util.Duration(func() {
@@ -70,6 +72,7 @@ func (b bankCaixa) ProcessBoleto(boleto *models.BoletoRequest) (models.BoletoRes
 	if len(errs) > 0 {
 		return models.BoletoResponse{Errors: errs}, nil
 	}
+
 	checkSum := b.getCheckSumCode(*boleto)
 
 	boleto.Authentication.AuthorizationToken = b.getAuthToken(checkSum)
