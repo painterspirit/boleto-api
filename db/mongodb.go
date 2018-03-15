@@ -2,6 +2,7 @@ package db
 
 import (
 	"fmt"
+	"strings"
 	"sync"
 	"time"
 
@@ -27,8 +28,9 @@ func CreateMongo() (DB, error) {
 }
 
 func getInfo() *mgo.DialInfo {
+	connMgo := strings.Split(config.Get().MongoURL, ",")
 	return &mgo.DialInfo{
-		Addrs:    []string{config.Get().MongoURL},
+		Addrs:    connMgo,
 		Timeout:  10 * time.Second,
 		Database: "Boleto",
 		Username: config.Get().MongoUser,
