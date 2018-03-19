@@ -234,7 +234,15 @@ const boletoForm = `
                     <span class="title">Agência/Código Beneficiário</span>
                     <br/>
                     <br/>
-                    <p class="content right" id="agreement_agency_account">{{.View.Boleto.Agreement.Agency}}/{{if eq .View.BankNumber "033-7"}}{{.View.Boleto.Agreement.AgreementNumber}}{{else}}{{.View.Boleto.Agreement.Account}}{{end}}</p>
+                    <p class="content right" id="agreement_agency_account">
+                        {{.View.Boleto.Agreement.Agency}} /{{if eq .View.BankNumber "033-7"}}
+                            {{.View.Boleto.Agreement.AgreementNumber}}
+                        {{else if eq .View.BankNumber "341-7" }}
+                            {{.View.Boleto.Agreement.Account}}-{{.View.Boleto.Agreement.AccountDigit}}
+                        {{else}}
+                            {{.View.Boleto.Agreement.Account}}
+                        {{end}}
+                    </p>
                 </td>
             </tr>
 
