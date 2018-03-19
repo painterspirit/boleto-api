@@ -55,6 +55,7 @@ var funcMap = template.FuncMap{
 	"mod10dv":                mod10Itau,
 	"printIfNotProduction":   printIfNotProduction,
 	"itauEnv":                itauEnv,
+	"caixaEnv":               caixaEnv,
 	"extractNumbers":         extractNumbers,
 	"splitValues":            splitValues,
 	"brDateDelimiter":        brDateDelimiter,
