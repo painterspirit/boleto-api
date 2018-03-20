@@ -84,6 +84,7 @@ func configFlags(devMode, mockMode, disableLog bool) {
 		os.Setenv("URL_SANTANDER_REGISTER", "https://ymbcash.santander.com.br/ymbsrv/CobrancaEndpointService")
 		os.Setenv("URL_BRADESCO_SHOPFACIL", "https://homolog.meiosdepagamentobradesco.com.br/api/transacao")
 		os.Setenv("ITAU_ENV", "1")
+		os.Setenv("SANTANDER_ENV", "T")
 		os.Setenv("URL_ITAU_REGISTER", "https://gerador-boletos.itau.com.br/router-gateway-app/public/codigo_barras/registro")
 		os.Setenv("URL_ITAU_TICKET", "https://oauth.itau.com.br/identity/connect/token")
 		if mockMode {

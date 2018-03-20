@@ -45,6 +45,7 @@ type Config struct {
 	URLBradescoShopFacil          string
 	URLBradescoNetEmpresa         string
 	ItauEnv                       string
+	SantanderEnv                  string
 	URLTicketItau                 string
 	URLRegisterBoletoItau         string
 }
@@ -93,6 +94,7 @@ func Install(mockMode, devMode, disableLog bool) {
 		URLTicketSantander:            os.Getenv("URL_SANTANDER_TICKET"),
 		URLRegisterBoletoSantander:    os.Getenv("URL_SANTANDER_REGISTER"),
 		ItauEnv:                       os.Getenv("ITAU_ENV"),
+		SantanderEnv:                  os.Getenv("SANTANDER_ENV"),
 		URLTicketItau:                 os.Getenv("URL_ITAU_TICKET"),
 		URLRegisterBoletoItau:         os.Getenv("URL_ITAU_REGISTER"),
 		URLBradescoShopFacil:          os.Getenv("URL_BRADESCO_SHOPFACIL"),
