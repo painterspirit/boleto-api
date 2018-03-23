@@ -73,6 +73,8 @@ func (b bankCaixa) ProcessBoleto(boleto *models.BoletoRequest) (models.BoletoRes
 		return models.BoletoResponse{Errors: errs}, nil
 	}
 
+	boleto.Title.OurNumber = b.FormatOurNumber(boleto.Title.OurNumber)
+
 	checkSum := b.getCheckSumCode(*boleto)
 
 	boleto.Authentication.AuthorizationToken = b.getAuthToken(checkSum)
@@ -83,8 +85,20 @@ func (b bankCaixa) ValidateBoleto(boleto *models.BoletoRequest) models.Errors {
 	return models.Errors(b.validate.Assert(boleto))
 }
 
+func (b bankCaixa) FormatOurNumber(ourNumber uint) uint {
+
+	if ourNumber != 0 {
+		ourNumberFormatted := 14000000000000000 + ourNumber
+
+		return ourNumberFormatted
+	}
+
+	return ourNumber
+}
+
 //getCheckSumCode Código do Cedente (7 posições) + Nosso Número (17 posições) + Data de Vencimento (DDMMAAAA) + Valor (15 posições) + CPF/CNPJ (14 Posições)
 func (b bankCaixa) getCheckSumCode(boleto models.BoletoRequest) string {
+
 	return fmt.Sprintf("%07d%017d%s%015d%014s",
 		boleto.Agreement.AgreementNumber,
 		boleto.Title.OurNumber,

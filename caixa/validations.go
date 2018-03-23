@@ -38,7 +38,7 @@ func validateInstructions(b interface{}) error {
 func validadeOurNumber(b interface{}) error {
 	switch t := b.(type) {
 	case *models.BoletoRequest:
-		if t.Title.OurNumber < 15 {
+		if t.Title.OurNumber > 999999999999999 {
 			return models.NewErrorResponse("MP400", "O nosso número deve conter apenas 15 digitos.")
 		}
 		return nil
