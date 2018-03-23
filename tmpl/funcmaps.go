@@ -67,10 +67,14 @@ func GetFuncMaps() template.FuncMap {
 }
 
 func santanderNSUPrefix(number string) string {
-	if config.Get().DevMode {
+	if config.Get().SantanderEnv == "T" {
 		return "TST" + number
 	}
 	return number
+}
+
+func santanderEnv() string {
+	return config.Get().SantanderEnv
 }
 
 func diff(a string, b string) bool {
@@ -80,13 +84,6 @@ func diff(a string, b string) bool {
 func formatSingleLine(s string) string {
 	s1 := strings.Replace(s, "\r", "", -1)
 	return strings.Replace(s1, "\n", "; ", -1)
-}
-
-func santanderEnv() string {
-	if config.Get().DevMode {
-		return "T"
-	}
-	return "P"
 }
 
 func padLeft(value, char string, total uint) string {
