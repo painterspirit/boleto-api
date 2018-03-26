@@ -45,7 +45,7 @@ func configBB(boleto models.BoletoRequest) ConfigBank {
 }
 
 func configCaixa(boleto models.BoletoRequest) ConfigBank {
-	return ConfigBank{Logo: template.HTML(LogoCaixa), EspecieDoc: "DM", Aceite: "N", Quantidade: "N", ValorCotacao: "", Moeda: "R$"}
+	return ConfigBank{Logo: template.HTML(LogoCaixa), EspecieDoc: "OUT", Aceite: "S", Quantidade: "", ValorCotacao: "", Moeda: "R$"}
 }
 
 func configSantander(boleto models.BoletoRequest) ConfigBank {
