@@ -30,6 +30,7 @@ func New() bankCaixa {
 	b.validate.Push(validations.ValidateRecipientDocumentNumber)
 	b.validate.Push(caixaValidateAgency)
 	b.validate.Push(validateInstructions)
+	b.validate.Push(validadeOurNumber)
 	return b
 }
 
@@ -43,6 +44,7 @@ func (b bankCaixa) RegisterBoleto(boleto *models.BoletoRequest) (models.BoletoRe
 	urlCaixa := config.Get().URLCaixaRegisterBoleto
 	from := getResponseCaixa()
 	to := getAPIResponseCaixa()
+
 	bod := r.From("message://?source=inline", boleto, getRequestCaixa(), tmpl.GetFuncMaps())
 	bod = bod.To("logseq://?type=request&url="+urlCaixa, b.log)
 	duration := util.Duration(func() {
@@ -66,14 +68,15 @@ func (b bankCaixa) RegisterBoleto(boleto *models.BoletoRequest) (models.BoletoRe
 	return models.BoletoResponse{}, models.NewInternalServerError("MP500", "Erro interno")
 }
 func (b bankCaixa) ProcessBoleto(boleto *models.BoletoRequest) (models.BoletoResponse, error) {
-	//TODO: Discutir sobre a geração do nosso número na Caixa
-	boleto.Title.OurNumber = 0
 	errs := b.ValidateBoleto(boleto)
 	if len(errs) > 0 {
 		return models.BoletoResponse{Errors: errs}, nil
 	}
+
+	boleto.Title.OurNumber = b.FormatOurNumber(boleto.Title.OurNumber)
+
 	checkSum := b.getCheckSumCode(*boleto)
-	//fmt.Println(checkSum)
+
 	boleto.Authentication.AuthorizationToken = b.getAuthToken(checkSum)
 	return b.RegisterBoleto(boleto)
 }
@@ -82,8 +85,20 @@ func (b bankCaixa) ValidateBoleto(boleto *models.BoletoRequest) models.Errors {
 	return models.Errors(b.validate.Assert(boleto))
 }
 
+func (b bankCaixa) FormatOurNumber(ourNumber uint) uint {
+
+	if ourNumber != 0 {
+		ourNumberFormatted := 14000000000000000 + ourNumber
+
+		return ourNumberFormatted
+	}
+
+	return ourNumber
+}
+
 //getCheckSumCode Código do Cedente (7 posições) + Nosso Número (17 posições) + Data de Vencimento (DDMMAAAA) + Valor (15 posições) + CPF/CNPJ (14 Posições)
 func (b bankCaixa) getCheckSumCode(boleto models.BoletoRequest) string {
+
 	return fmt.Sprintf("%07d%017d%s%015d%014s",
 		boleto.Agreement.AgreementNumber,
 		boleto.Title.OurNumber,

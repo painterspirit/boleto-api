@@ -79,8 +79,8 @@ func TestFormatNumber(t *testing.T) {
 
 func TestMod11OurNumber(t *testing.T) {
 	Convey("Deve-se calcular o mod11 do nosso número e retornar o digito à esquerda", t, func() {
-		So(calculateOurNumberMod11(12000000114), ShouldEqual, 120000001148)
-		So(calculateOurNumberMod11(8423657), ShouldEqual, 84236574)
+		So(calculateOurNumberMod11(12000000114, false), ShouldEqual, 120000001148)
+		So(calculateOurNumberMod11(8423657, false), ShouldEqual, 84236574)
 	})
 }
 

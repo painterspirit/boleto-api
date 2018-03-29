@@ -55,6 +55,7 @@ var funcMap = template.FuncMap{
 	"mod10dv":                mod10Itau,
 	"printIfNotProduction":   printIfNotProduction,
 	"itauEnv":                itauEnv,
+	"caixaEnv":               caixaEnv,
 	"extractNumbers":         extractNumbers,
 	"splitValues":            splitValues,
 	"brDateDelimiter":        brDateDelimiter,
@@ -279,8 +280,16 @@ func base64(s string) string {
 	return util.Base64(s)
 }
 
-func calculateOurNumberMod11(number uint) uint {
-	ourNumberWithDigit := strconv.Itoa(int(number)) + util.OurNumberDv(strconv.Itoa(int(number)), util.MOD11)
+func calculateOurNumberMod11(number uint, onlyDigit bool) uint {
+
+	ourNumberDigit := util.OurNumberDv(strconv.Itoa(int(number)), util.MOD11)
+
+	if onlyDigit {
+		value, _ := strconv.Atoi(ourNumberDigit)
+		return uint(value)
+	}
+
+	ourNumberWithDigit := strconv.Itoa(int(number)) + ourNumberDigit
 	value, _ := strconv.Atoi(ourNumberWithDigit)
 	return uint(value)
 }
@@ -306,6 +315,10 @@ func mod10Itau(number string, agency string, account string, wallet uint16) stri
 
 func itauEnv() string {
 	return config.Get().ItauEnv
+}
+
+func caixaEnv() string {
+	return config.Get().CaixaEnv
 }
 
 func extractNumbers(value string) string {

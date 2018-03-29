@@ -21,6 +21,7 @@ type Config struct {
 	SEQDomain                     string
 	ApplicationName               string
 	URLBBRegisterBoleto           string
+	CaixaEnv                      string
 	URLCaixaRegisterBoleto        string
 	URLBBToken                    string
 	URLCitiBoleto                 string
@@ -73,6 +74,7 @@ func Install(mockMode, devMode, disableLog bool) {
 		SEQDomain:                     "One",
 		ApplicationName:               "BoletoOnline",
 		URLBBRegisterBoleto:           os.Getenv("URL_BB_REGISTER_BOLETO"),
+		CaixaEnv:                      os.Getenv("CAIXA_ENV"),
 		URLCaixaRegisterBoleto:        os.Getenv("URL_CAIXA"),
 		URLBBToken:                    os.Getenv("URL_BB_TOKEN"),
 		URLCitiBoleto:                 os.Getenv("URL_CITI_BOLETO"),

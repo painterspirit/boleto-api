@@ -78,7 +78,6 @@ func registerBoletoCaixa(c *gin.Context) {
 	`
 	d, _ := ioutil.ReadAll(c.Request.Body)
 	xml := string(d)
-	//time.Sleep(400 * time.Millisecond)
 	if strings.Contains(xml, "<VALOR>5.04</VALOR>") {
 		c.AbortWithError(504, errors.New("Teste de Erro"))
 	} else if strings.Contains(xml, "<VALOR>2.00</VALOR>") {

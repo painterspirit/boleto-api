@@ -41,7 +41,7 @@ const incluiBoleto = `
          <sib:HEADER>
             <VERSAO>1.0</VERSAO>
             <AUTENTICACAO>{{unscape .Authentication.AuthorizationToken}}</AUTENTICACAO>
-            <USUARIO_SERVICO>SGCBS02P</USUARIO_SERVICO>
+            <USUARIO_SERVICO>{{caixaEnv}}</USUARIO_SERVICO>
             <OPERACAO>INCLUI_BOLETO</OPERACAO>
             <SISTEMA_ORIGEM>SIGCB</SISTEMA_ORIGEM>
             <UNIDADE>{{.Agreement.Agency}}</UNIDADE>
@@ -51,13 +51,13 @@ const incluiBoleto = `
             <INCLUI_BOLETO>
               <CODIGO_BENEFICIARIO>{{padLeft (toString .Agreement.AgreementNumber) "0" 7}}</CODIGO_BENEFICIARIO>
                <TITULO>
-                  <NOSSO_NUMERO>{{padLeft (toString .Title.OurNumber) "0"  17 }}</NOSSO_NUMERO>
+                  <NOSSO_NUMERO>{{toString .Title.OurNumber}}</NOSSO_NUMERO>
                   <NUMERO_DOCUMENTO>{{.Title.DocumentNumber}}</NUMERO_DOCUMENTO>
                   <DATA_VENCIMENTO>{{enDate .Title.ExpireDateTime "-"}}</DATA_VENCIMENTO>
                   <VALOR>{{toFloatStr .Title.AmountInCents}}</VALOR>
                   <TIPO_ESPECIE>99</TIPO_ESPECIE>
                   <FLAG_ACEITE>S</FLAG_ACEITE>
-                  <DATA_EMISSAO>2017-05-16</DATA_EMISSAO>
+                  <DATA_EMISSAO>{{enDate today "-"}}</DATA_EMISSAO>
                   <JUROS_MORA>
                      <TIPO>ISENTO</TIPO>
                      <VALOR>0</VALOR>

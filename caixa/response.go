@@ -14,8 +14,11 @@ const registerBoletoResponseCaixa = `{
             "href":"{{trim .url}}",
             "rel": "pdf",
             "method":"GET"
-        }],        
-        "OurNumber": "{{trim .ourNumber}}"
+        }]
+
+        {{if (ne .ourNumber "0") }}        
+        , "OurNumber": "{{trim .ourNumber}}"
+        {{end}}    
     {{end}}
 }
 `
