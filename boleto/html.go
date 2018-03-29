@@ -39,8 +39,7 @@ const templateBoleto = `
     	}
         .document {
             margin: auto auto;
-            width: 216mm;
-            height: 87mm;
+            width: 216mm;            
         }
 
         .headerBtn {
@@ -173,7 +172,7 @@ const templateBoleto = `
         </div>
     </div>
     <br/>
-    {{end}}    
+    {{end}}  
     {{template "boletoForm" .}}
 	<hr/>
     {{template "boletoForm" .}}
@@ -235,10 +234,12 @@ const boletoForm = `
                     <br/>
                     <br/>
                     <p class="content right" id="agreement_agency_account">
-                        {{.View.Boleto.Agreement.Agency}} /{{if eq .View.BankNumber "033-7"}}
+                        {{.View.Boleto.Agreement.Agency}} / {{if eq .View.BankNumber "033-7"}}
                             {{.View.Boleto.Agreement.AgreementNumber}}
                         {{else if eq .View.BankNumber "341-7" }}
                             {{.View.Boleto.Agreement.Account}}-{{.View.Boleto.Agreement.AccountDigit}}
+                        {{else if eq .View.BankNumber "104-0" }}
+                            {{.View.Boleto.Agreement.AgreementNumber}}
                         {{else}}
                             {{.View.Boleto.Agreement.Account}}
                         {{end}}
@@ -277,7 +278,7 @@ const boletoForm = `
                         <span class="title">Nosso Número</span>
                         <br/>
                         <br/>
-                        <p class="content right" id="ournumber">{{.View.Boleto.Title.OurNumber}}</p>
+                        <p class="content right" id="ournumber">{{.View.Boleto.Title.OurNumber}}-{{mod11dv .View.Boleto.Title.OurNumber true}}</p>
                     {{else}}
                         <span class="title">Carteira/Nosso Número</span>
                         <br/>
@@ -398,10 +399,25 @@ const boletoForm = `
                             <td><span class="text"><b>CNPJ/CPF: </b> &nbsp;</span></td>
                         </tr>
                     </table>
-
                 </td>
-
             </tr>
+            {{if eq .View.BankNumber "104-0" }}
+                <tr>
+                    <td>
+                        <span class="text"><b>Contato do Banco:</b></span>
+                    </td>
+                    <td colspan="4">
+                        <span class="title">Telefone:</span>
+                        <br>
+                        <span class="text">{{.ConfigBank.Telefone}}<span>
+                    </td>
+                    <td colspan="2">
+                        <span class="title">Site:</span>
+                        <br>
+                        <span class="text">{{.ConfigBank.Site}}<span>
+                    </td>
+                </tr>
+            {{end}}
         </table>
 		<br/>
     </div>

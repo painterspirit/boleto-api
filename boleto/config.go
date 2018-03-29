@@ -14,6 +14,8 @@ type ConfigBank struct {
 	Quantidade   string
 	ValorCotacao string
 	Moeda        string
+	Telefone     string
+	Site         string
 }
 
 //GetConfig returns boleto configution for each bank
@@ -45,7 +47,7 @@ func configBB(boleto models.BoletoRequest) ConfigBank {
 }
 
 func configCaixa(boleto models.BoletoRequest) ConfigBank {
-	return ConfigBank{Logo: template.HTML(LogoCaixa), EspecieDoc: "OUT", Aceite: "S", Quantidade: "", ValorCotacao: "", Moeda: "R$"}
+	return ConfigBank{Logo: template.HTML(LogoCaixa), EspecieDoc: "OUT", Aceite: "N", Quantidade: "", ValorCotacao: "", Moeda: "R$", Telefone: "0800 726 0101 / 0800 725 7474", Site: "www.caixa.gov.br"}
 }
 
 func configSantander(boleto models.BoletoRequest) ConfigBank {

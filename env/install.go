@@ -36,6 +36,7 @@ func configFlags(devMode, mockMode, disableLog bool) {
 	if devMode {
 		os.Setenv("INFLUXDB_HOST", "http://localhost")
 		os.Setenv("INFLUXDB_PORT", "8086")
+		os.Setenv("PDF_API", "http://localhost:7070/topdf")
 		os.Setenv("API_PORT", "3000")
 		os.Setenv("API_VERSION", "0.0.1")
 		os.Setenv("ENVIROMENT", "Development")
@@ -62,7 +63,7 @@ func configFlags(devMode, mockMode, disableLog bool) {
 		os.Setenv("CERT_ICP_BOLETO_CHAIN_CA", "C:\\cert_boleto_api\\ICP_cadeiaCerts.pem")
 		os.Setenv("URL_SANTANDER_TICKET", "https://ymbdlb.santander.com.br/dl-ticket-services/TicketEndpointService")
 		os.Setenv("URL_SANTANDER_REGISTER", "https://ymbcash.santander.com.br/ymbsrv/CobrancaEndpointService")
-		os.Setenv("URL_BRADESCO_SHOPFACIL", "https://homolog.meiosdepagamentobradesco.com.br/api/transacao")
+		os.Setenv("URL_BRADESCO_SHOPFACIL", "https://homolog.meiosdepagamentobradesco.com.br/apiboleto/transacao")
 		os.Setenv("ITAU_ENV", "1")
 		os.Setenv("SANTANDER_ENV", "T")
 		os.Setenv("URL_ITAU_REGISTER", "https://gerador-boletos.itau.com.br/router-gateway-app/public/codigo_barras/registro")

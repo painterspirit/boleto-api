@@ -280,8 +280,16 @@ func base64(s string) string {
 	return util.Base64(s)
 }
 
-func calculateOurNumberMod11(number uint) uint {
-	ourNumberWithDigit := strconv.Itoa(int(number)) + util.OurNumberDv(strconv.Itoa(int(number)), util.MOD11)
+func calculateOurNumberMod11(number uint, onlyDigit bool) uint {
+
+	ourNumberDigit := util.OurNumberDv(strconv.Itoa(int(number)), util.MOD11)
+
+	if onlyDigit {
+		value, _ := strconv.Atoi(ourNumberDigit)
+		return uint(value)
+	}
+
+	ourNumberWithDigit := strconv.Itoa(int(number)) + ourNumberDigit
 	value, _ := strconv.Atoi(ourNumberWithDigit)
 	return uint(value)
 }
