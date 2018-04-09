@@ -23,7 +23,7 @@ import (
 
 //Regista um boleto em um determinado banco
 func registerBoleto(c *gin.Context) {
-	if _, hasErr := c.Get("error"); hasErr{
+	if _, hasErr := c.Get("error"); hasErr {
 		return
 	}
 	_boleto, _ := c.Get("boleto")
@@ -88,7 +88,7 @@ func getBoleto(c *gin.Context) {
 	if checkError(c, errCon, log.CreateLog()) {
 		return
 	}
-	bleto, err := repo.GetBoletoByID(id)
+	_boleto, err := repo.GetBoletoByID(id)
 	if err != nil {
 		uid := util.Decrypt(id)
 		fd, err := os.Open(config.Get().BoletoJSONFileStore + "/boleto_" + uid + ".json")
@@ -101,11 +101,11 @@ func getBoleto(c *gin.Context) {
 			checkError(c, models.NewHTTPNotFound("Boleto não encontrado na base de dados", "MP404"), log.CreateLog())
 			return
 		}
-		json.Unmarshal(data, &bleto)
+		json.Unmarshal(data, &_boleto)
 		fd.Close()
 	}
 
-	s, err := boleto.HTML(bleto, format)
+	s, err := boleto.HTML(_boleto, format)
 	if checkError(c, err, log.CreateLog()) {
 		return
 	}
