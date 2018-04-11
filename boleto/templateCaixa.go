@@ -187,7 +187,7 @@ const templateBoletoCaixa = `
             <br/>
         </div>
         <div class="right" style="float:right;">
-            <span class="right">Ficha de Compensação</span>
+            <span class="right">Autenticação Mecânica – Ficha de Compensação</span>
         </div>
     </div>
 </body>
@@ -274,18 +274,11 @@ const boletoFormCaixa = `
                     <br/>
                     <p class="content center" id="process_date">{{.View.Boleto.Title.CreateDate | brdate}}</p>
                 </td>
-                <td width="30%">
-                    {{if eq .View.BankNumber "104-0"}}
-                        <span class="title">Nosso Número</span>
-                        <br/>
-                        <br/>
-                        <p class="content right" id="ournumber">{{.View.Boleto.Title.OurNumber}}-{{mod11dv .View.Boleto.Title.OurNumber true}}</p>
-                    {{else}}
-                        <span class="title">Carteira/Nosso Número</span>
-                        <br/>
-                        <br/>
-                        <p class="content right" id="ournumber">{{.View.Boleto.Agreement.Wallet}}/{{.View.Boleto.Title.OurNumber}}</p>
-                    {{end}}
+                <td width="30%">                    
+                    <span class="title">Nosso Número</span>
+                    <br/>
+                    <br/>
+                    <p class="content right" id="ournumber">{{.View.Boleto.Title.OurNumber}}-{{mod11dv .View.Boleto.Title.OurNumber true}}</p>                    
                 </td>
             </tr>
 
@@ -311,23 +304,11 @@ const boletoFormCaixa = `
                 <td width="14%">
                     <table>
                         <tr>
-                            {{if eq .View.BankNumber "237-2"}}
-                                <td style="border-right: 1px solid #808080;" id="cel_cip">
-                                    <span class="title">Cip</span>
-                                    <br/>
-                                    <p class="content center" id="wallet">865</p>
-                                </td>
-                            {{end}}
-
                             <td>
                                 <span class="title">Carteira</span>
                                 <br/>
-                                <p class="content center" id="wallet">
-                                {{if eq .View.BankNumber "104-0"}}
-                                    RG
-                                {{else}}
-                                    {{.View.Boleto.Agreement.Wallet}}
-                                {{end}}
+                                <p class="content center" id="wallet">                                
+                                    RG                                
                                 </p>
                             </td>
                         </tr>
