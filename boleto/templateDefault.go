@@ -386,24 +386,7 @@ const boletoFormDefault = `
                         </tr>
                     </table>
                 </td>
-            </tr>
-            {{if eq .View.BankNumber "104-0" }}
-                <tr>
-                    <td>
-                        <span class="text"><b>Contato do Banco:</b></span>
-                    </td>
-                    <td colspan="4">
-                        <span class="title">Telefone:</span>
-                        <br>
-                        <span class="text">{{.ConfigBank.Telefone}}<span>
-                    </td>
-                    <td colspan="2">
-                        <span class="title">Site:</span>
-                        <br>
-                        <span class="text">{{.ConfigBank.Site}}<span>
-                    </td>
-                </tr>
-            {{end}}
+            </tr>            
         </table>
 		<br/>
     </div>
