@@ -173,7 +173,7 @@ const templateBoletoCaixa = `
             </p>
         </div>
         <div style="float:right">
-            <span>Autenticação mecânica - Recibo do Sacado</span>
+            <span>Autenticação Mecânica - Recibo do Sacado</span>
         </div>
     </div>
     </br>    
