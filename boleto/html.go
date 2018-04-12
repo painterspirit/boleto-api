@@ -42,7 +42,8 @@ func HTML(boletoView models.BoletoView, format string) (string, error) {
 	err := png.Encode(buf, img)
 	html.Barcode64 = base64.StdEncoding.EncodeToString(buf.Bytes())
 	html.DigitableLine = textToImage(boletoView.DigitableLine)
-	templateBoleto, boletoForm := getTemplateOfBank(boletoView)
+	bankNumber := int(boletoView.Boleto.BankNumber)
+	templateBoleto, boletoForm := getTemplateBank(bankNumber)
 	s, err := b.From(html).To(templateBoleto).Transform(boletoForm)
 	if err != nil {
 		return "", err
@@ -50,9 +51,9 @@ func HTML(boletoView models.BoletoView, format string) (string, error) {
 	return s, nil
 }
 
-func getTemplateOfBank(boletoView models.BoletoView) (string, string) {
+func getTemplateBank(bankNumber int) (string, string) {
 
-	switch boletoView.Boleto.BankNumber {
+	switch bankNumber {
 	case models.Caixa:
 		return getTemplateCaixa()
 	default:
