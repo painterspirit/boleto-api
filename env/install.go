@@ -55,7 +55,7 @@ func configFlags(devMode, mockMode, disableLog bool) {
 		os.Setenv("MONGODB_URL", "localhost:27017")
 		os.Setenv("MONGODB_USER", "")
 		os.Setenv("MONGODB_PASSWORD", "")
-		os.Setenv("BOLETO_JSON_STORE", "/home/philippe/boletodb/upMongo")
+		os.Setenv("BOLETO_JSON_STORE", "C:\\boleto_json_store\\JSONFileStore.json")
 		os.Setenv("CERT_BOLETO_CRT", "C:\\cert_boleto_api\\certificate.crt")
 		os.Setenv("CERT_BOLETO_KEY", "C:\\cert_boleto_api\\mundi.key")
 		os.Setenv("CERT_BOLETO_CA", "C:\\cert_boleto_api\\ca-cert.ca")
