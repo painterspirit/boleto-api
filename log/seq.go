@@ -38,6 +38,7 @@ func Install() error {
 		"Application": config.Get().ApplicationName,
 		"Environment": config.Get().Environment,
 		"Domain":      config.Get().SEQDomain,
+		"MachineName": config.Get().MachineName,
 	})
 	logger = _logger
 	return nil
