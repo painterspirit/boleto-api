@@ -11,6 +11,7 @@ type Config struct {
 	InfluxDBHost                  string
 	InfluxDBPort                  string
 	APIPort                       string
+	MachineName                   string
 	PdfAPIURL                     string
 	Version                       string
 	SEQUrl                        string
@@ -62,10 +63,13 @@ func Get() Config {
 }
 func Install(mockMode, devMode, disableLog bool) {
 	atomic.StoreUint64(&running, 0)
+	hostName := getHostName()
+
 	cnf = Config{
 		APIPort:                       ":" + os.Getenv("API_PORT"),
 		PdfAPIURL:                     os.Getenv("PDF_API"),
 		Version:                       os.Getenv("API_VERSION"),
+		MachineName:                   hostName,
 		SEQUrl:                        os.Getenv("SEQ_URL"),                        //Pegar o SEQ de dev
 		SEQAPIKey:                     os.Getenv("SEQ_API_KEY"),                    //Staging Key:
 		EnableRequestLog:              os.Getenv("ENABLE_REQUEST_LOG") == "true",   // Log a cada request no SEQ
@@ -119,4 +123,12 @@ func IsNotProduction() bool {
 //Stop faz a aplicação parar de receber requisições
 func Stop() {
 	atomic.StoreUint64(&running, 1)
+}
+
+func getHostName() string {
+	machineName, err := os.Hostname()
+	if err != nil {
+		return ""
+	}
+	return machineName
 }
