@@ -56,6 +56,8 @@ func getTemplateBank(bankNumber int) (string, string) {
 	switch bankNumber {
 	case models.Caixa:
 		return getTemplateCaixa()
+	case models.Itau:
+		return getTemplateItau()
 	default:
 		return getTemplateDefault()
 	}

@@ -1,6 +1,6 @@
 package boleto
 
-const templateBoletoDefault = `
+const templateBoletoItau = `
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -172,7 +172,7 @@ const templateBoletoDefault = `
 </html>
 `
 
-const boletoFormDefault = `
+const boletoFormItau = `
 {{define "boletoForm"}}
 <div class="document">
         <table cellspacing="0" cellpadding="0">
@@ -220,11 +220,7 @@ const boletoFormDefault = `
                     <br/>
                     <br/>
                     <p class="content right" id="agreement_agency_account">
-                        {{.View.Boleto.Agreement.Agency}} / {{if eq .View.BankNumber "033-7"}}
-                            {{.View.Boleto.Agreement.AgreementNumber}}                                                
-                        {{else}}
-                            {{.View.Boleto.Agreement.Account}}
-                        {{end}}
+                        {{.View.Boleto.Agreement.Account}}-{{.View.Boleto.Agreement.AccountDigit}}                        
                     </p>
                 </td>
             </tr>
@@ -255,28 +251,17 @@ const boletoFormDefault = `
                     <br/>
                     <p class="content center" id="process_date">{{.View.Boleto.Title.CreateDate | brdate}}</p>
                 </td>
-                <td width="30%">
-                    <span class="title">Carteira/Nosso Número</span>
-                    <br/>
-                    <br/>
-                    <p class="content right" id="ournumber">{{.View.Boleto.Agreement.Wallet}}/{{.View.Boleto.Title.OurNumber}}</p>                   
+                <td width="30%">                    
+					<span class="title">Carteira/Nosso Número</span>
+					<br/>
+					<br/>
+                    <p class="content right" id="ournumber">{{.View.Boleto.Agreement.Wallet}} /
+                    {{padLeft (toString .View.Boleto.Title.OurNumber) "0" 8}}-{{mod10ItauDv (padLeft (toString .View.Boleto.Title.OurNumber) "0" 8) (padLeft .View.Boleto.Agreement.Agency "0" 4) (padLeft .View.Boleto.Agreement.Account "0" 7) .View.Boleto.Agreement.Wallet}}
+                    </p>                    
                 </td>
             </tr>
 
-            <tr>
-                {{if eq .View.BankNumber "033-7"}}
-                <td width="29%" colspan="2">
-                    <table>
-                        <tr>                            
-                            <td>
-                                <span class="title">Carteira</span>
-                                <br/>
-                                <p class="content center" id="wallet">COBRANCA SIMPLES RCR</p>
-                            </td>
-                        </tr>
-                    </table>                
-                </td>
-                {{else}}
+            <tr>                
                 <td width="20%">
                     <span class="title">Uso do Banco</span>
                     <br/>
@@ -285,30 +270,16 @@ const boletoFormDefault = `
                 <td width="14%">
                     <table>
                         <tr>
-                            {{if eq .View.BankNumber "237-2"}}
-                                <td style="border-right: 1px solid #808080;" id="cel_cip">
-                                    <span class="title">Cip</span>
-                                    <br/>
-                                    <p class="content center" id="wallet">865</p>
-                                </td>
-                            {{end}}
-
                             <td>
                                 <span class="title">Carteira</span>
                                 <br/>
-                                <p class="content center" id="wallet">
-                                {{if eq .View.BankNumber "104-0"}}
-                                    RG
-                                {{else}}
-                                    {{.View.Boleto.Agreement.Wallet}}
-                                {{end}}
+                                <p class="content center" id="wallet">                                
+                                    {{.View.Boleto.Agreement.Wallet}}                                
                                 </p>
                             </td>
                         </tr>
-                    </table>
-                    
-                </td>
-                {{end}}
+                    </table>                    
+                </td>                
                 <td width="10%">
                     <span class="title">Espécie</span>
                     <br/>
@@ -383,6 +354,6 @@ const boletoFormDefault = `
 	{{end}}
 `
 
-func getTemplateDefault() (string, string) {
-	return templateBoletoDefault, boletoFormDefault
+func getTemplateItau() (string, string) {
+	return templateBoletoItau, boletoFormItau
 }
