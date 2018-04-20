@@ -52,7 +52,7 @@ var funcMap = template.FuncMap{
 	"formatSingleLine":       formatSingleLine,
 	"diff":                   diff,
 	"mod11dv":                calculateOurNumberMod11,
-	"mod10dv":                mod10Itau,
+	"mod10ItauDv":            mod10Itau,
 	"printIfNotProduction":   printIfNotProduction,
 	"itauEnv":                itauEnv,
 	"caixaEnv":               caixaEnv,

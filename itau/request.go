@@ -42,7 +42,7 @@ const registerItau = `
         "quantidade_moeda": ""
     },
     "nosso_numero": "{{padLeft (toString .Title.OurNumber) "0" 8}}",
-    "digito_verificador_nosso_numero": "{{mod10dv (padLeft (toString .Title.OurNumber) "0" 8) (padLeft .Agreement.Agency "0" 4) (padLeft .Agreement.Account "0" 7) .Agreement.Wallet}}",
+    "digito_verificador_nosso_numero": "{{mod10ItauDv (padLeft (toString .Title.OurNumber) "0" 8) (padLeft .Agreement.Agency "0" 4) (padLeft .Agreement.Account "0" 7) .Agreement.Wallet}}",
     "codigo_barras": "",
     "data_vencimento": "{{enDate .Title.ExpireDateTime "-"}}",
     "valor_cobrado": "{{padLeft (toString64 .Title.AmountInCents) "0" 16}}",
