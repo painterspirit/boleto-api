@@ -13,7 +13,7 @@ BoletoOnline is an API for boleto's online register in banks and boleto's creati
 Currently, we support the following banks:
 * Banco do Brasil
 * Caixa
-* Citi
+* Citibank
 * Santander 
 * BradescoShopFacil
 * BradescoNetEmpresas
