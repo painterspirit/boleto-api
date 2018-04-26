@@ -78,15 +78,21 @@ func (b bankBradescoNetEmpresa) RegisterBoleto(boleto *models.BoletoRequest) (mo
 	})
 
 	timing.Push("bradesco-netempresa-register-boleto-online", duration.Seconds())
-
 	bod.To("logseq://?type=response&url="+serviceURL, b.log)
+
 	bod.To("transform://?format=xml", xmlResponse, jsonReponse)
 	bodyTransform := fmt.Sprintf("%v", bod.GetBody())
 	bodyJson := html.UnescapeString(bodyTransform)
 	bod.To("set://?prop=body", bodyJson)
 
 	ch := bod.Choice()
-	ch.When(flow.Header("status").IsEqualTo("200"))
+
+	if header := bod.GetHeader(); header["status"] == "200" {
+		ch.When(flow.Header("status").IsEqualTo("200"))
+	} else {
+		ch.When(flow.Header("status").IsEqualTo("500"))
+	}
+
 	ch.To("transform://?format=json", from, to, tmpl.GetFuncMaps())
 	ch.To("unmarshall://?format=json", new(models.BoletoResponse))
 	ch.Otherwise()
