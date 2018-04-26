@@ -17,3 +17,16 @@ func itauValidateAccount(b interface{}) error {
 		return validations.InvalidType(t)
 	}
 }
+
+func itauValidateAgency(b interface{}) error {
+	switch t := b.(type) {
+	case *models.BoletoRequest:
+		err := t.Agreement.IsAgencyValid()
+		if err != nil {
+			return models.NewErrorResponse("MP400", err.Error())
+		}
+		return nil
+	default:
+		return validations.InvalidType(t)
+	}
+}
