@@ -220,7 +220,7 @@ const boletoFormItau = `
                     <br/>
                     <br/>
                     <p class="content right" id="agreement_agency_account">
-                        {{.View.Boleto.Agreement.Account}}-{{.View.Boleto.Agreement.AccountDigit}}                        
+                    {{.View.Boleto.Agreement.Agency}} / {{.View.Boleto.Agreement.Account}}-{{.View.Boleto.Agreement.AccountDigit}}                        
                     </p>
                 </td>
             </tr>
