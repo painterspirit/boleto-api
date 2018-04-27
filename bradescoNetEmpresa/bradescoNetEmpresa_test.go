@@ -85,7 +85,16 @@ func TestRegisterBoleto(t *testing.T) {
 	})
 
 	Convey("Deve-se exibir uma mensagem de erro, caso o registro não aconteça com sucesso", t, func() {
-		input.Title.AmountInCents = 100
+		input.Title.AmountInCents = 201
+		output, err := bank.ProcessBoleto(input)
+		So(err, ShouldBeNil)
+		So(output.BarCodeNumber, ShouldBeEmpty)
+		So(output.DigitableLine, ShouldBeEmpty)
+		So(output.Errors, ShouldNotBeEmpty)
+	})
+
+	Convey("Deve-se exibir uma mensagem de erro, caso o status code for 500", t, func() {
+		input.Title.AmountInCents = 202
 		output, err := bank.ProcessBoleto(input)
 		So(err, ShouldBeNil)
 		So(output.BarCodeNumber, ShouldBeEmpty)
