@@ -11,7 +11,6 @@ import (
 	"github.com/mundipagg/boleto-api/log"
 	"github.com/mundipagg/boleto-api/mock"
 	"github.com/mundipagg/boleto-api/models"
-	"github.com/mundipagg/boleto-api/robot"
 	"github.com/mundipagg/boleto-api/util"
 )
 
@@ -30,7 +29,9 @@ func NewParams() *Params {
 //Run starts boleto api Application
 func Run(params *Params) {
 	env.Config(params.DevMode, params.MockMode, params.DisableLog)
-	robot.GoRobots()
+
+	//robot.GoRobots()
+
 	if config.Get().MockMode {
 		go mock.Run("9091")
 	}
