@@ -12,12 +12,17 @@ const (
 )
 
 //mod11 calculate Mod11 DV from string
-func mod11(valueSequence string) int {
+func mod11(valueSequence string, baseNum ...int) int {
+	base := 9
 	digit := 0
 	sum := 0
 	weight := 2
 
 	var values []int
+
+	if baseNum != nil {
+		base = baseNum[0]
+	}
 
 	for _, r := range valueSequence {
 		c := string(r)
@@ -27,7 +32,7 @@ func mod11(valueSequence string) int {
 	for i := len(values) - 1; i >= 0; i-- {
 		sum += values[i] * weight
 
-		if weight < 9 {
+		if weight < base {
 			weight = weight + 1
 		} else {
 			weight = 2
@@ -68,16 +73,20 @@ func mod10(valueSequence string) int {
 }
 
 //OurNumberDv calculate DV from OurNumber
-func OurNumberDv(valueSequence string, modFunc ModFunc) string {
+func OurNumberDv(valueSequence string, modFunc ModFunc, base ...int) string {
 	digit := 0
 
 	if modFunc == MOD10 {
 		digit = mod10(valueSequence)
+	} else if modFunc == MOD11 && base != nil {
+		digit = mod11(valueSequence, base[0])
 	} else if modFunc == MOD11 {
 		digit = mod11(valueSequence)
 	}
 
-	if digit > 9 {
+	if base != nil && digit == 10 {
+		return "P"
+	} else if digit > 9 {
 		digit = 0
 	}
 	return strconv.Itoa(digit)

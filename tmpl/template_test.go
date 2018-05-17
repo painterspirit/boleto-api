@@ -152,3 +152,15 @@ func TestSanitizeCep(t *testing.T) {
 		So(zipCodeWithoutSeparator, ShouldEqual, "25368100")
 	})
 }
+
+func TestDVOurNumberMod11BradescoShopFacil(t *testing.T) {
+	dvEqualZero := mod11BradescoShopFacilDv("00000000006", "19")
+	dvEqualP := mod11BradescoShopFacilDv("00000000001", "19")
+	dvEqualEight := mod11BradescoShopFacilDv("00000000002", "19")
+
+	Convey("o dígito verificador deve ser equivalente ao OurNumber", t, func() {
+		So(dvEqualZero, ShouldEqual, "0")
+		So(dvEqualP, ShouldEqual, "P")
+		So(dvEqualEight, ShouldEqual, "8")
+	})
+}
