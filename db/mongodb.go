@@ -56,12 +56,12 @@ func (e *mongoDb) SaveBoleto(boleto models.BoletoView) error {
 	defer e.m.Unlock()
 
 	l := log.CreateLog()
-	l.Info("SALVANDO BOLETO")
 
 	session, err := mgo.DialWithInfo(getInfo())
 	if err != nil {
-		l.Warn(err, "ERRO AO SALVAR BOLETO -BANCO")
+		l.Warn(err, fmt.Sprintf("SaveBoleto %s", err.Error()))
 		return models.NewInternalServerError(err.Error(), "Falha ao conectar com o banco de dados")
+
 	}
 	defer session.Close()
 	c := session.DB(dbName).C("boletos")
@@ -80,14 +80,14 @@ func (e *mongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
 	l.Info("PEGANDO BOLETO")
 
 	if err != nil {
-		l.Warn(err, "ERRO AO PEGAR BOLETO -BANCO")
+		l.Warn(err, fmt.Sprintf("GetBoletoByID %s %s", id, err.Error()))
 		return result, models.NewInternalServerError(err.Error(), "Falha ao conectar com o banco de dados")
 	}
 	defer session.Close()
 	c := session.DB(dbName).C("boletos")
 	errF := c.Find(bson.M{"id": id}).One(&result)
 	if errF != nil {
-		l.Warn(err, "ERRO AO PEGAR BOLETO -SERIALIZACAO")
+		l.Warn(err, fmt.Sprintf("GetBoletoByID %s", err.Error()))
 		return models.BoletoView{}, err
 	}
 	return result, nil
