@@ -2,11 +2,13 @@ package db
 
 import (
 	"fmt"
+	"os"
 	"strings"
 	"sync"
 	"time"
 
 	"github.com/mundipagg/boleto-api/config"
+	"github.com/mundipagg/boleto-api/log"
 	"github.com/mundipagg/boleto-api/models"
 	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -18,8 +20,17 @@ type mongoDb struct {
 
 var dbName = "Boleto"
 
+func installLog() {
+	err := log.Install()
+	if err != nil {
+		fmt.Println("Log SEQ Fails")
+		os.Exit(-1)
+	}
+}
+
 //CreateMongo cria uma nova intancia de conexão com o mongodb
 func CreateMongo() (DB, error) {
+	installLog()
 	db := new(mongoDb)
 	if config.Get().MockMode {
 		dbName = "boletoapi_mock"
@@ -44,9 +55,13 @@ func (e *mongoDb) SaveBoleto(boleto models.BoletoView) error {
 	e.m.Lock()
 	defer e.m.Unlock()
 
+	l := log.CreateLog()
+	l.Info("SALVANDO BOLETO")
+
 	session, err := mgo.DialWithInfo(getInfo())
 	if err != nil {
 		return models.NewInternalServerError(err.Error(), "Falha ao conectar com o banco de dados")
+		l.Warn(err, "ERRO AO SALVAR BOLETO -BANCO")
 	}
 	defer session.Close()
 	c := session.DB(dbName).C("boletos")
@@ -60,14 +75,20 @@ func (e *mongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
 	defer e.m.Unlock()
 	result := models.BoletoView{}
 	session, err := mgo.DialWithInfo(getInfo())
+
+	l := log.CreateLog()
+	l.Info("PEGANDO BOLETO")
+
 	if err != nil {
 		return result, models.NewInternalServerError(err.Error(), "Falha ao conectar com o banco de dados")
+		l.Warn(err, "ERRO AO PEGAR BOLETO -BANCO")
 	}
 	defer session.Close()
 	c := session.DB(dbName).C("boletos")
 	errF := c.Find(bson.M{"id": id}).One(&result)
 	if errF != nil {
 		return models.BoletoView{}, err
+		l.Warn(err, "ERRO AO PEGAR BOLETO -SERIALIZACAO")
 	}
 	return result, nil
 }

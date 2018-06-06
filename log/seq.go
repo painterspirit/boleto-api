@@ -85,6 +85,13 @@ func (l Log) Response(content interface{}, url string) {
 }
 
 //Info loga mensagem do level INFO
+func (l Log) Info(msg string) {
+	if config.Get().DisableLog {
+		return
+	}
+	go logger.Information(msg, goseq.NewProperties())
+}
+
 func Info(msg string) {
 	if config.Get().DisableLog {
 		return
