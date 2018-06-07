@@ -27,7 +27,12 @@ var (
 func CreateMongo() (DB, error) {
 
 	if dbSession == nil {
-		dbSession, _ = mgo.DialWithInfo(getInfo())
+		dbSession, err = mgo.DialWithInfo(getInfo())
+
+		if err != nil {
+			l := log.CreateLog()
+			l.Warn(err, fmt.Sprintf("Error create connection mongo %s", err.Error()))
+		}
 	}
 
 	db := new(mongoDb)
