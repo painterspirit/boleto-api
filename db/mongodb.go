@@ -2,7 +2,6 @@ package db
 
 import (
 	"fmt"
-	"os"
 	"strings"
 	"sync"
 	"time"
@@ -20,17 +19,17 @@ type mongoDb struct {
 
 var dbName = "Boleto"
 
-func installLog() {
-	err := log.Install()
-	if err != nil {
-		fmt.Println("Log SEQ Fails")
-		os.Exit(-1)
-	}
-}
+var (
+	dbSession *mgo.Session
+)
 
 //CreateMongo cria uma nova intancia de conexão com o mongodb
 func CreateMongo() (DB, error) {
-	installLog()
+
+	if dbSession == nil {
+		dbSession, _ = mgo.DialWithInfo(getInfo())
+	}
+
 	db := new(mongoDb)
 	if config.Get().MockMode {
 		dbName = "boletoapi_mock"
@@ -51,19 +50,14 @@ func getInfo() *mgo.DialInfo {
 
 //SaveBoleto salva um boleto no mongoDB
 func (e *mongoDb) SaveBoleto(boleto models.BoletoView) error {
-	var err error
+
 	e.m.Lock()
 	defer e.m.Unlock()
 
-	l := log.CreateLog()
+	session := dbSession.Copy()
 
-	session, err := mgo.DialWithInfo(getInfo())
-	if err != nil {
-		l.Warn(err, fmt.Sprintf("SaveBoleto %s", err.Error()))
-		return models.NewInternalServerError(err.Error(), "Falha ao conectar com o banco de dados")
-
-	}
 	defer session.Close()
+
 	c := session.DB(dbName).C("boletos")
 	err = c.Insert(boleto)
 	return err
@@ -74,22 +68,19 @@ func (e *mongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
 	e.m.Lock()
 	defer e.m.Unlock()
 	result := models.BoletoView{}
-	session, err := mgo.DialWithInfo(getInfo())
 
-	l := log.CreateLog()
-	l.Info("PEGANDO BOLETO")
+	session := dbSession.Copy()
 
-	if err != nil {
-		l.Warn(err, fmt.Sprintf("GetBoletoByID %s %s", id, err.Error()))
-		return result, models.NewInternalServerError(err.Error(), "Falha ao conectar com o banco de dados")
-	}
 	defer session.Close()
+
 	c := session.DB(dbName).C("boletos")
 	errF := c.Find(bson.M{"id": id}).One(&result)
 	if errF != nil {
+		l := log.CreateLog()
 		l.Warn(err, fmt.Sprintf("GetBoletoByID %s", err.Error()))
 		return models.BoletoView{}, err
 	}
+
 	return result, nil
 }
 
