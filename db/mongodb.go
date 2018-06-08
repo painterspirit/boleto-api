@@ -36,20 +36,21 @@ func CreateMongo() (DB, error) {
 	}
 
 	db := new(mongoDb)
-	if config.Get().MockMode {
-		dbName = "boletoapi_mock"
-	}
+	// if config.Get().MockMode {
+	// 	dbName = "boletoapi_mock"
+	// }
 	return db, nil
 }
 
 func getInfo() *mgo.DialInfo {
 	connMgo := strings.Split(config.Get().MongoURL, ",")
 	return &mgo.DialInfo{
-		Addrs:    connMgo,
-		Timeout:  10 * time.Second,
-		Database: "Boleto",
-		Username: config.Get().MongoUser,
-		Password: config.Get().MongoPassword,
+		Addrs:     connMgo,
+		Timeout:   10 * time.Second,
+		Database:  "Boleto",
+		PoolLimit: 512,
+		Username:  config.Get().MongoUser,
+		Password:  config.Get().MongoPassword,
 	}
 }
 

@@ -29,6 +29,9 @@ func ConfigMock(port string) {
 	os.Setenv("URL_ITAU_TICKET", "http://localhost:"+port+"/itau/gerarToken")
 	os.Setenv("URL_ITAU_REGISTER", "http://localhost:"+port+"/itau/registrarBoleto")
 	os.Setenv("URL_BRADESCO_NET_EMPRESA", "http://localhost:"+port+"/bradesconetempresa/registrarBoleto")
+	os.Setenv("MONGODB_URL", "localhost:27017")
+	os.Setenv("MONGODB_USER", "")
+	os.Setenv("MONGODB_PASSWORD", "")
 	config.Install(true, true, true)
 }
 
