@@ -36,9 +36,9 @@ func CreateMongo() (DB, error) {
 	}
 
 	db := new(mongoDb)
-	// if config.Get().MockMode {
-	// 	dbName = "boletoapi_mock"
-	// }
+	if config.Get().MockMode {
+		dbName = "boletoapi_mock"
+	}
 	return db, nil
 }
 
