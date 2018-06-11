@@ -8,18 +8,9 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io"
-
-	"gopkg.in/mgo.v2/bson"
 )
 
 const _key = "2131231231231234"
-
-func GetBsonId() bson.ObjectId {
-
-	idBson := bson.NewObjectId()
-
-	return idBson
-}
 
 //Encrypt encripta texto baseado na documentação do GO
 func Encrypt(s string) string {
