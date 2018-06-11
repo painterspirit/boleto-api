@@ -64,13 +64,13 @@ jobs:
                         }
               }'
             fi
-            if [ "${CIRCLE_BRANCH}" == "develop" ]; then
+            if [ "${CIRCLE_BRANCH}" == "dev" ]; then
               curl -X POST \
                 ${RANCHER_STG_DEPLOY_URL} \
                 -H 'Content-Type: application/json' \
                 -d '{
                         "push_data": {
-                        "tag": "develop"
+                        "tag": "dev"
                         },
                         "repository": {
                         "repo_name": "'"${DOCKER_ACCOUNT}/${PROJECT_NAME}"'"
@@ -90,7 +90,7 @@ workflows:
             branches:
               only: 
                 - master
-                - develop
+                - dev
       - hold:
           type: approval
           requires:
@@ -99,7 +99,7 @@ workflows:
             branches:
               only: 
                 - master
-                - develop
+                - dev
       - deploy:
           requires:
             - hold
