@@ -151,7 +151,7 @@ const templateBoletoBradescoShopFacil = `
                 <span class="align iconFont ion-printer"></span>
                 <span class="align">&nbspImprimir</span>
             </button>
-            <button class="no-print btnDefault print" onclick="window.location='./boleto?fmt=pdf&id={{.View.ID}}'">
+            <button class="no-print btnDefault print" onclick="window.location='./boleto?fmt=pdf&id={{bsonMongoToString .View.ID}}'">
                 <span class="align iconFont ion-document-text"></span>
                 <span class="align">&nbspGerar PDF</span>
             </button>            

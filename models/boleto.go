@@ -3,8 +3,10 @@ package models
 import (
 	"time"
 
+	"gopkg.in/mgo.v2/bson"
+
 	"github.com/mundipagg/boleto-api/config"
-	"github.com/mundipagg/boleto-api/util"
+	
 
 	"github.com/PMoneda/flow"
 	"github.com/google/uuid"
@@ -45,8 +47,8 @@ type Link struct {
 }
 
 // BoletoView contem as informações que serão preenchidas no boleto
-type BoletoView struct {
-	ID            string
+type BoletoView struct {	
+	ID            bson.ObjectId `bson:"_id,omitempty"`
 	UID           string
 	Format        string        `json:"format,omitempty"`
 	Boleto        BoletoRequest `json:"boleto,omitempty"`
@@ -64,7 +66,7 @@ type BoletoView struct {
 func NewBoletoView(boleto BoletoRequest, response BoletoResponse, bankName string) BoletoView {
 	boleto.Authentication = Authentication{}
 	uid, _ := uuid.NewUUID()
-	id := util.Encrypt(uid.String())
+	id := bson.NewObjectId()
 	view := BoletoView{
 		ID:            id,
 		UID:           uid.String(),
@@ -85,7 +87,8 @@ func NewBoletoView(boleto BoletoRequest, response BoletoResponse, bankName strin
 
 //EncodeURL tranforma o boleto view na forma que será escrito na url
 func (b *BoletoView) EncodeURL(format string) string {
-	_url := fmt.Sprintf("%s?fmt=%s&id=%s", config.Get().AppURL, format, b.ID)
+	idBson, _ := b.ID.MarshalText()
+	_url := fmt.Sprintf("%s?fmt=%s&id=%s", config.Get().AppURL, format, string(idBson))
 
 	return _url
 }

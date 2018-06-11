@@ -21,6 +21,7 @@ var dbName = "Boleto"
 
 var (
 	dbSession *mgo.Session
+	errF      error
 )
 
 //CreateMongo cria uma nova intancia de conexão com o mongodb
@@ -80,7 +81,14 @@ func (e *mongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
 	defer session.Close()
 
 	c := session.DB(dbName).C("boletos")
-	errF := c.Find(bson.M{"id": id}).One(&result)
+
+	if len(id) == 24 {
+		d := bson.ObjectIdHex(id)
+		errF = c.Find(bson.M{"_id": d}).One(&result)
+	} else {
+		errF = c.Find(bson.M{"id": id}).One(&result)
+	}
+
 	if errF != nil {
 		l := log.CreateLog()
 		l.Warn(err, fmt.Sprintf("GetBoletoByID %s", err.Error()))
