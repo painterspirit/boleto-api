@@ -54,7 +54,9 @@ func registerBoleto(c *gin.Context) {
 		}
 	} else {
 		boView := models.NewBoletoView(boleto, resp, bank.GetBankNameIntegration())
-		resp.ID = boView.ID
+		idBson, _ := boView.ID.MarshalText()
+		resp.ID = string(idBson)
+
 		resp.Links = boView.Links
 		errMongo := repo.SaveBoleto(boView)
 		if errMongo != nil {
