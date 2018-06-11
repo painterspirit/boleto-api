@@ -8,6 +8,8 @@ import (
 	"strings"
 	"time"
 
+	"gopkg.in/mgo.v2/bson"
+
 	"strconv"
 
 	"fmt"
@@ -62,6 +64,7 @@ var funcMap = template.FuncMap{
 	"brDateDelimiterTime":      brDateDelimiterTime,
 	"toString16":               toString16,
 	"mod11BradescoShopFacilDv": mod11BradescoShopFacilDv,
+	"bsonMongoToString":        bsonMongoToString,
 }
 
 func GetFuncMaps() template.FuncMap {
@@ -359,4 +362,9 @@ func mod11BradescoShopFacilDv(number string, wallet string) string {
 	buffer.WriteString(wallet)
 	buffer.WriteString(number)
 	return util.OurNumberDv(buffer.String(), util.MOD11, 7)
+}
+
+func bsonMongoToString(bsonId bson.ObjectId) string {
+	idBson, _ := bsonId.MarshalText()
+	return string(idBson)
 }

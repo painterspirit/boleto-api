@@ -18,7 +18,6 @@ import (
 	"github.com/mundipagg/boleto-api/db"
 	"github.com/mundipagg/boleto-api/log"
 	"github.com/mundipagg/boleto-api/models"
-	"github.com/mundipagg/boleto-api/util"
 )
 
 //Regista um boleto em um determinado banco
@@ -92,7 +91,7 @@ func getBoleto(c *gin.Context) {
 	}
 	_boleto, err := repo.GetBoletoByID(id)
 	if err != nil {
-		uid := util.Decrypt(id)
+		uid := id
 		fd, err := os.Open(config.Get().BoletoJSONFileStore + "/boleto_" + uid + ".json")
 		if err != nil {
 			checkError(c, models.NewHTTPNotFound("Boleto não encontrado na base de dados", "MP404"), log.CreateLog())
