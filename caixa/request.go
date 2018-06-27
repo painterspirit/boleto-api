@@ -86,12 +86,12 @@ const incluiBoleto = `
                   </PAGADOR>                  
                   <FICHA_COMPENSACAO>
                      <MENSAGENS>
-                        <MENSAGEM>{{.Title.Instructions}}</MENSAGEM>                        
+                        <MENSAGEM>{{clearString (truncate .Title.Instructions 40)}}</MENSAGEM>                        
                         </MENSAGENS>
                   </FICHA_COMPENSACAO>
                   <RECIBO_PAGADOR>
                      <MENSAGENS>
-                        <MENSAGEM>{{.Title.Instructions}}</MENSAGEM>
+                        <MENSAGEM>{{clearString (truncate .Title.Instructions 40)}}</MENSAGEM>
                      </MENSAGENS>
                   </RECIBO_PAGADOR>                 
                </TITULO>

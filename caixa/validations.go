@@ -23,18 +23,6 @@ func caixaModElevenCalculator(a string, m []int) string {
 	return strconv.Itoa(digit)
 }
 
-func validateInstructions(b interface{}) error {
-	switch t := b.(type) {
-	case *models.BoletoRequest:
-		if len(t.Title.Instructions) > 40 {
-			return models.NewErrorResponse("MP400", "O número máximo permitido para instruções é de 40 caracteres")
-		}
-		return nil
-	default:
-		return validations.InvalidType(t)
-	}
-}
-
 func validadeOurNumber(b interface{}) error {
 	switch t := b.(type) {
 	case *models.BoletoRequest:
