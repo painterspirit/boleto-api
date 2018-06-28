@@ -34,7 +34,7 @@ func ConfigMock(port string) {
 	os.Setenv("MONGODB_PASSWORD", "")
 	os.Setenv("SEQ_URL", "http://localhost:5341")
 	os.Setenv("SEQ_API_KEY", "4jZzTybZ9bUHtJiPdh6")
-	config.Install(true, true, false)
+	config.Install(true, true, true)
 }
 
 func configFlags(devMode, mockMode, disableLog bool) {

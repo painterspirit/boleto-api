@@ -64,7 +64,7 @@ func main() {
 		params := app.NewParams()
 		if *airPlaneMode {
 			params.DevMode = true
-			params.DisableLog = false
+			params.DisableLog = true
 			params.MockMode = true
 			env = strconv.FormatBool(params.DevMode)
 		} else {
