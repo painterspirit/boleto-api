@@ -290,21 +290,7 @@ func TestRegisterBoletoRequest(t *testing.T) {
 		errJSON := json.Unmarshal([]byte(response), &boleto)
 		So(errJSON, ShouldEqual, nil)
 		So(len(boleto.Errors), ShouldBeGreaterThan, 0)
-	})
-
-	Convey("Deve-se retornar um erro quando o campo de instruções tem mais de 40 caracteres", t, func() {
-		m := getModelBody(models.Caixa, 200)
-		m.Title.Instructions = "Senhor caixa, após o vencimento não aceitar o pagamento"
-		response, st, err := util.Post("http://localhost:3000/v1/boleto/register", stringify(m), nil)
-		So(err, ShouldBeNil)
-		So(st, ShouldEqual, 400)
-		boleto := models.BoletoResponse{}
-		errJSON := json.Unmarshal([]byte(response), &boleto)
-		So(errJSON, ShouldEqual, nil)
-		So(len(boleto.Errors), ShouldBeGreaterThan, 0)
-		So(boleto.Errors[0].Message, ShouldEqual, "O número máximo permitido para instruções é de 40 caracteres")
-
-	})
+	})	
 
 	Convey("Quando o serviço da caixa estiver offline", t, func() {
 		Convey("Deve-se retornar o status 504", func() {

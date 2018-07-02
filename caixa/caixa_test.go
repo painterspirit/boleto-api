@@ -109,6 +109,7 @@ func TestShouldProcessBoleto(t *testing.T) {
 
 	input.Title.AmountInCents = 200
 	input.Title.Instructions = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+	input.Title.OurNumber = 9999999999999999
 	Convey("deve-se tratar erro no boleto Caixa", t, func() {
 		output, err := bank.ProcessBoleto(input)
 		So(err, ShouldBeNil)
