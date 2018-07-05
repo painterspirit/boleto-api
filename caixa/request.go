@@ -52,7 +52,7 @@ const incluiBoleto = `
               <CODIGO_BENEFICIARIO>{{padLeft (toString .Agreement.AgreementNumber) "0" 7}}</CODIGO_BENEFICIARIO>
                <TITULO>
                   <NOSSO_NUMERO>{{toString .Title.OurNumber}}</NOSSO_NUMERO>
-                  <NUMERO_DOCUMENTO>{{.Title.DocumentNumber}}</NUMERO_DOCUMENTO>
+                  <NUMERO_DOCUMENTO>{{truncate .Title.DocumentNumber 11}}</NUMERO_DOCUMENTO>
                   <DATA_VENCIMENTO>{{enDate .Title.ExpireDateTime "-"}}</DATA_VENCIMENTO>
                   <VALOR>{{toFloatStr .Title.AmountInCents}}</VALOR>
                   <TIPO_ESPECIE>99</TIPO_ESPECIE>
@@ -71,22 +71,22 @@ const incluiBoleto = `
                   <PAGADOR>
                      {{if eq .Buyer.Document.Type "CPF"}}
 					 	<CPF>{{.Buyer.Document.Number}}</CPF>
-                     	<NOME>{{.Buyer.Name}}</NOME>
+                     	<NOME>{{truncate .Buyer.Name 40}}</NOME>
                      {{else}}
 					 	<CNPJ>{{.Buyer.Document.Number}}</CNPJ>
-                     	<RAZAO_SOCIAL>{{.Buyer.Name}}</RAZAO_SOCIAL>
+                     	<RAZAO_SOCIAL>{{truncate .Buyer.Name 40}}</RAZAO_SOCIAL>
 					 {{end}}
                      <ENDERECO>
-                        <LOGRADOURO>{{.Buyer.Address.Street}} {{.Buyer.Address.Number}} {{.Buyer.Address.Complement}}</LOGRADOURO>
-                        <BAIRRO>{{.Buyer.Address.District}}</BAIRRO>
-                        <CIDADE>{{.Buyer.Address.City}}</CIDADE>
-                        <UF>{{.Buyer.Address.StateCode}}</UF>
-                        <CEP>{{.Buyer.Address.ZipCode}}</CEP>
+                     <LOGRADOURO>{{truncateManyFields 40 .Buyer.Address.Street .Buyer.Address.Number .Buyer.Address.Complement}}</LOGRADOURO>
+                        <BAIRRO>{{truncate .Buyer.Address.District 15}}</BAIRRO>
+                        <CIDADE>{{truncate .Buyer.Address.City 15}}</CIDADE>
+                        <UF>{{truncate .Buyer.Address.StateCode 2}}</UF>
+                        <CEP>{{truncate .Buyer.Address.ZipCode 8}}</CEP>
                      </ENDERECO>
-                  </PAGADOR>                  
+                  </PAGADOR>
                   <FICHA_COMPENSACAO>
                      <MENSAGENS>
-                        <MENSAGEM>{{clearString (truncate .Title.Instructions 40)}}</MENSAGEM>                        
+                        <MENSAGEM>{{clearString (truncate .Title.Instructions 40)}}</MENSAGEM>
                         </MENSAGENS>
                   </FICHA_COMPENSACAO>
                   <RECIBO_PAGADOR>

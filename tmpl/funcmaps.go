@@ -65,6 +65,7 @@ var funcMap = template.FuncMap{
 	"toString16":               toString16,
 	"mod11BradescoShopFacilDv": mod11BradescoShopFacilDv,
 	"bsonMongoToString":        bsonMongoToString,
+	"truncateManyFields":       truncateManyFields,
 }
 
 func GetFuncMaps() template.FuncMap {
@@ -367,4 +368,13 @@ func mod11BradescoShopFacilDv(number string, wallet string) string {
 func bsonMongoToString(bsonId bson.ObjectId) string {
 	idBson, _ := bsonId.MarshalText()
 	return string(idBson)
+}
+
+func truncateManyFields(num int, values ...string) string{	
+	buf := bytes.Buffer{}
+	for _, item := range values {
+		buf.WriteString(" " + item)
+	}
+	str := strings.Trim(buf.String()," ")
+	return truncateString(str, num)
 }
