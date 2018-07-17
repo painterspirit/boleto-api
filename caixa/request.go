@@ -77,11 +77,11 @@ const incluiBoleto = `
                      	<RAZAO_SOCIAL>{{truncate .Buyer.Name 40}}</RAZAO_SOCIAL>
 					 {{end}}
                      <ENDERECO>
-                     <LOGRADOURO>{{truncateManyFields 40 .Buyer.Address.Street .Buyer.Address.Number .Buyer.Address.Complement}}</LOGRADOURO>
-                        <BAIRRO>{{truncate .Buyer.Address.District 15}}</BAIRRO>
-                        <CIDADE>{{truncate .Buyer.Address.City 15}}</CIDADE>
-                        <UF>{{truncate .Buyer.Address.StateCode 2}}</UF>
-                        <CEP>{{truncate .Buyer.Address.ZipCode 8}}</CEP>
+                     <LOGRADOURO>{{clearString (truncateManyFields 40 .Buyer.Address.Street .Buyer.Address.Number .Buyer.Address.Complement)}}</LOGRADOURO>
+                        <BAIRRO>{{clearString (truncate .Buyer.Address.District 15)}}</BAIRRO>
+                        <CIDADE>{{clearString (truncate .Buyer.Address.City 15)}}</CIDADE>
+                        <UF>{{clearString (truncate .Buyer.Address.StateCode 2)}}</UF>
+                        <CEP>{{clearString (truncate .Buyer.Address.ZipCode 8)}}</CEP>
                      </ENDERECO>
                   </PAGADOR>
                   <FICHA_COMPENSACAO>
