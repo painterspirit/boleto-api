@@ -1,44 +1,11 @@
-version: "2"
+version: '2'
 services:
-  api:
-    build: .
+  boleto-api:
+    build: 
+      context: ..
+      dockerfile: ./devops/Dockerfile
+    volumes:
+      - ~/boletodb/upMongo://C/boleto_json_store
+      - ~/boleto_cert://C/cert_boleto_api
     ports:
-     - "9000:3000"
-    environment:
-     - API_PORT=3000
-     - API_VERSION=0.0.1
-     - PDF_API=http://10.0.2.15:8089/topdf
-     - ENVIRONMENT=Development
-     - SEQ_URL=http://example.mundipagg.com
-     - SEQ_API_KEY=xxxxxxxxxxxxx
-     - ENABLE_REQUEST_LOG=false
-     - ENABLE_PRINT_REQUEST=true
-     - MONGODB_URL=10.0.2.15:27017
-     - MONGODB_USER=user
-     - MONGODB_PASSWORD=pass
-     - APP_URL=http://localhost:8080/boleto
-     - BOLETO_JSON_STORE=/home/upMongo
-     - CERT_BOLETO_CRT=/home/mundipagg/boleto_cert/certificate.crt
-     - CERT_BOLETO_KEY=/home/mundipagg/boleto_cert/mundi.key
-     - CERT_BOLETO_CA=/home/mundipagg/boleto_cert/ca-cert.ca
-     - CERT_ICP_BOLETO_KEY=/home/mundipagg/boleto_cert/ICP_PKey.key
-     - CERT_ICP_BOLETO_CHAIN_CA=/home/mundipagg/boleto_cert/ICP_cadeiaCerts.pem
-     - INFLUXDB_HOST=http://10.0.2.15
-     - INFLUXDB_PORT=8086
-     - URL_BB_REGISTER_BOLETO=https://cobranca.desenv.bb.com.br:7101/registrarBoleto
-     - URL_BB_TOKEN=https://oauth.desenv.bb.com.br:43000/oauth/token
-     - URL_CAIXA=https://des.barramento.caixa.gov.br/sibar/ManutencaoCobrancaBancaria/Boleto/Externo
-     - URL_CITI=https://citigroupsoauat.citigroup.com/comercioeletronico/registerboleto/RegisterBoletoSOAP
-     - URL_CITI_BOLETO=https://ebillpayer.uat.brazil.citigroup.com/ebillpayer/jspInformaDadosConsulta.jsp
-     - URL_SANTANDER_TICKET=https://ymbdlb.santander.com.br/dl-ticket-services/TicketEndpointService
-     - URL_SANTANDER_REGISTER=https://ymbcashhml.santander.com.br:443/ymbsrv/CobrancaEndpointService
-     - URL_BRADESCO_SHOPFACIL=https://homolog.meiosdepagamentobradesco.com.br/api/transacao
-     - URL_ITAU_REGISTER=https://gerador-boletos.itau.com.br/router-gateway-app/public/codigo_barras/registro
-     - URL_ITAU_TICKET=https://oauth.itau.com.br/identity/connect/token
-     - URL_BRADESCO_NET_EMPRESA=https://cobranca.bradesconetempresa.b.br/ibpjregistrotitulows/registrotitulohomologacao
-  mongodb:
-        image: mongo:latest
-        container_name: "mongodb"        
-        ports:
-            - 27017:27017
-        command: mongod --smallfiles --logpath=/dev/null  
+     - "3000:3000"

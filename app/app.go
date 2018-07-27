@@ -34,9 +34,8 @@ func Run(params *Params) {
 		go mock.Run("9091")
 	}
 
-	installLog()
+	installLog()	
 	api.InstallRestAPI()
-
 }
 
 func installLog() {
