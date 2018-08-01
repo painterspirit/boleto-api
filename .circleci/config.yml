@@ -38,7 +38,6 @@ jobs:
           at: /app
       - deploy:
           name: Push application Docker image
-          context: DockerRegistry
           command: |
             ls -la
             docker build -t ${DOCKER_ACCOUNT}/${PROJECT_NAME} .
@@ -87,6 +86,7 @@ workflows:
       - publish:
           requires:
             - build
+          context: DockerRegistry
           filters:
             branches:
               only: 
