@@ -8,8 +8,8 @@ RUN mkdir -p "/home/mundipagg/boleto"
 ENV GOROOT="/home/mundipagg/"
 
 COPY time "/home/mundipagg/lib/time"
-COPY favicon.ico  /home/mundipagg/boleto/
-COPY boleto/Arial.ttf "/home/mundipagg/boleto/"
+COPY favicon.ico  "/home/mundipagg/boleto/"
+COPY Arial.ttf "/home/mundipagg/boleto/"
 
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 ADD boleto-api /home/mundipagg/
