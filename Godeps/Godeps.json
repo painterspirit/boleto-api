@@ -11,6 +11,33 @@
 			"Rev": "a009d8d7de53d9503c797cb8ec66fa3b21eed209"
 		},
 		{
+			"ImportPath": "github.com/golang/freetype",
+			"Comment": "release-137-ge2365df",
+			"Rev": "e2365dfdc4a05e4b8299a783240d4a7d5a65d4e4"
+		},
+		{
+			"ImportPath": "github.com/golang/freetype/raster",
+			"Comment": "release-137-ge2365df",
+			"Rev": "e2365dfdc4a05e4b8299a783240d4a7d5a65d4e4"
+		},
+		{
+			"ImportPath": "github.com/golang/freetype/truetype",
+			"Comment": "release-137-ge2365df",
+			"Rev": "e2365dfdc4a05e4b8299a783240d4a7d5a65d4e4"
+		},		
+		{
+			"ImportPath": "golang.org/x/image/font",
+			"Rev": "426cfd8eeb6e08ab1932954e09e3c2cb2bc6e36d"
+		},
+		{
+			"ImportPath": "golang.org/x/image/math/fixed",
+			"Rev": "426cfd8eeb6e08ab1932954e09e3c2cb2bc6e36d"
+		},
+		{
+			"ImportPath": "github.com/fullsailor/pkcs7",
+			"Rev": "a009d8d7de53d9503c797cb8ec66fa3b21eed209"
+		},
+		{
 			"ImportPath": "github.com/Jeffail/gabs",
 			"Comment": "1.0-8-g9cef256",
 			"Rev": "9cef256b595a9e616eb6aec1da446529b7705613"
