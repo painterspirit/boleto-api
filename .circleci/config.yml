@@ -20,7 +20,7 @@ jobs:
           command: go build -v
       - run: 
           name: Move artifacts
-          command: mv boleto-api devops/ && mv boleto/favicon.ico devops/
+          command: mv boleto-api devops/ && mv boleto/favicon.ico devops/ && mv boleto/Arial.ttf devops/
       - run: 
           name: Testing
           command: go test $(go list ./... | grep -v /vendor/) -v
