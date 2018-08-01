@@ -74,7 +74,7 @@ const registerBradescoShopFacil = `
 const responseBradescoShopFacil = `
 {
     "boleto": {
-        "linha_digitavel_formatada": "{{digitableLine}}",
+        "linha_digitavel": "{{digitableLine}}",
         "url_acesso": "{{url}}"
     },
     "status": {
