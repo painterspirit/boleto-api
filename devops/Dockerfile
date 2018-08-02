@@ -2,24 +2,19 @@
 FROM golang:alpine AS build-env
 WORKDIR /go/src/github.com/mundipagg/boleto-api
 COPY . .
-RUN go build -o boleto-api
+RUN mkdir -p "deploy"
 
+RUN go build -o /deploy/boleto-api
+
+COPY devops/time "/deploy/lib/time/"
+COPY boleto/favicon.ico "/deploy/boleto/"
+COPY boleto/Arial.ttf "/deploy/boleto/"
 
 FROM alpine:3.7
 WORKDIR /home/mundipagg
-COPY --from=build-env /go/src/github.com/mundipagg/boleto-api/boleto-api /home/mundipagg/
-
-RUN mkdir -p "/home/mundipagg/boleto_ssh"
-RUN mkdir -p "/home/mundipagg/boleto_cert"
-RUN mkdir -p "/home/mundipagg/boleto"
-RUN mkdir  -p "/home/upMongo"
-
-COPY devops/time "/home/mundipagg/lib/time"
-COPY boleto/favicon.ico  "/home/mundipagg/boleto/"
-COPY boleto/Arial.ttf "/home/mundipagg/boleto/"
+COPY --from=build-env ./deploy/ .
 
 RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
-RUN chmod +x /home/mundipagg/boleto-api
 
 ENV GOROOT="/home/mundipagg/"
 ENV INFLUXDB_HOST="http://localhost"
