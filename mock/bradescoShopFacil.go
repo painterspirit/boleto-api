@@ -22,8 +22,8 @@ func registerBoletoBradescoShopFacil(c *gin.Context) {
         "valor_titulo": 15000,
         "data_geracao": "2016-04-22T08:10:43",
         "data_atualizacao": null,
-        "linha_digitavel": "23790000255123456789223000000002867240000015000",
-        "linha_digitavel_formatada": "23790.00025 51234.567892 23000.000002 8 67240000015000",
+        "linha_digitavel": "23792372215000460151949000560000176050000013114",
+        "linha_digitavel_formatada": "23792.37221  50004.601519  49000.560000  1  76050000013114",
         "token": "c3ZtRGVKRDFoUlRESmxRNnhKQnpJalFrb0VueXdVdUxnT2FVMG45cm1qMFMyRDcwRWZ0cFVBS0o0\nMFAxOHY0aTdJK3E1MXVjUVJjNEpBdUxvcE15T1E9PQ==",
         "url_acesso": "http://localhost:9080/boleto/titulo?token=c3ZtRGVKRDFoUlRESmxRNnhKQnpJalFrb0VueXdVdUxnT2FVMG45cm1qMFMyRDcwRWZ0cFVBS0o0\nMFAxOHY0aTdJK3E1MXVjUVJjNEpBdUxvcE15T1E9PQ=="
     },

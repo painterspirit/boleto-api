@@ -3,7 +3,7 @@ package bradescoShopFacil
 var apiResponse = `
 {
 	{{if eq .returnCode "0"}}
-       "DigitableLine": "{{.digitableLine}}",
+       "DigitableLine": "{{fmtDigitableLine (trim .digitableLine)}}",
 		"Links": [{
 			"href":"{{.url}}",
 			"rel": "pdf",
