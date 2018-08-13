@@ -4,53 +4,12 @@ services:
     build: 
       context: ..
       dockerfile: ./devops/Dockerfile      
-    command: go run main.go -airplane-mode
     volumes:
       - c:/boleto_json_store/:/home/mundipagg/upMongo
       - c:/cert_boleto_api/:/home/mundipagg/boleto_cert/
     ports:
       - "3000:3000"
-    links:
-      - mongodb
-      - pdfapi
-    networks:
-      - boleto-api
-
-  pdfapi:
-    image: 'pmoneda/pdfapi'
-    ports: 
-      - "7070:8080"
-    networks:
-      - pdf-api
-
-  mongodb:
-    image: 'bitnami/mongodb:latest'
-    ports:
-      - "27017:27017"
-    volumes:
-      - c:/boleto_json_store/:/bitnami
-    networks:
-      - mongo-boletoapi
-
-  elasticsearch:
-    image: 'bitnami/elasticsearch:latest'
-    ports: 
-      - "9200:9200"   
-    networks:
-      - es-boletoapi
-  
-networks:
-  boleto-api: 
-    driver: bridge
-  pdf-api:
-    driver: bridge
-  mongo-boletoapi: 
-    driver: bridge
-  es-boletoapi: 
-    driver: bridge
-    
-
-
+    network_mode: bridge
 
     
         
