@@ -35,6 +35,10 @@ type Config struct {
 	MongoURL                      string
 	MongoUser                     string
 	MongoPassword                 string
+	RedisURL                      string
+	RedisPassword                 string
+	RedisDatabase                 string
+	RedisExpirationTime           string
 	BoletoJSONFileStore           string
 	DisableLog                    bool
 	CertBoletoPathCrt             string
@@ -91,6 +95,10 @@ func Install(mockMode, devMode, disableLog bool) {
 		MongoURL:                      os.Getenv("MONGODB_URL"),
 		MongoUser:                     os.Getenv("MONGODB_USER"),
 		MongoPassword:                 os.Getenv("MONGODB_PASSWORD"),
+		RedisURL:                      os.Getenv("REDIS_URL"),
+		RedisPassword:                 os.Getenv("REDIS_PASSWORD"),
+		RedisDatabase:                 os.Getenv("REDIS_DATABASE"),
+		RedisExpirationTime:           os.Getenv("REDIS_EXPIRATION_TIME"),
 		BoletoJSONFileStore:           os.Getenv("BOLETO_JSON_STORE"),
 		CertBoletoPathCrt:             os.Getenv("CERT_BOLETO_CRT"),
 		CertBoletoPathKey:             os.Getenv("CERT_BOLETO_KEY"),
