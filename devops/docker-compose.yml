@@ -1,4 +1,5 @@
 version: '2'
+
 services:
   boleto-api:
     build: 
@@ -9,5 +10,30 @@ services:
       - c:/cert_boleto_api/:/home/mundipagg/boleto_cert/
     ports:
       - "3000:3000"
-    network_mode: bridge
+    links:
+      - pdfapi
+      - mongodb
+      - seq
+    
+  pdfapi:
+    image: "pmoneda/pdfapi"
+    ports:
+      - "7070:8080"
+    
+  mongodb:
+    image: "bitnami/mongodb"
+    ports: 
+      - "27017:27017"
+
+  seq:
+    image: "datalust/seq:latest"
+    ports:
+      - "55341:5341"
+      - "8070:80"
+    volumes:
+      - c:/seq_boleto/:/data
+    environment:
+      - ACCEPT_EULA=Y
+
+    
         

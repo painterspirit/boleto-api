@@ -16,7 +16,7 @@ import (
 var (
 	ignoreTags = []string{"title", "script", "style", "iframe", "frame", "frameset", "noframes", "noembed", "embed", "applet", "object", "base"}
 
-	defaultTags = []string{"h1", "h2", "h3", "h4", "h5", "h6", "div", "span", "hr", "p", "br", "b", "i", "strong", "em", "ol", "ul", "li", "a", "img", "pre", "code", "blockquote"}
+	defaultTags = []string{"h1", "h2", "h3", "h4", "h5", "h6", "div", "span", "hr", "p", "br", "b", "i", "strong", "em", "ol", "ul", "li", "a", "img", "pre", "code", "blockquote", "article", "section"}
 
 	defaultAttributes = []string{"id", "class", "src", "href", "title", "alt", "name", "rel"}
 )
@@ -162,14 +162,18 @@ func HTML(s string) (output string) {
 // We are very restrictive as this is intended for ascii url slugs
 var illegalPath = regexp.MustCompile(`[^[:alnum:]\~\-\./]`)
 
-// Path makes a string safe to use as an url path.
+// Path makes a string safe to use as a URL path,
+// removing accents and replacing separators with -.
+// The path may still start at / and is not intended
+// for use as a file system path without prefix.
 func Path(s string) string {
 	// Start with lowercase string
 	filePath := strings.ToLower(s)
 	filePath = strings.Replace(filePath, "..", "", -1)
 	filePath = path.Clean(filePath)
 
-	// Remove illegal characters for paths, flattening accents and replacing some common separators with -
+	// Remove illegal characters for paths, flattening accents
+	// and replacing some common separators with -
 	filePath = cleanString(filePath, illegalPath)
 
 	// NB this may be of length 0, caller must check
@@ -235,20 +239,21 @@ var transliterations = map[rune]string{
 	'Ó': "O",
 	'Ô': "O",
 	'Õ': "O",
-	'Ö': "O",
+	'Ö': "OE",
 	'Ø': "OE",
+	'Œ': "OE",
 	'Ù': "U",
 	'Ú': "U",
-	'Ü': "U",
+	'Ü': "UE",
 	'Û': "U",
 	'Ý': "Y",
-	'Þ': "Th",
-	'ß': "ss",
+	'Þ': "TH",
+	'ẞ': "SS",
 	'à': "a",
 	'á': "a",
 	'â': "a",
 	'ã': "a",
-	'ä': "a",
+	'ä': "ae",
 	'å': "aa",
 	'æ': "ae",
 	'ç': "c",
@@ -269,20 +274,20 @@ var transliterations = map[rune]string{
 	'ô': "o",
 	'õ': "o",
 	'ō': "o",
-	'ö': "o",
+	'ö': "oe",
 	'ø': "oe",
+	'œ': "oe",
 	'ś': "s",
 	'ù': "u",
 	'ú': "u",
 	'û': "u",
 	'ū': "u",
-	'ü': "u",
+	'ü': "ue",
 	'ý': "y",
-	'þ': "th",
 	'ÿ': "y",
 	'ż': "z",
-	'Œ': "OE",
-	'œ': "oe",
+	'þ': "th",
+	'ß': "ss",
 }
 
 // Accents replaces a set of accented characters with ascii equivalents.
