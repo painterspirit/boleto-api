@@ -13,7 +13,8 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-type mongoDb struct {
+//MongoDb Struct
+type MongoDb struct {
 	m sync.RWMutex
 }
 
@@ -21,11 +22,11 @@ var dbName = "Boleto"
 
 var (
 	dbSession *mgo.Session
-	errF      error
+	err       error
 )
 
 //CreateMongo cria uma nova intancia de conexão com o mongodb
-func CreateMongo() (DB, error) {
+func CreateMongo() (*MongoDb, error) {
 
 	if dbSession == nil {
 		dbSession, err = mgo.DialWithInfo(getInfo())
@@ -36,10 +37,10 @@ func CreateMongo() (DB, error) {
 		}
 	}
 
-	db := new(mongoDb)
-	if config.Get().MockMode {
-		dbName = "boletoapi_mock"
-	}
+	db := new(MongoDb)
+	// if config.Get().MockMode {
+	// 	dbName = "boletoapi_mock"
+	// }
 	return db, nil
 }
 
@@ -56,7 +57,7 @@ func getInfo() *mgo.DialInfo {
 }
 
 //SaveBoleto salva um boleto no mongoDB
-func (e *mongoDb) SaveBoleto(boleto models.BoletoView) error {
+func (e *MongoDb) SaveBoleto(boleto models.BoletoView) error {
 
 	e.m.Lock()
 	defer e.m.Unlock()
@@ -70,8 +71,8 @@ func (e *mongoDb) SaveBoleto(boleto models.BoletoView) error {
 	return err
 }
 
-//GetBoletoById busca um boleto pelo ID que vem na URL
-func (e *mongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
+//GetBoletoByID busca um boleto pelo ID que vem na URL
+func (e *MongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
 	e.m.Lock()
 	defer e.m.Unlock()
 	result := models.BoletoView{}
@@ -84,12 +85,12 @@ func (e *mongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
 
 	if len(id) == 24 {
 		d := bson.ObjectIdHex(id)
-		errF = c.Find(bson.M{"_id": d}).One(&result)
+		err = c.Find(bson.M{"_id": d}).One(&result)
 	} else {
-		errF = c.Find(bson.M{"id": id}).One(&result)
+		err = c.Find(bson.M{"id": id}).One(&result)
 	}
 
-	if errF != nil {
+	if err != nil {
 		l := log.CreateLog()
 		l.Warn(err, fmt.Sprintf("GetBoletoByID %s", err.Error()))
 		return models.BoletoView{}, err
@@ -98,6 +99,6 @@ func (e *mongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
 	return result, nil
 }
 
-func (e *mongoDb) Close() {
+func (e *MongoDb) Close() {
 	fmt.Println("Close Database Connection")
 }

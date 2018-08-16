@@ -1,21 +1,31 @@
 package db
 
 import (
+	"bytes"
 	"fmt"
 	"strconv"
 	"time"
 
 	"github.com/gomodule/redigo/redis"
+
 	"github.com/mundipagg/boleto-api/config"
-	"github.com/mundipagg/boleto-api/models"
 )
 
-//Repository Classe de Conexão com o Banco REDIS
-type Repository struct {
+//Redis Classe de Conexão com o Banco REDIS
+type Redis struct {
 	conn redis.Conn
 }
 
-func (r *Repository) openConnection() error {
+var dbId = config.Get().RedisDatabase
+
+//CreateRedis Cria instancia do Struct Redis
+func CreateRedis() *Redis {
+
+	return new(Redis)
+
+}
+
+func (r *Redis) openConnection() error {
 	dbID, _ := strconv.Atoi(config.Get().RedisDatabase)
 	o := redis.DialDatabase(dbID)
 	ps := redis.DialPassword(config.Get().RedisPassword)
@@ -30,23 +40,23 @@ func (r *Repository) openConnection() error {
 	return nil
 }
 
-func (r *Repository) closeConnection() {
+func (r *Redis) closeConnection() {
 	r.conn.Close()
 }
 
 //SetBoletoHTML Grava um boleto em formato Html no Redis
-func (r *Repository) SetBoletoHTML(b string, mID string) error {
+func (r *Redis) SetBoletoHTML(b string, mID string) error {
 	err := r.openConnection()
 
 	if err != nil {
 		return err
 	}
 
-	key := fmt.Sprintf("%s:%s", mID, "HTML")
-	ins, _ := r.conn.Do("SETEX", key, config.Get().RedisExpirationTime, b)
+	key := fmt.Sprintf("%s:%s", "HTML", mID)
+	ret, _ := r.conn.Do("SETEX", key, config.Get().RedisExpirationTime, b)
 	r.closeConnection()
 
-	res := fmt.Sprintf("%s", ins)
+	res := fmt.Sprintf("%s", ret)
 
 	if res != "OK" {
 		return fmt.Errorf("Could not record HTML in Redis Database: %s", res)
@@ -56,15 +66,15 @@ func (r *Repository) SetBoletoHTML(b string, mID string) error {
 }
 
 // SetBoletoJSON Grava um boleto em formato JSON no Redis
-func (r *Repository) SetBoletoJSON(m *models.BoletoView) error {
+func (r *Redis) SetBoletoJSON(b *bytes.Reader, mID string) error {
 	err := r.openConnection()
 
 	if err != nil {
 		return err
 	}
 
-	key := fmt.Sprintf("%s:%s", m.ID, "JSON")
-	ret, _ := r.conn.Do("SETEX", key, config.Get().RedisExpirationTime, m)
+	key := fmt.Sprintf("%s:%s", "JSON", mID)
+	ret, _ := r.conn.Do("SET", key, b)
 	r.closeConnection()
 
 	res := fmt.Sprintf("%s", ret)
@@ -76,15 +86,34 @@ func (r *Repository) SetBoletoJSON(m *models.BoletoView) error {
 	return nil
 }
 
-//GetMerchantTokenByKey Recupera um token da base de dados a partir do MerchantKey de um lojista
-// func (r *Repository) GetMerchantTokenByKey(k string) (string, error) {
+//GetBoletoHTML Recupera um boleto do tipo HTML do Redis a partir do MongoID
+func (r *Redis) GetBoletoHTML(mID string) (string, error) {
+	err := r.openConnection()
+
+	if err != nil {
+		return "", err
+	}
+
+	key := fmt.Sprintf("%s:%s", mID, "HTML")
+	ret, _ := r.conn.Do("GET", key)
+	r.closeConnection()
+
+	if ret == nil {
+		return "", nil
+	}
+
+	return fmt.Sprintf("%s", ret), nil
+}
+
+//GetBoletoJSON Reupero um boleto do tipo JSON do Redis a partir do MongoID
+// func (r *Redis) GetBoletoJSON(mID string) (m *models.BoletoView, error) {
 // 	err := r.openConnection()
 
 // 	if err != nil {
 // 		return "", err
 // 	}
 
-// 	key := fmt.Sprintf("%s:%s", config.Get().Application, k)
+// 	key := fmt.Sprintf("%s:%s", mID, "JSON")
 // 	ret, _ := r.conn.Do("GET", key)
 // 	r.closeConnection()
 
@@ -92,5 +121,5 @@ func (r *Repository) SetBoletoJSON(m *models.BoletoView) error {
 // 		return "", nil
 // 	}
 
-// 	return fmt.Sprintf("%s", ret), nil
+// 	return m, nil
 // }
