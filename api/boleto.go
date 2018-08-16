@@ -40,6 +40,7 @@ func registerBoleto(c *gin.Context) {
 	if checkError(c, errDb, lg) {
 		return
 	}
+
 	resp, errR := bank.ProcessBoleto(&boleto)
 	if checkError(c, errR, lg) {
 		return
@@ -52,6 +53,9 @@ func registerBoleto(c *gin.Context) {
 			st = http.StatusBadRequest
 		}
 	} else {
+		// MONTAR HTML
+		// SALVAR REDIS
+
 		boView := models.NewBoletoView(boleto, resp, bank.GetBankNameIntegration())
 		idBson, _ := boView.ID.MarshalText()
 		resp.ID = string(idBson)
