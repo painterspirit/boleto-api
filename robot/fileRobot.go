@@ -29,7 +29,7 @@ func robotMongo(path string) {
 				boleto := models.BoletoView{}
 				errJSON := json.Unmarshal(data, &boleto)
 				if errJSON == nil {
-					repo, errBD := db.GetDB()
+					repo, errBD := db.CreateMongo()
 					if errBD == nil && repo != nil {
 						errRepo := repo.SaveBoleto(boleto)
 						if errRepo == nil {
