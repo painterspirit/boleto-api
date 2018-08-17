@@ -34,6 +34,7 @@ func CreateMongo() (*MongoDb, error) {
 		if err != nil {
 			l := log.CreateLog()
 			l.Warn(err, fmt.Sprintf("Error create connection mongo %s", err.Error()))
+			return nil, err
 		}
 	}
 
