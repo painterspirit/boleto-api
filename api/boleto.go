@@ -1,16 +1,17 @@
 package api
 
 import (
-	"bytes"
-	"errors"
+	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tdewolff/minify"
+	"github.com/tdewolff/minify/css"
+	"github.com/tdewolff/minify/html"
+	"github.com/tdewolff/minify/js"
+	jm "github.com/tdewolff/minify/json"
 
 	"strings"
-
-	"encoding/json"
-	"os"
 
 	"io/ioutil"
 
@@ -39,8 +40,8 @@ func registerBoleto(c *gin.Context) {
 	lg.RequestKey = bol.RequestKey
 	lg.BankName = bank.GetBankNameIntegration()
 
-	resp, errR := bank.ProcessBoleto(&bol)
-	if checkError(c, errR, lg) {
+	resp, err := bank.ProcessBoleto(&bol)
+	if checkError(c, err, lg) {
 		return
 	}
 
@@ -55,102 +56,75 @@ func registerBoleto(c *gin.Context) {
 
 	} else {
 
-		mongo, err := db.CreateMongo()
-		if checkError(c, err, lg) {
-			return
-		}
+		mongo, errMongo := db.CreateMongo()
+		checkError(c, err, lg)
 
 		boView := models.NewBoletoView(bol, resp, bank.GetBankNameIntegration())
 		mID, _ := boView.ID.MarshalText()
 		resp.ID = string(mID)
+		resp.Links = boView.Links
+
+		if errMongo == nil {
+			errMongo = mongo.SaveBoleto(boView)
+		}
 
 		bhtml, err := boleto.HTML(boView, "html")
+		s := minifyString(bhtml, "text/html")
+
 		redis := db.CreateRedis()
-		err = redis.SetBoletoHTML(bhtml, resp.ID)
-		if checkError(c, err, lg) {
-			return
+		redis.SetBoletoHTML(s, resp.ID, lg)
+
+		if errMongo != nil {
+			b := minifyJSON(boView)
+
+			err = redis.SetBoletoJSON(b, resp.ID)
+			if checkError(c, err, lg) {
+				return
+			}
 		}
 
-		resp.Links = boView.Links
-		_ = mongo.SaveBoleto(boView)
-		// if errMongo != nil {
-
-		b, err := convertToByte(boView)
-		if err != nil {
-			return
-		}
-
-		err = redis.SetBoletoJSON(b, resp.ID)
-		if checkError(c, err, lg) {
-			//LOGAR
-			//MELHORAR
-			return
-		}
-
-		// }
 	}
 	c.JSON(st, resp)
 	c.Set("boletoResponse", resp)
 }
 
-// func saveBoletoJSONFile(boView models.BoletoView, lg *log.Log, err error) {
-// 	lg.Warn(err.Error(), "Boleto cannot be saved at Database")
-// 	fd, errOpen := os.Create(config.Get().BoletoJSONFileStore + "/boleto_" + boView.UID + ".json")
-// 	if errOpen != nil {
-// 		lg.Fatal(boView, "[BOLETO_ONLINE_CONTINGENCIA]"+errOpen.Error())
-// 	}
-// 	data, _ := json.Marshal(boView)
-// 	_, errW := fd.Write(data)
-// 	if errW != nil {
-// 		lg.Fatal(boView, "[BOLETO_ONLINE_CONTINGENCIA]"+errW.Error())
-// 	}
-// 	fd.Close()
-// }
-
 func getBoleto(c *gin.Context) {
 	c.Status(200)
 
 	id := c.Query("id")
-	format := c.Query("fmt")
-	mongo, errCon := db.CreateMongo()
-	if checkError(c, errCon, log.CreateLog()) {
+	fmt := c.Query("fmt")
+
+	log := log.CreateLog()
+	log.Operation = "GetBoleto"
+
+	redis := db.CreateRedis()
+
+	b, err := redis.GetBoletoHTMLByID(id)
+	if checkError(c, err, log) {
 		return
-	}
-	_boleto, err := mongo.GetBoletoByID(id)
-	if err != nil {
-		uid := id
-		fd, err := os.Open(config.Get().BoletoJSONFileStore + "/boleto_" + uid + ".json")
-		if err != nil {
-			checkError(c, models.NewHTTPNotFound("Boleto não encontrado na base de dados", "MP404"), log.CreateLog())
-			return
-		}
-		data, errR := ioutil.ReadAll(fd)
-		if errR != nil {
-			checkError(c, models.NewHTTPNotFound("Boleto não encontrado na base de dados", "MP404"), log.CreateLog())
-			return
-		}
-		json.Unmarshal(data, &_boleto)
-		fd.Close()
 	}
 
-	s, err := boleto.HTML(_boleto, format)
-	if checkError(c, err, log.CreateLog()) {
-		return
+	if b == "" {
+		//METODO PARA BUSCAR O BOLETO NO MONGODB
+		// TALVEZ APENAS RENDERIZAR E ENVIAR PRO CLIENT
+		// TALVES FAZER O SET NO REDIS
+		//IR NO MONGODB
+		log.Info("INDO NO MONGODB")
 	}
-	if format == "html" {
+
+	if fmt == "html" {
 		c.Header("Content-Type", "text/html; charset=utf-8")
-		c.Writer.WriteString(s)
+		c.Writer.WriteString(b)
 	} else {
 		c.Header("Content-Type", "application/pdf")
-
-		buf, err := toPdf(s)
+		bpdf, err := toPdf(b)
 
 		if err != nil {
 			c.Header("Content-Type", "application/json")
-			checkError(c, models.NewInternalServerError(err.Error(), "internal error"), log.CreateLog())
+			checkError(c, models.NewInternalServerError(err.Error(), "internal error"), log)
 			c.Abort()
 		} else {
-			c.Writer.Write(buf)
+			c.Writer.Write(bpdf)
 		}
 
 	}
@@ -184,11 +158,30 @@ func getBoletoByID(c *gin.Context) {
 	c.JSON(http.StatusOK, boleto)
 }
 
-//convertToByte converte um model BoletoView para um JSON
-func convertToByte(m models.BoletoView) (*bytes.Reader, error) {
-	json, err := json.Marshal(m)
+//minifyJSON converte um model BoletoView para um JSON/STRING
+func minifyJSON(m models.BoletoView) string {
+	j, _ := json.Marshal(m)
+
+	return minifyString(string(j), "application/json")
+}
+
+func minifyString(mString, tp string) string {
+	m := minify.New()
+	m.Add("text/html", &html.Minifier{
+		KeepDocumentTags:        true,
+		KeepEndTags:             true,
+		KeepWhitespace:          false,
+		KeepConditionalComments: true,
+	})
+	m.AddFunc("text/css", css.Minify)
+	m.AddFunc("text/javascript", js.Minify)
+	m.AddFunc("application/json", jm.Minify)
+
+	s, err := m.String(tp, mString)
+
 	if err != nil {
-		err = errors.New("Failed to convert a json of model")
+		return mString
+	} else {
+		return s
 	}
-	return bytes.NewReader([]byte(json)), err
 }
