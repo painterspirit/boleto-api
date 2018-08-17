@@ -1,7 +1,6 @@
 package db
 
 import (
-	"bytes"
 	"fmt"
 	"strconv"
 	"time"
@@ -9,6 +8,7 @@ import (
 	"github.com/gomodule/redigo/redis"
 
 	"github.com/mundipagg/boleto-api/config"
+	"github.com/mundipagg/boleto-api/log"
 )
 
 //Redis Classe de Conexão com o Banco REDIS
@@ -16,13 +16,9 @@ type Redis struct {
 	conn redis.Conn
 }
 
-var dbId = config.Get().RedisDatabase
-
 //CreateRedis Cria instancia do Struct Redis
 func CreateRedis() *Redis {
-
 	return new(Redis)
-
 }
 
 func (r *Redis) openConnection() error {
@@ -45,57 +41,56 @@ func (r *Redis) closeConnection() {
 }
 
 //SetBoletoHTML Grava um boleto em formato Html no Redis
-func (r *Redis) SetBoletoHTML(b string, mID string) error {
+func (r *Redis) SetBoletoHTML(b string, mID string, lg *log.Log) {
+	err := r.openConnection()
+
+	if err != nil {
+		lg.Warn(err, fmt.Sprintf("OpenConnection - Could not connection to Redis Database"))
+	} else {
+
+		key := fmt.Sprintf("%s:%s", "HTML", mID)
+		ret, err := r.conn.Do("SETEX", key, config.Get().RedisExpirationTime, b)
+		r.closeConnection()
+
+		res := fmt.Sprintf("%s", ret)
+
+		if res != "OK" {
+			lg.Warn(err, fmt.Sprintf("SetBoletoHTML - Could not record HTML in Redis Database: %s", err.Error()))
+		}
+	}
+
+}
+
+//SetBoletoJSON Grava um boleto em formato JSON no Redis
+func (r *Redis) SetBoletoJSON(b, mID string) error {
 	err := r.openConnection()
 
 	if err != nil {
 		return err
+	} else {
+		key := fmt.Sprintf("%s:%s", "JSON", mID)
+		ret, err := r.conn.Do("SET", key, b)
+		r.closeConnection()
+
+		res := fmt.Sprintf("%s", ret)
+
+		if res != "OK" {
+			return err
+		}
 	}
-
-	key := fmt.Sprintf("%s:%s", "HTML", mID)
-	ret, _ := r.conn.Do("SETEX", key, config.Get().RedisExpirationTime, b)
-	r.closeConnection()
-
-	res := fmt.Sprintf("%s", ret)
-
-	if res != "OK" {
-		return fmt.Errorf("Could not record HTML in Redis Database: %s", res)
-	}
-
 	return nil
 }
 
-// SetBoletoJSON Grava um boleto em formato JSON no Redis
-func (r *Redis) SetBoletoJSON(b *bytes.Reader, mID string) error {
-	err := r.openConnection()
-
-	if err != nil {
-		return err
-	}
-
-	key := fmt.Sprintf("%s:%s", "JSON", mID)
-	ret, _ := r.conn.Do("SET", key, b)
-	r.closeConnection()
-
-	res := fmt.Sprintf("%s", ret)
-
-	if res != "OK" {
-		return fmt.Errorf("Could not record JSON in Redis Database: %s", res)
-	}
-
-	return nil
-}
-
-//GetBoletoHTML Recupera um boleto do tipo HTML do Redis a partir do MongoID
-func (r *Redis) GetBoletoHTML(mID string) (string, error) {
+//GetBoletoHTMLByID busca um boleto pelo ID que vem na URL
+func (r *Redis) GetBoletoHTMLByID(id string) (string, error) {
 	err := r.openConnection()
 
 	if err != nil {
 		return "", err
 	}
 
-	key := fmt.Sprintf("%s:%s", mID, "HTML")
-	ret, _ := r.conn.Do("GET", key)
+	key := fmt.Sprintf("%s:%s", "HTML", id)
+	ret, err := r.conn.Do("GET", key)
 	r.closeConnection()
 
 	if ret == nil {
