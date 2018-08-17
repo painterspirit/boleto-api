@@ -243,6 +243,72 @@
 			"revisionTime": "2018-02-22T19:45:00Z"
 		},
 		{
+			"checksumSHA1": "kxLQVepojZXUJUy4gcySKqPSfDc=",
+			"path": "github.com/tdewolff/minify",
+			"revision": "948b6490cf3cacab5f4d7474104c3d21bf6eda46",
+			"revisionTime": "2018-08-14T08:18:15Z"
+		},
+		{
+			"checksumSHA1": "A712AqkT4/YMZJviGNTdBNCsDMo=",
+			"path": "github.com/tdewolff/minify/css",
+			"revision": "948b6490cf3cacab5f4d7474104c3d21bf6eda46",
+			"revisionTime": "2018-08-14T08:18:15Z"
+		},
+		{
+			"checksumSHA1": "WCBNgKl6/fCaY/wzpAdQTNq6kTk=",
+			"path": "github.com/tdewolff/minify/html",
+			"revision": "948b6490cf3cacab5f4d7474104c3d21bf6eda46",
+			"revisionTime": "2018-08-14T08:18:15Z"
+		},
+		{
+			"checksumSHA1": "asp/d3oOcE/lezEiA0HX8EmyLpM=",
+			"path": "github.com/tdewolff/minify/js",
+			"revision": "948b6490cf3cacab5f4d7474104c3d21bf6eda46",
+			"revisionTime": "2018-08-14T08:18:15Z"
+		},
+		{
+			"checksumSHA1": "TKs5iYrQXT/BbdVQxuJXgiw1F/I=",
+			"path": "github.com/tdewolff/minify/json",
+			"revision": "948b6490cf3cacab5f4d7474104c3d21bf6eda46",
+			"revisionTime": "2018-08-14T08:18:15Z"
+		},
+		{
+			"checksumSHA1": "uZFDhWclv3YQxRL5uhVrNJSNb28=",
+			"path": "github.com/tdewolff/parse",
+			"revision": "dd9676af8dd934a61082c5b3038e79626847fa32",
+			"revisionTime": "2018-08-11T06:31:47Z"
+		},
+		{
+			"checksumSHA1": "ztgxLu3EbUk+7IMQi4V/XLyAYmQ=",
+			"path": "github.com/tdewolff/parse/buffer",
+			"revision": "dd9676af8dd934a61082c5b3038e79626847fa32",
+			"revisionTime": "2018-08-11T06:31:47Z"
+		},
+		{
+			"checksumSHA1": "wm9aftxseIXTq9zNcWd95hu+6uE=",
+			"path": "github.com/tdewolff/parse/css",
+			"revision": "dd9676af8dd934a61082c5b3038e79626847fa32",
+			"revisionTime": "2018-08-11T06:31:47Z"
+		},
+		{
+			"checksumSHA1": "EZMU7tTQTXEDF1/reKo4wDosht8=",
+			"path": "github.com/tdewolff/parse/html",
+			"revision": "dd9676af8dd934a61082c5b3038e79626847fa32",
+			"revisionTime": "2018-08-11T06:31:47Z"
+		},
+		{
+			"checksumSHA1": "xLFhxgdI7yAdKMVyjBL4ri7gKIY=",
+			"path": "github.com/tdewolff/parse/js",
+			"revision": "dd9676af8dd934a61082c5b3038e79626847fa32",
+			"revisionTime": "2018-08-11T06:31:47Z"
+		},
+		{
+			"checksumSHA1": "uXYLno7ESwO7lRH+A1+f4BS0AHc=",
+			"path": "github.com/tdewolff/parse/strconv",
+			"revision": "dd9676af8dd934a61082c5b3038e79626847fa32",
+			"revisionTime": "2018-08-11T06:31:47Z"
+		},
+		{
 			"checksumSHA1": "G9ZGa1NLkstgPd9EylK9Hq+wqrE=",
 			"path": "github.com/ugorji/go/codec",
 			"revision": "8c0409fcbb70099c748d71f714529204975f6c3f",
