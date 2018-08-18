@@ -148,11 +148,11 @@ const templateBoletoBradescoShopFacil = `
     <div class="headerBtn">
         <div style="text-align:right;">
             <button class="no-print btnDefault print" onclick="window.print()">
-                <span class="align icss-print"></span>
+                <i class="icss-print"></i>
                 <span class="align">&nbspImprimir</span>
             </button>
             <button class="no-print btnDefault print" onclick="window.location='./boleto?fmt=pdf&id={{bsonMongoToString .View.ID}}'">
-                <span class="align icss-file"></span>
+                <i class="icss-files"></i>
                 <span class="align">&nbspGerar PDF</span>
             </button>            
         </div>
