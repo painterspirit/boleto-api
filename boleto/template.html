@@ -123,7 +123,7 @@
             vertical-align: middle;
         }
     </style>
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="./icons.min.css">
 </head>
 
 <body>
@@ -131,11 +131,11 @@
     <div class="headerBtn">
         <div style="text-align:right;">
             <button class="no-print btnDefault print" onclick="window.print()">
-                <span class="align iconFont ion-printer"></span>
+                <span class="align icss-print"></span>
                 <span class="align">&nbspImprimir</span>
             </button>
-            <button class="no-print btnDefault print" onclick="window.location='./boleto/www.google.com'">
-                <span class="align iconFont ion-document-text"></span>
+            <button class="no-print btnDefault print" onclick="window.location='./boleto?fmt=pdf&id={{bsonMongoToString .View.ID}}'">
+                <span class="align icss-file"></span>
                 <span class="align">&nbspGerar PDF</span>
             </button>
             <!--<button class="no-print btnDefault print" onclick="window.location='./boleto/www.google.com'">

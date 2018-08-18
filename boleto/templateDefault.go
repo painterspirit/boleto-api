@@ -137,9 +137,9 @@ const templateBoletoDefault = `
             -webkit-user-select: none;            
             -ms-user-select: none;
             user-select: none;
-        }
-    </style>
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        }            
+    </style>    
+    <link rel="stylesheet" href="./icons.min.css">
 </head>
 
 <body>
@@ -148,12 +148,12 @@ const templateBoletoDefault = `
     <div class="headerBtn">
         <div style="text-align:right;">
             <button class="no-print btnDefault print" onclick="window.print()">
-                <span class="align iconFont ion-printer"></span>
-                <span class="align">&nbspImprimir</span>
-            </button>
-            <button class="no-print btnDefault print" onclick="window.location='./boleto?fmt=pdf&id={{bsonMongoToString .View.ID}}'">
-                <span class="align iconFont ion-document-text"></span>
-                <span class="align">&nbspGerar PDF</span>
+            <i class="icss-print"></i>
+            <span class="align">&nbspImprimir</span>
+        </button>
+        <button class="no-print btnDefault print" onclick="window.location='./boleto?fmt=pdf&id={{bsonMongoToString .View.ID}}'">
+            <i class="icss-files"></i>
+            <span class="align">&nbspGerar PDF</span>
             </button>            
         </div>
     </div>
