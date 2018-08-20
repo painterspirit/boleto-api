@@ -82,6 +82,8 @@ func configFlags(devMode, mockMode, disableLog bool) {
 		os.Setenv("URL_ITAU_REGISTER", "https://gerador-boletos.itau.com.br/router-gateway-app/public/codigo_barras/registro")
 		os.Setenv("URL_ITAU_TICKET", "https://oauth.itau.com.br/identity/connect/token")
 		os.Setenv("URL_BRADESCO_NET_EMPRESA", "https://cobranca.bradesconetempresa.b.br/ibpjregistrotitulows/registrotitulohomologacao")
+		os.Setenv("RECOVERYROBOT_EXECUTION_ENABLED", "true")
+		os.Setenv("RECOVERYROBOT_EXECUTION_IN_MINUTES", "2")
 	}
 	config.Install(mockMode, devMode, disableLog)
 }
