@@ -123,6 +123,21 @@ func (l Log) Fatal(content interface{}, msg string) {
 	})()
 }
 
+//InitRobot loga o inicio da execução do robô de recovery
+func InitRobot() {
+	msg := formatter("- Starting execution")
+	go logger.Information(msg, defaultRobotProperties("Execute", "Recovery"))
+}
+
+//EndRobot loga o fim da execução do robô de recovery
+func EndRobot() {
+	if config.Get().DisableLog {
+		return
+	}
+	msg := formatter("- Finishing execution")
+	go logger.Information(msg, defaultRobotProperties("Finish", "Recovery"))
+}
+
 func (l Log) defaultProperties(messageType string, content interface{}) goseq.Properties {
 	props := goseq.NewProperties()
 	props.AddProperty("MessageType", messageType)
@@ -132,6 +147,13 @@ func (l Log) defaultProperties(messageType string, content interface{}) goseq.Pr
 	props.AddProperty("NossoNumero", l.NossoNumero)
 	props.AddProperty("RequestKey", l.RequestKey)
 	props.AddProperty("BankName", l.BankName)
+	return props
+}
+
+func defaultRobotProperties(msgType, op string) goseq.Properties {
+	props := goseq.NewProperties()
+	props.AddProperty("MessageType", msgType)
+	props.AddProperty("Operation", op)
 	return props
 }
 
