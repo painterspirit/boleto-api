@@ -41,7 +41,7 @@ func (r *Redis) closeConnection() {
 }
 
 //SetBoletoHTML Grava um boleto em formato Html no Redis
-func (r *Redis) SetBoletoHTML(b string, mID string, lg *log.Log) {
+func (r *Redis) SetBoletoHTML(b, mID string, lg *log.Log) {
 	err := r.openConnection()
 
 	if err != nil {
@@ -82,22 +82,22 @@ func (r *Redis) SetBoletoJSON(b, mID string) error {
 }
 
 //GetBoletoHTMLByID busca um boleto pelo ID que vem na URL
-func (r *Redis) GetBoletoHTMLByID(id string) (string, error) {
+func (r *Redis) GetBoletoHTMLByID(id string) string {
 	err := r.openConnection()
 
 	if err != nil {
-		return "", err
+		return ""
 	}
 
 	key := fmt.Sprintf("%s:%s", "HTML", id)
-	ret, err := r.conn.Do("GET", key)
+	ret, _ := r.conn.Do("GET", key)
 	r.closeConnection()
 
 	if ret == nil {
-		return "", nil
+		return ""
 	}
 
-	return fmt.Sprintf("%s", ret), nil
+	return fmt.Sprintf("%s", ret)
 }
 
 //GetBoletoJSON Reupero um boleto do tipo JSON do Redis a partir do MongoID

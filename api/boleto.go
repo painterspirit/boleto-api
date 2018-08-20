@@ -57,7 +57,7 @@ func registerBoleto(c *gin.Context) {
 	} else {
 
 		mongo, errMongo := db.CreateMongo()
-		checkError(c, err, lg)
+		checkError(c, errMongo, lg)
 
 		boView := models.NewBoletoView(bol, resp, bank.GetBankNameIntegration())
 		mID, _ := boView.ID.MarshalText()
@@ -99,17 +99,23 @@ func getBoleto(c *gin.Context) {
 
 	redis := db.CreateRedis()
 
-	b, err := redis.GetBoletoHTMLByID(id)
-	if checkError(c, err, log) {
-		return
-	}
+	b := redis.GetBoletoHTMLByID(id)
 
 	if b == "" {
-		//METODO PARA BUSCAR O BOLETO NO MONGODB
-		// TALVEZ APENAS RENDERIZAR E ENVIAR PRO CLIENT
-		// TALVES FAZER O SET NO REDIS
-		//IR NO MONGODB
-		log.Info("INDO NO MONGODB")
+		mongo, errMongo := db.CreateMongo()
+		if checkError(c, errMongo, log) {
+			return
+		}
+
+		boView, err := mongo.GetBoletoByID(id)
+		if checkError(c, err, log) {
+			return
+		}
+
+		bhtml, err := boleto.HTML(boView, "html")
+		b = minifyString(bhtml, "text/html")
+
+		redis.SetBoletoHTML(b, id, log)
 	}
 
 	if fmt == "html" {
