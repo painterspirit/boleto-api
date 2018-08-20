@@ -42,7 +42,7 @@ func handleSignal(c chan os.Signal) {
 	config.Stop()
 	log.Info("Quiting BoletoApi")
 	log.Close()
-	//db.GetDB().Close()
+
 	fmt.Println("Done")
 	os.Exit(1)
 }
