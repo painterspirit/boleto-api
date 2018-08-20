@@ -165,6 +165,12 @@
 			"revisionTime": "2017-08-31T15:15:03Z"
 		},
 		{
+			"checksumSHA1": "4g/XL+0Ou8o0azYuGsu9NfBzsLQ=",
+			"path": "github.com/jasonlvhit/gocron",
+			"revision": "54194c9749d48b073c9aeb2c787b6882e95dd0cd",
+			"revisionTime": "2018-03-12T19:25:15Z"
+		},
+		{
 			"checksumSHA1": "DdVb2staqPb8lhY1mIlRSgENKAc=",
 			"path": "github.com/json-iterator/go",
 			"revision": "1624edc4454b8682399def8740d46db5e4362ba4",
