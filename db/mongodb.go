@@ -26,13 +26,12 @@ var (
 )
 
 //CreateMongo cria uma nova intancia de conexão com o mongodb
-func CreateMongo() (*MongoDb, error) {
+func CreateMongo(l *log.Log) (*MongoDb, error) {
 
 	if dbSession == nil {
 		dbSession, err = mgo.DialWithInfo(getInfo())
 
 		if err != nil {
-			l := log.CreateLog()
 			l.Warn(err, fmt.Sprintf("Error create connection mongo %s", err.Error()))
 			return nil, err
 		}

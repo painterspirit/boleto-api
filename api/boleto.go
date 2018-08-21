@@ -55,9 +55,7 @@ func registerBoleto(c *gin.Context) {
 		}
 
 	} else {
-
-		mongo, errMongo := db.CreateMongo()
-		checkError(c, errMongo, lg)
+		mongo, errMongo := db.CreateMongo(lg)
 
 		boView := models.NewBoletoView(bol, resp, bank.GetBankNameIntegration())
 		mID, _ := boView.ID.MarshalText()
@@ -102,7 +100,7 @@ func getBoleto(c *gin.Context) {
 	b := redis.GetBoletoHTMLByID(id)
 
 	if b == "" {
-		mongo, errMongo := db.CreateMongo()
+		mongo, errMongo := db.CreateMongo(log)
 		if checkError(c, errMongo, log) {
 			return
 		}
@@ -152,9 +150,12 @@ func toPdf(page string) ([]byte, error) {
 
 func getBoletoByID(c *gin.Context) {
 	id := c.Param("id")
-	mongo, errDb := db.CreateMongo()
+	log := log.CreateLog()
+	log.Operation = "GetBoletoV1"
+
+	mongo, errDb := db.CreateMongo(log)
 	if errDb != nil {
-		checkError(c, models.NewInternalServerError("MP500", "Erro interno"), log.CreateLog())
+		checkError(c, models.NewInternalServerError("MP500", "Erro interno"), log)
 	}
 	boleto, err := mongo.GetBoletoByID(id)
 	if err != nil {
