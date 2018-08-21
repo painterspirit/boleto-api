@@ -124,18 +124,21 @@ func (l Log) Fatal(content interface{}, msg string) {
 }
 
 //InitRobot loga o inicio da execução do robô de recovery
-func InitRobot() {
+func (l Log) InitRobot() {
 	msg := formatter("- Starting execution")
-	go logger.Information(msg, defaultRobotProperties("Execute", "Recovery"))
+	go logger.Information(msg, defaultRobotProperties("Execute", l.Operation))
+}
+
+//ResumeRobot loga um resumo de Recovery do robô de recovery
+func (l Log) ResumeRobot(key string) {
+	msg := formatter(key)
+	go logger.Information(msg, defaultRobotProperties("RecoveryBoleto", l.Operation))
 }
 
 //EndRobot loga o fim da execução do robô de recovery
-func EndRobot() {
-	if config.Get().DisableLog {
-		return
-	}
+func (l Log) EndRobot() {
 	msg := formatter("- Finishing execution")
-	go logger.Information(msg, defaultRobotProperties("Finish", "Recovery"))
+	go logger.Information(msg, defaultRobotProperties("Finish", l.Operation))
 }
 
 func (l Log) defaultProperties(messageType string, content interface{}) goseq.Properties {
