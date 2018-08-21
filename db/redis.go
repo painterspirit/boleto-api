@@ -1,6 +1,7 @@
 package db
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"time"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/mundipagg/boleto-api/config"
 	"github.com/mundipagg/boleto-api/log"
+	"github.com/mundipagg/boleto-api/models"
 )
 
 //Redis Classe de Conexão com o Banco REDIS
@@ -50,7 +52,6 @@ func (r *Redis) SetBoletoHTML(b, mID string, lg *log.Log) {
 
 		key := fmt.Sprintf("%s:%s", "HTML", mID)
 		ret, err := r.conn.Do("SETEX", key, config.Get().RedisExpirationTime, b)
-		r.closeConnection()
 
 		res := fmt.Sprintf("%s", ret)
 
@@ -59,26 +60,8 @@ func (r *Redis) SetBoletoHTML(b, mID string, lg *log.Log) {
 		}
 	}
 
-}
+	r.closeConnection()
 
-//SetBoletoJSON Grava um boleto em formato JSON no Redis
-func (r *Redis) SetBoletoJSON(b, mID string) error {
-	err := r.openConnection()
-
-	if err != nil {
-		return err
-	} else {
-		key := fmt.Sprintf("%s:%s", "JSON", mID)
-		ret, err := r.conn.Do("SET", key, b)
-		r.closeConnection()
-
-		res := fmt.Sprintf("%s", ret)
-
-		if res != "OK" {
-			return err
-		}
-	}
-	return nil
 }
 
 //GetBoletoHTMLByID busca um boleto pelo ID que vem na URL
@@ -100,21 +83,79 @@ func (r *Redis) GetBoletoHTMLByID(id string) string {
 	return fmt.Sprintf("%s", ret)
 }
 
-//GetBoletoJSON Reupero um boleto do tipo JSON do Redis a partir do MongoID
-// func (r *Redis) GetBoletoJSON(mID string) (m *models.BoletoView, error) {
-// 	err := r.openConnection()
+//SetBoletoJSON Grava um boleto em formato JSON no Redis
+func (r *Redis) SetBoletoJSON(b, mID string) error {
+	err := r.openConnection()
 
-// 	if err != nil {
-// 		return "", err
-// 	}
+	if err != nil {
+		return err
+	}
 
-// 	key := fmt.Sprintf("%s:%s", mID, "JSON")
-// 	ret, _ := r.conn.Do("GET", key)
-// 	r.closeConnection()
+	key := fmt.Sprintf("%s:%s", "JSON", mID)
+	ret, err := r.conn.Do("SET", key, b)
+	r.closeConnection()
 
-// 	if ret == nil {
-// 		return "", nil
-// 	}
+	res := fmt.Sprintf("%s", ret)
 
-// 	return m, nil
-// }
+	if res != "OK" {
+		return err
+	}
+
+	return nil
+}
+
+// GetBoletoJSONByKey Recupera um boleto do tipo JSON do Redis
+func (r *Redis) GetBoletoJSONByKey(key string) (models.BoletoView, error) {
+	err := r.openConnection()
+
+	if err != nil {
+		return models.BoletoView{}, err
+	}
+
+	ret, err := r.conn.Do("GET", key)
+	r.closeConnection()
+
+	if ret != nil {
+		result := models.BoletoView{}
+		r := fmt.Sprintf("%s", ret)
+		_ = json.Unmarshal([]byte(r), &result)
+		return result, nil
+	}
+
+	return models.BoletoView{}, err
+}
+
+// DeleteBoletoJSONByKey Recupera um boleto do tipo JSON do Redis
+func (r *Redis) DeleteBoletoJSONByKey(key string) {
+	err := r.openConnection()
+
+	if err == nil {
+
+		_, err = r.conn.Do("DEL", key)
+	}
+
+	r.closeConnection()
+}
+
+// GetAllJSON Recupera todas as keys JSON do Redis
+func (r *Redis) GetAllJSON() ([]string, error) {
+
+	err := r.openConnection()
+	if err != nil {
+		return nil, err
+	}
+
+	var keys []string
+
+	arr, err := redis.Values(r.conn.Do("SCAN", 0, "MATCH", "JSON:*", "COUNT", 500))
+	if err != nil {
+		return nil, err
+	}
+
+	keys, _ = redis.Strings(arr[1], nil)
+
+	r.closeConnection()
+
+	return keys, nil
+
+}
