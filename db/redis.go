@@ -45,9 +45,8 @@ func (r *Redis) closeConnection() {
 //SetBoletoHTML Grava um boleto em formato Html no Redis
 func (r *Redis) SetBoletoHTML(b, mID string, lg *log.Log) {
 	err := r.openConnection()
-
 	if err != nil {
-		lg.Warn(err, fmt.Sprintf("OpenConnection - Could not connection to Redis Database"))
+		lg.Warn(err, fmt.Sprintf("OpenConnection [SetBoletoHTML] - Could not connection to Redis Database "))
 	} else {
 
 		key := fmt.Sprintf("%s:%s", "HTML", mID)
@@ -56,19 +55,20 @@ func (r *Redis) SetBoletoHTML(b, mID string, lg *log.Log) {
 		res := fmt.Sprintf("%s", ret)
 
 		if res != "OK" {
-			lg.Warn(err, fmt.Sprintf("SetBoletoHTML - Could not record HTML in Redis Database: %s", err.Error()))
+			lg.Warn(err, fmt.Sprintf("SetBoletoHTML [SetBoletoHTML] - Could not record HTML in Redis Database: %s", err.Error()))
 		}
+
+		r.closeConnection()
 	}
-
-	r.closeConnection()
-
 }
 
 //GetBoletoHTMLByID busca um boleto pelo ID que vem na URL
-func (r *Redis) GetBoletoHTMLByID(id string) string {
+func (r *Redis) GetBoletoHTMLByID(id string, lg *log.Log) string {
+
 	err := r.openConnection()
 
 	if err != nil {
+		lg.Warn(err, fmt.Sprintf("OpenConnection [GetBoletoHTMLByID] - Could not connection to Redis Database"))
 		return ""
 	}
 
@@ -84,10 +84,11 @@ func (r *Redis) GetBoletoHTMLByID(id string) string {
 }
 
 //SetBoletoJSON Grava um boleto em formato JSON no Redis
-func (r *Redis) SetBoletoJSON(b, mID string) error {
+func (r *Redis) SetBoletoJSON(b, mID string, lg *log.Log) error {
 	err := r.openConnection()
 
 	if err != nil {
+		lg.Warn(err, fmt.Sprintf("OpenConnection [SetBoletoJSON] - Could not connection to Redis Database "))
 		return err
 	}
 
@@ -98,6 +99,7 @@ func (r *Redis) SetBoletoJSON(b, mID string) error {
 	res := fmt.Sprintf("%s", ret)
 
 	if res != "OK" {
+		lg.Warn(err, fmt.Sprintf("SetBoletoHTML [SetBoletoJSON] - Could not record HTML in Redis Database: %s", err.Error()))
 		return err
 	}
 
@@ -105,10 +107,11 @@ func (r *Redis) SetBoletoJSON(b, mID string) error {
 }
 
 // GetBoletoJSONByKey Recupera um boleto do tipo JSON do Redis
-func (r *Redis) GetBoletoJSONByKey(key string) (models.BoletoView, error) {
+func (r *Redis) GetBoletoJSONByKey(key string, lg *log.Log) (models.BoletoView, error) {
 	err := r.openConnection()
 
 	if err != nil {
+		lg.Warn(err, fmt.Sprintf("OpenConnection [GetBoletoJSONByKey] - Could not connection to Redis Database "))
 		return models.BoletoView{}, err
 	}
 
@@ -126,15 +129,18 @@ func (r *Redis) GetBoletoJSONByKey(key string) (models.BoletoView, error) {
 }
 
 // DeleteBoletoJSONByKey Recupera um boleto do tipo JSON do Redis
-func (r *Redis) DeleteBoletoJSONByKey(key string) {
+func (r *Redis) DeleteBoletoJSONByKey(key string, lg *log.Log) {
 	err := r.openConnection()
 
-	if err == nil {
+	if err != nil {
+		lg.Warn(err, fmt.Sprintf("OpenConnection [DeleteBoletoJSONByKey] - Could not connection to Redis Database "))
+	} else {
 
 		_, err = r.conn.Do("DEL", key)
+		r.closeConnection()
+
 	}
 
-	r.closeConnection()
 }
 
 // GetAllJSON Recupera todas as keys JSON do Redis

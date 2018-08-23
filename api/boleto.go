@@ -75,7 +75,7 @@ func registerBoleto(c *gin.Context) {
 		if errMongo != nil {
 			b := minifyJSON(boView)
 
-			err = redis.SetBoletoJSON(b, resp.ID)
+			err = redis.SetBoletoJSON(b, resp.ID, lg)
 			if checkError(c, err, lg) {
 				return
 			}
@@ -97,7 +97,7 @@ func getBoleto(c *gin.Context) {
 
 	redis := db.CreateRedis()
 
-	b := redis.GetBoletoHTMLByID(id)
+	b := redis.GetBoletoHTMLByID(id, log)
 
 	if b == "" {
 		mongo, errMongo := db.CreateMongo(log)
