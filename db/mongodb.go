@@ -48,7 +48,7 @@ func getInfo() *mgo.DialInfo {
 	connMgo := strings.Split(config.Get().MongoURL, ",")
 	return &mgo.DialInfo{
 		Addrs:     connMgo,
-		Timeout:   10 * time.Second,
+		Timeout:   5 * time.Second,
 		Database:  "Boleto",
 		PoolLimit: 512,
 		Username:  config.Get().MongoUser,
@@ -91,8 +91,6 @@ func (e *MongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
 	}
 
 	if err != nil {
-		l := log.CreateLog()
-		l.Warn(err, fmt.Sprintf("GetBoletoByID %s", err.Error()))
 		return models.BoletoView{}, err
 	}
 
