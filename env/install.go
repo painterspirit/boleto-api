@@ -70,7 +70,6 @@ func configFlags(devMode, mockMode, disableLog bool) {
 		os.Setenv("REDIS_PASSWORD", "123456")
 		os.Setenv("REDIS_DATABASE", "8")
 		os.Setenv("REDIS_EXPIRATION_TIME_IN_SECONDS", "2880")
-		os.Setenv("BOLETO_JSON_STORE", "C:\\boleto_json_store\\JSONFileStore.json")
 		os.Setenv("CERT_BOLETO_CRT", "C:\\cert_boleto_api\\certificate.crt")
 		os.Setenv("CERT_BOLETO_KEY", "C:\\cert_boleto_api\\pkey.key")
 		os.Setenv("CERT_BOLETO_CA", "C:\\cert_boleto_api\\ca-cert.ca")

@@ -101,7 +101,6 @@ func Install(mockMode, devMode, disableLog bool) {
 		RedisPassword:                   os.Getenv("REDIS_PASSWORD"),
 		RedisDatabase:                   os.Getenv("REDIS_DATABASE"),
 		RedisExpirationTime:             os.Getenv("REDIS_EXPIRATION_TIME_IN_SECONDS"),
-		BoletoJSONFileStore:             os.Getenv("BOLETO_JSON_STORE"),
 		CertBoletoPathCrt:               os.Getenv("CERT_BOLETO_CRT"),
 		CertBoletoPathKey:               os.Getenv("CERT_BOLETO_KEY"),
 		CertBoletoPathCa:                os.Getenv("CERT_BOLETO_CA"),
