@@ -66,11 +66,7 @@ func registerBoleto(c *gin.Context) {
 			errMongo = mongo.SaveBoleto(boView)
 		}
 
-		bhtml, err := boleto.HTML(boView, "html")
-		s := minifyString(bhtml, "text/html")
-
 		redis := db.CreateRedis()
-		redis.SetBoletoHTML(s, resp.ID, lg)
 
 		if errMongo != nil {
 			b := minifyJSON(boView)
@@ -80,6 +76,10 @@ func registerBoleto(c *gin.Context) {
 				return
 			}
 		}
+
+		bhtml, err := boleto.HTML(boView, "html")
+		s := minifyString(bhtml, "text/html")
+		redis.SetBoletoHTML(s, resp.ID, lg)
 
 	}
 	c.JSON(st, resp)
