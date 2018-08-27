@@ -77,7 +77,7 @@ func registerBoleto(c *gin.Context) {
 			}
 		}
 
-		bhtml, err := boleto.HTML(boView, "html")
+		bhtml, _ := boleto.HTML(boView, "html")
 		s := minifyString(bhtml, "text/html")
 		redis.SetBoletoHTML(s, resp.ID, lg)
 
