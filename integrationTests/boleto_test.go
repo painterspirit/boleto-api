@@ -268,7 +268,7 @@ func TestRegisterBoletoRequest(t *testing.T) {
 		Convey("A mensagem de retorno deverá ser Boleto não encontrado", func() {
 			resp, _, err := util.Get("http://localhost:3000/boleto?fmt=html&id=90230843492384", getBody(models.Caixa, 200), nil)
 			So(err, ShouldBeNil)
-			So(resp, ShouldContainSubstring, "Boleto não encontrado na base de dados")
+			So(resp, ShouldContainSubstring, "Boleto não encontrado")
 		})
 
 	})
