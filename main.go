@@ -14,7 +14,6 @@ import (
 	"github.com/mundipagg/boleto-api/app"
 	"github.com/mundipagg/boleto-api/config"
 	"github.com/mundipagg/boleto-api/log"
-	"github.com/mundipagg/boleto-api/robot"
 )
 
 var (
@@ -42,7 +41,7 @@ func handleSignal(c chan os.Signal) {
 	config.Stop()
 	log.Info("Quiting BoletoApi")
 	log.Close()
-	//db.GetDB().Close()
+
 	fmt.Println("Done")
 	os.Exit(1)
 }
@@ -58,13 +57,13 @@ func main() {
 	if *mockOnly {
 		w := make(chan int)
 		config.Install(true, true, true)
-		robot.GoRobots()
+		// robot.GoRobots()
 		<-w
 	} else {
 		params := app.NewParams()
 		if *airPlaneMode {
 			params.DevMode = true
-			params.DisableLog = true
+			params.DisableLog = false
 			params.MockMode = true
 			env = strconv.FormatBool(params.DevMode)
 		} else {
@@ -73,6 +72,7 @@ func main() {
 			params.MockMode = *mockMode
 			env = strconv.FormatBool(params.DevMode)
 		}
+
 		logo(env)
 		app.Run(params)
 	}
@@ -96,4 +96,5 @@ $$$$$$$  |\$$$$$$  |$$ |\$$$$$$$\  \$$$$  |\$$$$$$  |$$ |  $$ |$$$$$$$  |$$ |
 	fmt.Println(l)
 	fmt.Println("Version: " + config.Get().Version)
 	fmt.Println("DevMode: " + env)
+	fmt.Println("RecoveryRobot Enabled: " + config.Get().RecoveryRobotExecutionEnabled)
 }

@@ -27,9 +27,7 @@ type Log struct {
 
 //Install instala o "servico" de log do SEQ
 func Install() error {
-	if config.Get().DisableLog {
-		return nil
-	}
+
 	_logger, err := goseq.GetLogger(config.Get().SEQUrl, config.Get().SEQAPIKey)
 	if err != nil {
 		return err
@@ -125,6 +123,24 @@ func (l Log) Fatal(content interface{}, msg string) {
 	})()
 }
 
+//InitRobot loga o inicio da execução do robô de recovery
+func (l Log) InitRobot() {
+	msg := formatter("- Starting execution")
+	go logger.Information(msg, defaultRobotProperties("Execute", l.Operation, ""))
+}
+
+//ResumeRobot loga um resumo de Recovery do robô de recovery
+func (l Log) ResumeRobot(key string) {
+	msg := formatter(key)
+	go logger.Information(msg, defaultRobotProperties("RecoveryBoleto", l.Operation, key))
+}
+
+//EndRobot loga o fim da execução do robô de recovery
+func (l Log) EndRobot() {
+	msg := formatter("- Finishing execution")
+	go logger.Information(msg, defaultRobotProperties("Finish", l.Operation, ""))
+}
+
 func (l Log) defaultProperties(messageType string, content interface{}) goseq.Properties {
 	props := goseq.NewProperties()
 	props.AddProperty("MessageType", messageType)
@@ -134,6 +150,18 @@ func (l Log) defaultProperties(messageType string, content interface{}) goseq.Pr
 	props.AddProperty("NossoNumero", l.NossoNumero)
 	props.AddProperty("RequestKey", l.RequestKey)
 	props.AddProperty("BankName", l.BankName)
+	return props
+}
+
+func defaultRobotProperties(msgType, op, key string) goseq.Properties {
+	props := goseq.NewProperties()
+	props.AddProperty("MessageType", msgType)
+	props.AddProperty("Operation", op)
+
+	if key != "" {
+		props.AddProperty("BoletoKey", key)
+	}
+
 	return props
 }
 

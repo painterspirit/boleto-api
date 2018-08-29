@@ -1,14 +1,14 @@
 package integrationTests
 
 import (
-
 	"testing"
+
+	"strings"
 
 	"github.com/mundipagg/boleto-api/app"
 	"github.com/mundipagg/boleto-api/models"
 	"github.com/mundipagg/boleto-api/util"
 	. "github.com/smartystreets/goconvey/convey"
-	"strings"
 )
 
 func TestRegisterBoletoBradescoShopFacil(t *testing.T) {

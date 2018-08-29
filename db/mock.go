@@ -7,17 +7,16 @@ import (
 	"github.com/mundipagg/boleto-api/models"
 )
 
-type mock struct{}
 
 //SaveBoleto salva o boleto num cache local em memoria
-func (m *mock) SaveBoleto(boleto models.BoletoView) error {
+func SaveBoletoMock(boleto models.BoletoView) error {
 	idBson, _ := boleto.ID.MarshalText()
 	cache.Set(string(idBson), boleto)
 	return nil
 }
 
 //GetBoletoById retorna o boleto por id do cache em memoria
-func (m *mock) GetBoletoByID(id string) (models.BoletoView, error) {
+func GetBoletoByIDMock(id string) (models.BoletoView, error) {
 	c, ok := cache.Get(string(id))
 	if !ok {
 		return models.BoletoView{}, errors.New("Boleto não encontrado")
@@ -25,4 +24,4 @@ func (m *mock) GetBoletoByID(id string) (models.BoletoView, error) {
 	return c.(models.BoletoView), nil
 }
 
-func (m *mock) Close() {}
+func Close() {}

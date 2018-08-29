@@ -152,7 +152,7 @@ func stringify(boleto models.BoletoRequest) string {
 func TestRegisterBoletoRequest(t *testing.T) {
 	param := app.NewParams()
 	param.DevMode = true
-	param.DisableLog = true
+	param.DisableLog = false
 	param.MockMode = true
 	go app.Run(param)
 	time.Sleep(10 * time.Second)
@@ -259,27 +259,13 @@ func TestRegisterBoletoRequest(t *testing.T) {
 	})
 
 	Convey("Quando um boleto não existir na base de dados", t, func() {
-		Convey("Deve-se retornar um status 404", func() {
-			_, st, err := util.Get("http://localhost:3000/boleto?fmt=html&id=90230843492384", getBody(models.Caixa, 200), nil)
-			So(err, ShouldBeNil)
-			So(st, ShouldEqual, 404)
-		})
 
-		Convey("A mensagem de retorno deverá ser Boleto não encontrado", func() {
+		Convey("A mensagem de retorno deverá ser um JSON de Erros com Message: Not Found", func() {
 			resp, _, err := util.Get("http://localhost:3000/boleto?fmt=html&id=90230843492384", getBody(models.Caixa, 200), nil)
 			So(err, ShouldBeNil)
-			So(resp, ShouldContainSubstring, "Boleto não encontrado na base de dados")
+			So(resp, ShouldContainSubstring, "{\"errors\":[{\"code\":\"MP400\",\"message\":\"not found\"}]}")
 		})
 
-	})
-
-	Convey("Deve-se registrar um boleto na Caixa", t, func() {
-		_, st, err := util.Post("http://localhost:3000/v1/boleto/register", getBody(models.Caixa, 200), nil)
-		So(err, ShouldBeNil)
-		So(st, ShouldEqual, 200)
-		Convey("Deve-se gerar um boleto específico para a Caixa", func() {
-			//TODO
-		})
 	})
 
 	Convey("Deve-se retornar um objeto de erro quando não registra um boleto na Caixa", t, func() {
@@ -290,7 +276,7 @@ func TestRegisterBoletoRequest(t *testing.T) {
 		errJSON := json.Unmarshal([]byte(response), &boleto)
 		So(errJSON, ShouldEqual, nil)
 		So(len(boleto.Errors), ShouldBeGreaterThan, 0)
-	})	
+	})
 
 	Convey("Quando o serviço da caixa estiver offline", t, func() {
 		Convey("Deve-se retornar o status 504", func() {
