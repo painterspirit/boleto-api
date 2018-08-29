@@ -57,10 +57,6 @@ func getInfo() *mgo.DialInfo {
 //SaveBoleto salva um boleto no mongoDB
 func (e *MongoDb) SaveBoleto(boleto models.BoletoView) error {
 
-	if config.Get().MockMode || config.Get().DevMode {
-		return SaveBoletoMock(boleto)
-	}
-
 	e.m.Lock()
 	defer e.m.Unlock()
 
@@ -75,10 +71,6 @@ func (e *MongoDb) SaveBoleto(boleto models.BoletoView) error {
 
 //GetBoletoByID busca um boleto pelo ID que vem na URL
 func (e *MongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
-
-	if config.Get().MockMode || config.Get().DevMode {
-		return GetBoletoByIDMock(id)
-	}
 
 	e.m.Lock()
 	defer e.m.Unlock()
