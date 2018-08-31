@@ -112,8 +112,6 @@ func getBoleto(c *gin.Context) {
 
 		bhtml, err := boleto.HTML(boView, "html")
 		b = minifyString(bhtml, "text/html")
-
-		redis.SetBoletoHTML(b, id, log)
 	}
 
 	if fmt == "html" {
