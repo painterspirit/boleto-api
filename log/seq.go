@@ -2,6 +2,7 @@ package log
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/mundipagg/boleto-api/config"
 	"github.com/mundipagg/goseq"
@@ -21,6 +22,7 @@ type Log struct {
 	Recipient   string
 	RequestKey  string
 	BankName    string
+	IPAddress   string
 	NossoNumero uint
 	logger      *goseq.Logger
 }
@@ -62,7 +64,8 @@ func (l Log) Request(content interface{}, url string, headers map[string]string)
 		props := l.defaultProperties("Request", content)
 		props.AddProperty("Headers", headers)
 		props.AddProperty("URL", url)
-		msg := formatter("to {Recipient} ({URL})")
+		action := strings.Split(url, "/")
+		msg := formatter(fmt.Sprintf("to {BankName} (%s) | {Recipient}", action[len(action)-1]))
 
 		l.logger.Information(msg, props)
 	})()
@@ -76,7 +79,37 @@ func (l Log) Response(content interface{}, url string) {
 	go (func() {
 		props := l.defaultProperties("Response", content)
 		props.AddProperty("URL", url)
-		msg := formatter("from {Recipient} ({URL})")
+		action := strings.Split(url, "/")
+		msg := formatter(fmt.Sprintf("from {BankName} (%s) | {Recipient}", action[len(action)-1]))
+
+		l.logger.Information(msg, props)
+	})()
+}
+
+// Request loga o request que chega na boleto api
+func (l Log) RequestApplication(content interface{}, url string, headers map[string]string) {
+	if config.Get().DisableLog {
+		return
+	}
+	go (func() {
+		props := l.defaultProperties("Request", content)
+		props.AddProperty("Headers", headers)
+		props.AddProperty("URL", url)
+		msg := formatter("from {IPAddress} | {Recipient}")
+
+		l.logger.Information(msg, props)
+	})()
+}
+
+// Response loga o response que sai da boleto api
+func (l Log) ResponseApplication(content interface{}, url string) {
+	if config.Get().DisableLog {
+		return
+	}
+	go (func() {
+		props := l.defaultProperties("Response", content)
+		props.AddProperty("URL", url)
+		msg := formatter(" {Operation} | {Recipient}")
 
 		l.logger.Information(msg, props)
 	})()
@@ -150,6 +183,7 @@ func (l Log) defaultProperties(messageType string, content interface{}) goseq.Pr
 	props.AddProperty("NossoNumero", l.NossoNumero)
 	props.AddProperty("RequestKey", l.RequestKey)
 	props.AddProperty("BankName", l.BankName)
+	props.AddProperty("IPAddress", l.IPAddress)
 	return props
 }
 

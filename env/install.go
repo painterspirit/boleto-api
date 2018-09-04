@@ -50,7 +50,7 @@ func configFlags(devMode, mockMode, disableLog bool) {
 		os.Setenv("PDF_API", "http://localhost:7070/topdf")
 		os.Setenv("API_PORT", "3000")
 		os.Setenv("API_VERSION", "0.0.1")
-		os.Setenv("ENVIROMENT", "Development")
+		os.Setenv("ENVIRONMENT", "Development")
 		os.Setenv("SEQ_URL", "http://localhost:5341")
 		os.Setenv("SEQ_API_KEY", "4jZzTybZ9bUHtJiPdh6")
 		os.Setenv("ENABLE_REQUEST_LOG", "false")
