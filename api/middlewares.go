@@ -73,11 +73,12 @@ func ParseBoleto() gin.HandlerFunc {
 		l.Recipient = boleto.Recipient.Name
 		l.RequestKey = boleto.RequestKey
 		l.BankName = bank.GetBankNameIntegration()
-		l.Request(boleto, c.Request.URL.RequestURI(), util.HeaderToMap(c.Request.Header))
+		l.IPAddress = c.ClientIP()
+		l.RequestApplication(boleto, c.Request.URL.RequestURI(), util.HeaderToMap(c.Request.Header))
 		c.Set("boleto", boleto)
 		c.Next()
 		resp, _ := c.Get("boletoResponse")
-		l.Response(resp, c.Request.URL.RequestURI())
+		l.ResponseApplication(resp, c.Request.URL.RequestURI())
 		tag := bank.GetBankNameIntegration() + "-status"
 		businessMetrics.Push(tag, c.Writer.Status())
 	}

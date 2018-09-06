@@ -39,6 +39,7 @@ func registerBoleto(c *gin.Context) {
 	lg.Recipient = bol.Recipient.Name
 	lg.RequestKey = bol.RequestKey
 	lg.BankName = bank.GetBankNameIntegration()
+	lg.IPAddress = c.ClientIP()
 
 	resp, err := bank.ProcessBoleto(&bol)
 	if checkError(c, err, lg) {
