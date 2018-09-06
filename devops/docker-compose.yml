@@ -1,19 +1,20 @@
 version: '2'
 
 services:
-  boleto-api:
-    build: 
-      context: ..
-      dockerfile: ./devops/Dockerfile      
-    volumes:
-      - c:/boleto_json_store/:/home/mundipagg/upMongo
-      - c:/cert_boleto_api/:/home/mundipagg/boleto_cert/
-    ports:
-      - "3000:3000"
-    links:
-      - pdfapi
-      - mongodb
-      - seq
+  # boleto-api:
+  #   build: 
+  #     context: ..
+  #     dockerfile: ./devops/Dockerfile      
+  #   volumes:
+  #     - c:/boleto_json_store/:/home/mundipagg/upMongo
+  #     - c:/cert_boleto_api/:/home/mundipagg/boleto_cert/
+  #   ports:
+  #     - "3000:3000"
+  #   links:
+  #     - pdfapi
+  #     - mongodb
+  #     - seq
+  #     - influxdb
     
   pdfapi:
     image: "pmoneda/pdfapi"
@@ -25,15 +26,15 @@ services:
     ports: 
       - "27017:27017"
 
-  seq:
-    image: "datalust/seq:latest"
-    ports:
-      - "55341:5341"
-      - "8070:80"
-    volumes:
-      - c:/seq_boleto/:/data
-    environment:
-      - ACCEPT_EULA=Y
+  # seq:
+  #   image: "datalust/seq:latest"
+  #   ports:
+  #     - "55341:5341"
+  #     - "8070:80"
+  #   volumes:
+  #     - c:/seq_boleto/:/data
+  #   environment:
+  #     - ACCEPT_EULA=Y
   
   redis:
     image: "bitnami/redis:latest"
@@ -43,6 +44,26 @@ services:
       - REDIS_PASSWORD=123456
     volumes:
       - c:/redis_boleto:/bitnami
+
+  influxdb:
+    image: "influxdb:latest"
+    ports:
+      - "8086:8086"
+    environment:
+      - INFLUXDB_DATA_QUERY_LOG_ENABLED=false
+      - INFLUXDB_HTTP_AUTH_ENABLED=true
+      - INFLUXDB_HTTP_LOG_ENABLED=false
+    volumes:
+      - c:/influx_boleto/influxdb/data:/var/lib/influxdb
+
+  grafana:
+    image: "grafana/grafana:latest"
+    ports:
+      - "3030:3000"
+    links:
+      - influxdb
+    volumes:
+      - c:/influx_boleto/grafana/data:/var/lib/grafana
 
     
         
