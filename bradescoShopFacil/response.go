@@ -2,7 +2,7 @@ package bradescoShopFacil
 
 var apiResponse = `
 {
-	{{if eq .returnCode "0"}}
+	{{if or (eq .returnCode "0") (eq .returnCode "93005999")}}
        "DigitableLine": "{{fmtDigitableLine (trim .digitableLine)}}",
 		"Links": [{
 			"href":"{{.url}}",
