@@ -46,24 +46,34 @@ services:
       - c:/redis_boleto:/bitnami
 
   influxdb:
-    image: "influxdb:latest"
-    ports:
-      - "8086:8086"
-    environment:
-      - INFLUXDB_DATA_QUERY_LOG_ENABLED=false
-      - INFLUXDB_HTTP_AUTH_ENABLED=true
-      - INFLUXDB_HTTP_LOG_ENABLED=false
+    image: influxdb:latest
+    container_name: influxdb
     volumes:
-      - c:/influx_boleto/influxdb/data:/var/lib/influxdb
+      - c:/influxdb-boleto/influxdb/influxdb-lib:/var/lib/influxdb
+    ports:
+      - 8083:8083
+      - 8086:8086
 
   grafana:
-    image: "grafana/grafana:latest"
+    image: grafana/grafana:latest
+    volumes:
+        - c:/influxdb-boleto/grafana/grafana-lib:/var/lib/grafana
+        - c:/influxdb-boleto/grafana/grafana-log:/var/log/grafana
+    links:
+        - influxdb:influxdb
     ports:
-      - "3030:3000"
+      - 3030:3000
     links:
       - influxdb
+    
+  chronograf:
+    image: chronograf:latest
     volumes:
-      - c:/influx_boleto/grafana/data:/var/lib/grafana
+      - c:/influxdb-boleto/chronograf:/var/lib/chronograf
+    ports:
+      - "8888:8888"
+    links:
+      - influxdb
 
     
         
