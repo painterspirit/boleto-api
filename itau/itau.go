@@ -2,6 +2,7 @@ package itau
 
 import (
 	"errors"
+	"strings"
 
 	. "github.com/PMoneda/flow"
 	"github.com/mundipagg/boleto-api/config"
@@ -92,7 +93,11 @@ func (b bankItau) RegisterBoleto(input *models.BoletoRequest) (models.BoletoResp
 
 	headerMap := exec.GetHeader()
 
-	if status, exist := headerMap["status"]; exist && status != "200" {
+	if status, exist := headerMap["Content-Type"]; exist && strings.Contains(status, "text/html") {
+		exec.To("set://?prop=body", `{"codigo":"501","mensagem":"Error"}`)
+		ch.When(Header("Content-Type").IsEqualTo(status))
+		ch.To("transform://?format=json", fromResponseError, toAPI, tmpl.GetFuncMaps())
+	} else if status, exist = headerMap["status"]; exist && status != "200" {
 		ch.When(Header("status").IsEqualTo(status))
 		ch.To("transform://?format=json", fromResponseError, toAPI, tmpl.GetFuncMaps())
 		ch.To("unmarshall://?format=json", new(models.BoletoResponse))
@@ -100,13 +105,14 @@ func (b bankItau) RegisterBoleto(input *models.BoletoRequest) (models.BoletoResp
 
 	ch.Otherwise()
 	ch.To("logseq://?type=response&url="+itauURL, b.log).To("apierro://")
+
 	switch t := exec.GetBody().(type) {
 	case *models.BoletoResponse:
 		return *t, nil
 	case error:
 		return models.BoletoResponse{}, t
 	}
-	return models.BoletoResponse{}, models.NewInternalServerError("Internal error", "MP500")
+	return models.BoletoResponse{}, models.NewInternalServerError("MP500", "Internal error")
 }
 
 func (b bankItau) ProcessBoleto(boleto *models.BoletoRequest) (models.BoletoResponse, error) {
