@@ -1,6 +1,8 @@
 package integrationTests
 
 import (
+	"math/rand"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -121,6 +123,7 @@ const body = `{
 
 func getBody(bank models.BankNumber, v uint64) string {
 	req := models.BoletoRequest{}
+	req.RequestKey = strconv.Itoa(rand.Intn(999999))
 	json.Unmarshal([]byte(body), &req)
 	req.Title.ExpireDate = time.Now().Format("2006-01-02")
 	req.Title.ExpireDateTime = time.Now()
@@ -263,7 +266,7 @@ func TestRegisterBoletoRequest(t *testing.T) {
 		Convey("A mensagem de retorno deverá ser um JSON de Erros com Message: Not Found", func() {
 			resp, _, err := util.Get("http://localhost:3000/boleto?fmt=html&id=90230843492384", getBody(models.Caixa, 200), nil)
 			So(err, ShouldBeNil)
-			So(resp, ShouldContainSubstring, "{\"errors\":[{\"code\":\"MP400\",\"message\":\"not found\"}]}")
+			So(resp, ShouldContainSubstring, "{\"errors\":[{\"code\":\"MP404\",\"message\":\"Not Found\"}]}")
 		})
 
 	})

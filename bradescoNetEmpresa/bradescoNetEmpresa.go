@@ -107,7 +107,7 @@ func (b bankBradescoNetEmpresa) RegisterBoleto(boleto *models.BoletoRequest) (mo
 	case error:
 		return models.BoletoResponse{}, t
 	}
-	return models.BoletoResponse{}, models.NewInternalServerError("MP500", "Erro interno")
+	return models.BoletoResponse{}, models.NewInternalServerError("MP500", "Internal error")
 }
 
 func signRequest(bod *flow.Flow) error {

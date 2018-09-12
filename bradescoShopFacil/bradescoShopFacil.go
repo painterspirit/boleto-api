@@ -87,7 +87,7 @@ func (b bankBradescoShopFacil) RegisterBoleto(boleto *models.BoletoRequest) (mod
 	case error:
 		return models.BoletoResponse{}, t
 	}
-	return models.BoletoResponse{}, models.NewInternalServerError("MP500", "Internal Error")
+	return models.BoletoResponse{}, models.NewInternalServerError("MP500", "Internal error")
 }
 
 func (b bankBradescoShopFacil) ProcessBoleto(boleto *models.BoletoRequest) (models.BoletoResponse, error) {

@@ -124,7 +124,7 @@ func getBoleto(c *gin.Context) {
 
 		if err != nil {
 			c.Header("Content-Type", "application/json")
-			checkError(c, models.NewInternalServerError(err.Error(), "internal error"), log)
+			checkError(c, models.NewInternalServerError(err.Error(), "Internal error"), log)
 			c.Abort()
 		} else {
 			c.Writer.Write(bpdf)
@@ -154,7 +154,7 @@ func getBoletoByID(c *gin.Context) {
 
 	mongo, errDb := db.CreateMongo(log)
 	if errDb != nil {
-		checkError(c, models.NewInternalServerError("MP500", "Erro interno"), log)
+		checkError(c, models.NewInternalServerError("MP500", "Internal error"), log)
 	}
 	boleto, err := mongo.GetBoletoByID(id)
 	if err != nil {
