@@ -51,16 +51,15 @@ services:
     volumes:
       - c:/influxdb-boleto/influxdb/influxdb-lib:/var/lib/influxdb
     ports:
-      - 8083:8083
       - 8086:8086
 
   grafana:
     image: grafana/grafana:latest
     volumes:
-        - c:/influxdb-boleto/grafana/grafana-lib:/var/lib/grafana
-        - c:/influxdb-boleto/grafana/grafana-log:/var/log/grafana
+      - c:/influxdb-boleto/grafana/grafana-lib:/var/lib/grafana
+      - c:/influxdb-boleto/grafana/grafana-log:/var/log/grafana
     links:
-        - influxdb:influxdb
+      - influxdb:influxdb
     ports:
       - 3030:3000
     links:
