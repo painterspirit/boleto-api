@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_INFLUX",
-      "label": "influx",
+      "name": "DS_INFLUXDB",
+      "label": "InfluxDB",
       "description": "",
       "type": "datasource",
       "pluginId": "influxdb",
@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "5.2.3"
+      "version": "5.0.4"
     },
     {
       "type": "panel",
@@ -63,7 +63,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 10000,
@@ -176,7 +176,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 1,
       "format": "deckbytes",
       "gauge": {
@@ -289,7 +289,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 2,
       "format": "s",
       "gauge": {
@@ -402,7 +402,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -515,7 +515,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 2,
       "format": "s",
       "gauge": {
@@ -628,7 +628,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 2,
       "format": "s",
       "gauge": {
@@ -741,7 +741,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 2,
       "format": "s",
       "gauge": {
@@ -854,7 +854,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 2,
       "format": "s",
       "gauge": {
@@ -967,7 +967,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "s",
       "gauge": {
         "maxValue": 2,
@@ -1079,7 +1079,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 2,
       "format": "s",
       "gauge": {
@@ -1192,7 +1192,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 2,
       "format": "s",
       "gauge": {
@@ -1305,7 +1305,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 2,
       "format": "s",
       "gauge": {
@@ -1418,7 +1418,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 2,
       "format": "s",
       "gauge": {
@@ -1531,7 +1531,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 2,
       "format": "s",
       "gauge": {
@@ -1644,7 +1644,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": null,
       "format": "none",
       "gauge": {
@@ -1757,7 +1757,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": null,
       "format": "none",
       "gauge": {
@@ -1870,7 +1870,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -1982,7 +1982,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -2094,7 +2094,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": null,
       "format": "none",
       "gauge": {
@@ -2207,7 +2207,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -2319,7 +2319,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(245, 54, 54, 0.9)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -2431,7 +2431,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -2544,7 +2544,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -2656,7 +2656,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -2768,7 +2768,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -2880,7 +2880,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -2992,7 +2992,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -3104,7 +3104,7 @@
         "rgba(237, 129, 40, 0.89)",
         "rgba(50, 172, 45, 0.97)"
       ],
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "format": "none",
       "gauge": {
         "maxValue": 100,
@@ -3215,7 +3215,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 1,
       "fill": 1,
       "gridPos": {
@@ -3381,7 +3381,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 1,
       "fill": 1,
       "gridPos": {
@@ -3547,7 +3547,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 1,
       "fill": 1,
       "gridPos": {
@@ -3725,7 +3725,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 1,
       "fill": 1,
       "gridPos": {
@@ -3891,7 +3891,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 1,
       "fill": 1,
       "gridPos": {
@@ -4057,7 +4057,7 @@
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 1,
       "fill": 1,
       "gridPos": {
@@ -4216,11 +4216,14 @@
       }
     },
     {
-      "aliasColors": {},
+      "aliasColors": {
+        "boletos.errors": "#890F02",
+        "boletos.success": "#508642"
+      },
       "bars": true,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "decimals": 1,
       "fill": 1,
       "gridPos": {
@@ -4230,13 +4233,16 @@
         "y": 23
       },
       "hideTimeOverride": false,
-      "id": 37,
+      "id": 43,
       "legend": {
         "alignAsTable": true,
         "avg": false,
         "current": false,
+        "hideEmpty": false,
+        "hideZero": false,
         "max": false,
         "min": false,
+        "rightSide": false,
         "show": true,
         "total": true,
         "values": true
@@ -4246,7 +4252,7 @@
       "links": [],
       "nullPointMode": "connected",
       "percentage": true,
-      "pointradius": 5,
+      "pointradius": 4,
       "points": false,
       "renderer": "flot",
       "seriesOverrides": [],
@@ -4255,6 +4261,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "dsType": "influxdb",
           "groupBy": [
             {
               "params": [
@@ -4269,9 +4276,10 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT count(\"BradescoShopFacil-status\") AS \"errors\" FROM \"boleto-api\".\"business\".\"boletos\" WHERE time > now() - 24h AND \"Caixa-status\"<>200 Group by time(1h)",
+          "query": "SELECT count(\"Caixa-status\") AS \"errors\" FROM \"boleto-api\".\"business\".\"boletos\" WHERE time > now() - 24h AND \"Caixa-status\"<>200 Group by time(1h)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4292,6 +4300,7 @@
           "tags": []
         },
         {
+          "dsType": "influxdb",
           "groupBy": [
             {
               "params": [
@@ -4306,9 +4315,10 @@
               "type": "fill"
             }
           ],
+          "hide": false,
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT count(\"BancoDoBrasil-status\") AS \"success\" FROM \"boleto-api\".\"business\".\"boletos\" WHERE time > now() - 24h AND \"Caixa-status\"=200 Group by time(1h)",
+          "query": "SELECT count(\"Caixa-status\") AS \"success\" FROM \"boleto-api\".\"business\".\"boletos\" WHERE time > now() - 24h AND \"Caixa-status\"=200 Group by time(1h)",
           "rawQuery": true,
           "refId": "B",
           "resultFormat": "time_series",
@@ -4338,6 +4348,7 @@
         "sort": 0,
         "value_type": "individual"
       },
+      "transparent": false,
       "type": "graph",
       "xaxis": {
         "buckets": null,
@@ -4350,7 +4361,7 @@
         {
           "decimals": null,
           "format": "short",
-          "label": null,
+          "label": "",
           "logBase": 1,
           "max": "100",
           "min": null,
@@ -4375,7 +4386,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "fill": 2,
       "gridPos": {
         "h": 8,
@@ -4490,7 +4501,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_INFLUX}",
+      "datasource": "${DS_INFLUXDB}",
       "fill": 1,
       "gridPos": {
         "h": 8,
@@ -4538,7 +4549,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"memory-alloc\") AS \"mean_memory-alloc\" FROM \"boleto-api\".\"runtime\".\"metrics\" WHERE time > now() - 1h GROUP BY time(3m)",
+          "query": "SELECT mean(\"memory-alloc\") AS \"mean_memory-alloc\" FROM \"boleto-api\".\"runtime\".\"metrics\" WHERE time > now() - 1h GROUP BY time(5m)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4578,6 +4589,7 @@
       },
       "yaxes": [
         {
+          "decimals": 1,
           "format": "deckbytes",
           "label": null,
           "logBase": 1,
@@ -4642,5 +4654,5 @@
   "timezone": "browser",
   "title": "Boleto API PROD",
   "uid": "iDrz__mmkaaaaa",
-  "version": 16
+  "version": 3
 }
