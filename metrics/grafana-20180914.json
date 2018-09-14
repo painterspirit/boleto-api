@@ -4571,7 +4571,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": "6h",
+      "timeFrom": "12h",
       "timeShift": null,
       "title": "Memory Allocated Series",
       "tooltip": {
@@ -4654,5 +4654,5 @@
   "timezone": "browser",
   "title": "Boleto API PROD",
   "uid": "iDrz__mmkaaaaa",
-  "version": 4
+  "version": 5
 }
