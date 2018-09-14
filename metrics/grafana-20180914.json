@@ -4434,7 +4434,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"request-time\") AS \"mean_request-time\" FROM \"boleto-api\".\"runtime\".\"timing\" WHERE time > now() - 1h GROUP BY time(5m)",
+          "query": "SELECT mean(\"request-time\") AS \"mean_request-time\" FROM \"boleto-api\".\"runtime\".\"timing\" GROUP BY time(5m)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4456,7 +4456,7 @@
         }
       ],
       "thresholds": [],
-      "timeFrom": "6h",
+      "timeFrom": "12h",
       "timeShift": null,
       "title": "API Time Series",
       "tooltip": {
@@ -4474,10 +4474,10 @@
       },
       "yaxes": [
         {
-          "decimals": 2,
+          "decimals": null,
           "format": "s",
           "label": null,
-          "logBase": 1,
+          "logBase": 2,
           "max": null,
           "min": null,
           "show": true
@@ -4549,7 +4549,7 @@
           ],
           "orderByTime": "ASC",
           "policy": "default",
-          "query": "SELECT mean(\"memory-alloc\") AS \"mean_memory-alloc\" FROM \"boleto-api\".\"runtime\".\"metrics\" WHERE time > now() - 1h GROUP BY time(5m)",
+          "query": "SELECT mean(\"memory-alloc\") AS \"mean_memory-alloc\" FROM \"boleto-api\".\"runtime\".\"metrics\" GROUP BY time(5m)",
           "rawQuery": true,
           "refId": "A",
           "resultFormat": "time_series",
@@ -4654,5 +4654,5 @@
   "timezone": "browser",
   "title": "Boleto API PROD",
   "uid": "iDrz__mmkaaaaa",
-  "version": 3
+  "version": 4
 }
