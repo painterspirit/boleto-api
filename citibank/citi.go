@@ -81,7 +81,7 @@ func (b bankCiti) RegisterBoleto(boleto *models.BoletoRequest) (models.BoletoRes
 	case models.BoletoResponse:
 		return t, nil
 	}
-	return models.BoletoResponse{}, models.NewInternalServerError("Erro interno", "MP500")
+	return models.BoletoResponse{}, models.NewInternalServerError("MP500", "Internal error")
 }
 
 func (b bankCiti) ProcessBoleto(boleto *models.BoletoRequest) (models.BoletoResponse, error) {

@@ -1,7 +1,7 @@
 package santander
 
 import (
-	"errors"
+	"github.com/mundipagg/boleto-api/models"
 )
 
 /*
@@ -23,5 +23,5 @@ func checkError(code string) error {
 	if !exist {
 		return nil
 	}
-	return errors.New(msg)
+	return models.NewFormatError(msg)
 }

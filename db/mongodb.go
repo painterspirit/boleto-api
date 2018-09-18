@@ -90,7 +90,7 @@ func (e *MongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
 	}
 
 	if err != nil {
-		return models.BoletoView{}, err
+		return models.BoletoView{}, models.NewHTTPNotFound("MP404", "Not Found")
 	}
 
 	return result, nil

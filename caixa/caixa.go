@@ -28,7 +28,7 @@ func New() bankCaixa {
 	b.validate.Push(validations.ValidateExpireDate)
 	b.validate.Push(validations.ValidateBuyerDocumentNumber)
 	b.validate.Push(validations.ValidateRecipientDocumentNumber)
-	b.validate.Push(caixaValidateAgency)	
+	b.validate.Push(caixaValidateAgency)
 	b.validate.Push(validadeOurNumber)
 	return b
 }
@@ -64,7 +64,7 @@ func (b bankCaixa) RegisterBoleto(boleto *models.BoletoRequest) (models.BoletoRe
 	case models.BoletoResponse:
 		return t, nil
 	}
-	return models.BoletoResponse{}, models.NewInternalServerError("MP500", "Erro interno")
+	return models.BoletoResponse{}, models.NewInternalServerError("MP500", "Internal error")
 }
 func (b bankCaixa) ProcessBoleto(boleto *models.BoletoRequest) (models.BoletoResponse, error) {
 	errs := b.ValidateBoleto(boleto)

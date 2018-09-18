@@ -108,7 +108,7 @@ func (b bankSantander) RegisterBoleto(input *models.BoletoRequest) (models.Bolet
 	case error:
 		return models.BoletoResponse{}, t
 	}
-	return models.BoletoResponse{}, models.NewInternalServerError("Internal error", "MP500")
+	return models.BoletoResponse{}, models.NewInternalServerError("MP500", "Internal error")
 }
 func (b bankSantander) ProcessBoleto(boleto *models.BoletoRequest) (models.BoletoResponse, error) {
 	errs := b.ValidateBoleto(boleto)

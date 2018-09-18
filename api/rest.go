@@ -46,30 +46,33 @@ func checkError(c *gin.Context, err error, l *log.Log) bool {
 		}
 
 		switch v := err.(type) {
-		case models.IErrorResponse:
+
+		case models.ErrorResponse:
 			errResp.Errors.Append(v.ErrorCode(), v.Error())
 			c.JSON(http.StatusBadRequest, errResp)
 
-		case models.IHttpNotFound:
+		case models.HttpNotFound:
 			errResp.Errors.Append("MP404", v.Error())
 			l.Warn(errResp, v.Error())
 			c.JSON(http.StatusNotFound, errResp)
 
-		case models.IFormatError:
+		case models.InternalServerError:
+			errResp.Errors.Append("MP500", v.Error())
+			l.Warn(errResp, v.Error())
+			c.JSON(http.StatusInternalServerError, errResp)
+
+		case models.FormatError:
 			errResp.Errors.Append("MP400", v.Error())
 			l.Warn(errResp, v.Error())
 			c.JSON(http.StatusBadRequest, errResp)
 
-		case models.IServerError:
-			errResp.Errors.Append("MP500", "Internal Error")
-			l.Fatal(v.Error(), v.Message())
-			c.JSON(http.StatusInternalServerError, errResp)
-
 		default:
-			l.Fatal(err.Error(), "")
 			errResp.Errors.Append("MP500", "Internal Error")
+			l.Fatal(errResp, v.Error())
 			c.JSON(http.StatusInternalServerError, errResp)
 		}
+
+		c.Set("boletoResponse", errResp)
 		return true
 	}
 	return false
