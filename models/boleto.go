@@ -157,6 +157,7 @@ const (
 	// Citibank constante do Citi
 	Citibank = 745
 
+	//Real constante do REal
 	Real = 9
 )
 

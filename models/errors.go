@@ -52,15 +52,17 @@ func NewGatewayTimeout(code, msg string) GatewayTimeout {
 	return GatewayTimeout{Message: msg, Code: code}
 }
 
+//ErrorCode ErrorCode
 func (e GatewayTimeout) ErrorCode() string {
 	return e.Code
 }
 
+//Error Error
 func (e GatewayTimeout) Error() string {
 	return e.Message
 }
 
-// IServerError interface para implementar Error
+//InternalServerError IServerError interface para implementar Error
 type InternalServerError ErrorResponse
 
 //NewInternalServerError cria um novo objeto InternalServerError a partir de uma mensagem original e final
@@ -68,17 +70,17 @@ func NewInternalServerError(code, msg string) InternalServerError {
 	return InternalServerError{Message: msg, Code: code}
 }
 
-// Message retorna a mensagem final para o usuário
+//ErrorCode Message retorna a mensagem final para o usuário
 func (e InternalServerError) ErrorCode() string {
 	return e.Code
 }
 
-// Error retorna o erro original
+//Error retorna o erro original
 func (e InternalServerError) Error() string {
 	return e.Message
 }
 
-// IHttpNotFound interface para implementar Error
+//HttpNotFound interface para implementar Error
 type HttpNotFound ErrorResponse
 
 //NewHTTPNotFound cria um novo objeto NewHttpNotFound a partir de uma mensagem original e final
@@ -86,17 +88,17 @@ func NewHTTPNotFound(code, msg string) HttpNotFound {
 	return HttpNotFound{Message: msg, Code: code}
 }
 
-// Message retorna a mensagem final para o usuário
+//ErrorCode Message retorna a mensagem final para o usuário
 func (e HttpNotFound) ErrorCode() string {
 	return e.Code
 }
 
-// Error retorna o erro original
+//Error retorna o erro original
 func (e HttpNotFound) Error() string {
 	return e.Message
 }
 
-// IFormatError interface para implementar Error
+//FormatError interface para implementar Error
 type FormatError ErrorResponse
 
 //NewFormatError cria um novo objeto de FormatError com descrição do erro
@@ -104,15 +106,17 @@ func NewFormatError(e string) FormatError {
 	return FormatError{Message: e}
 }
 
+//Error Retorna um erro code
 func (e FormatError) Error() string {
 	return e.Message
 }
 
+//ErrorCode Retorna um erro code
 func (e FormatError) ErrorCode() string {
 	return e.Code
 }
 
-// Append adiciona mais um erro na coleção
+//Append adiciona mais um erro na coleção
 func (e *Errors) Append(code, message string) {
 	*e = append(*e, ErrorResponse{Code: code, Message: message})
 }

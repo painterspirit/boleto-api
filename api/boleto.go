@@ -33,6 +33,7 @@ func registerBoleto(c *gin.Context) {
 	_bank, _ := c.Get("bank")
 	bol := _boleto.(models.BoletoRequest)
 	bank := _bank.(bank.Bank)
+
 	lg := bank.Log()
 	lg.Operation = "RegisterBoleto"
 	lg.NossoNumero = bol.Title.OurNumber
@@ -187,7 +188,7 @@ func minifyString(mString, tp string) string {
 
 	if err != nil {
 		return mString
-	} else {
-		return s
 	}
+
+	return s
 }
