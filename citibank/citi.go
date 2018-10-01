@@ -99,9 +99,9 @@ func (b bankCiti) ValidateBoleto(boleto *models.BoletoRequest) models.Errors {
 func (b bankCiti) sendRequest(body string) (string, int, error) {
 	serviceURL := config.Get().URLCiti
 	if config.Get().MockMode {
-		return util.Post(serviceURL, body, map[string]string{"Soapaction": "RegisterBoleto"})
+		return util.Post(serviceURL, body, config.Get().TimeoutDefault, map[string]string{"Soapaction": "RegisterBoleto"})
 	} else {
-		return util.PostTLS(serviceURL, body, map[string]string{"Soapaction": "RegisterBoleto"}, b.transport)
+		return util.PostTLS(serviceURL, body, config.Get().TimeoutDefault, map[string]string{"Soapaction": "RegisterBoleto"}, b.transport)
 	}
 }
 
