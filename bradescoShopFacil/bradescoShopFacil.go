@@ -65,7 +65,7 @@ func (b bankBradescoShopFacil) RegisterBoleto(boleto *models.BoletoRequest) (mod
 	bod := r.From("message://?source=inline", boleto, getRequestBradescoShopFacil(), tmpl.GetFuncMaps())
 	bod.To("logseq://?type=request&url="+serviceURL, b.log)
 	duration := util.Duration(func() {
-		bod.To(serviceURL, map[string]string{"method": "POST", "insecureSkipVerify": "true"})
+		bod.To(serviceURL, map[string]string{"method": "POST", "insecureSkipVerify": "true", "timeout": config.Get().TimeoutDefault})
 	})
 	timing.Push("bradesco-shopfacil-register-boleto-online", duration.Seconds())
 	bod.To("logseq://?type=response&url="+serviceURL, b.log)
