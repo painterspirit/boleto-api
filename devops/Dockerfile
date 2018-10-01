@@ -51,6 +51,10 @@ ENV SANTANDER_ENV="T"
 ENV URL_ITAU_REGISTER="https://gerador-boletos.itau.com.br/router-gateway-app/public/codigo_barras/registro"
 ENV URL_ITAU_TICKET="https://oauth.itau.com.br/identity/connect/token"
 ENV URL_BRADESCO_NET_EMPRESA="https://cobranca.bradesconetempresa.b.br/ibpjregistrotitulows/registrotitulohomologacao"
+ENV TIMEOUT_REGISTER="30"
+ENV TIMEOUT_TOKEN="20"
+ENV TIMEOUT_DEFAULT="50"
+
 
 ENTRYPOINT ["/home/mundipagg/boleto-api"]
 EXPOSE 3000
