@@ -45,7 +45,7 @@ func (b bankItau) GetTicket(boleto *models.BoletoRequest) (string, error) {
 	pipe.From("message://?source=inline", boleto, getRequestTicket(), tmpl.GetFuncMaps())
 	pipe.To("logseq://?type=request&url="+url, b.log)
 	duration := util.Duration(func() {
-		pipe.To(url, map[string]string{"method": "POST", "insecureSkipVerify": "true"})
+		pipe.To(url, map[string]string{"method": "POST", "insecureSkipVerify": "true", "timeout": config.Get().TimeoutToken})
 	})
 	timing.Push("itau-get-ticket-boleto-time", duration.Seconds())
 	pipe.To("logseq://?type=response&url="+url, b.log)
@@ -81,7 +81,7 @@ func (b bankItau) RegisterBoleto(input *models.BoletoRequest) (models.BoletoResp
 	exec := NewFlow().From("message://?source=inline", input, inputTemplate, tmpl.GetFuncMaps())
 	exec.To("logseq://?type=request&url="+itauURL, b.log)
 	duration := util.Duration(func() {
-		exec.To(itauURL, map[string]string{"method": "POST", "insecureSkipVerify": "true"})
+		exec.To(itauURL, map[string]string{"method": "POST", "insecureSkipVerify": "true", "timeout": config.Get().TimeoutRegister})
 	})
 	timing.Push("itau-register-boleto-time", duration.Seconds())
 	exec.To("logseq://?type=response&url="+itauURL, b.log)
