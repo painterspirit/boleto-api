@@ -69,12 +69,11 @@ type BoletoView struct {
 func NewBoletoView(boleto BoletoRequest, response BoletoResponse, bankName string) BoletoView {
 	boleto.Authentication = Authentication{}
 	uid, _ := uuid.NewUUID()
-	sk, _ := uuid.NewUUID()
 	id := bson.NewObjectId()
 	view := BoletoView{
 		ID:            id,
 		UID:           uid.String(),
-		SecretKey:     sk.String(),
+		SecretKey:     uid.String(),
 		BankID:        boleto.BankNumber,
 		Boleto:        boleto,
 		Barcode:       response.BarCodeNumber,

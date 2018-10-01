@@ -73,7 +73,7 @@ func registerBoleto(c *gin.Context) {
 		if errMongo != nil {
 			b := minifyJSON(boView)
 
-			err = redis.SetBoletoJSON(b, resp.ID, lg)
+			err = redis.SetBoletoJSON(b, resp.ID, boView.PublicKey, lg)
 			if checkError(c, err, lg) {
 				return
 			}
@@ -81,7 +81,7 @@ func registerBoleto(c *gin.Context) {
 
 		bhtml, _ := boleto.HTML(boView, "html")
 		s := minifyString(bhtml, "text/html")
-		redis.SetBoletoHTML(s, resp.ID, lg)
+		redis.SetBoletoHTML(s, resp.ID, boView.PublicKey, lg)
 
 	}
 	c.JSON(st, resp)
@@ -93,13 +93,13 @@ func getBoleto(c *gin.Context) {
 
 	id := c.Query("id")
 	fmt := c.Query("fmt")
+	pk := c.Query("pk")
 
 	log := log.CreateLog()
 	log.Operation = "GetBoleto"
 
 	redis := db.CreateRedis()
-
-	b := redis.GetBoletoHTMLByID(id, log)
+	b := redis.GetBoletoHTMLByID(id, pk, log)
 
 	if b == "" {
 		mongo, errMongo := db.CreateMongo(log)
@@ -107,7 +107,7 @@ func getBoleto(c *gin.Context) {
 			return
 		}
 
-		boView, err := mongo.GetBoletoByID(id)
+		boView, err := mongo.GetBoletoByID(id, pk)
 		if checkError(c, err, log) {
 			return
 		}
@@ -150,6 +150,7 @@ func toPdf(page string) ([]byte, error) {
 
 func getBoletoByID(c *gin.Context) {
 	id := c.Param("id")
+	pk := c.Param("pk")
 	log := log.CreateLog()
 	log.Operation = "GetBoletoV1"
 
@@ -157,7 +158,7 @@ func getBoletoByID(c *gin.Context) {
 	if errDb != nil {
 		checkError(c, models.NewInternalServerError("MP500", "Internal error"), log)
 	}
-	boleto, err := mongo.GetBoletoByID(id)
+	boleto, err := mongo.GetBoletoByID(id, pk)
 	if err != nil {
 		checkError(c, models.NewHTTPNotFound("MP404", "Boleto não encontrado"), nil)
 		return
