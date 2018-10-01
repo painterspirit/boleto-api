@@ -1,8 +1,9 @@
 package util
 
 import (
+	"strconv"
 	"time"
-	
+
 	"github.com/mundipagg/boleto-api/log"
 )
 
@@ -36,4 +37,10 @@ func NycNow() time.Time {
 	t := time.Now()
 	local := t.In(z)
 	return local
+}
+
+func GetDurationTimeoutRequest(t string) time.Duration {
+	tTime, _ := strconv.Atoi(t)
+	tOut := time.Duration(tTime)
+	return tOut
 }

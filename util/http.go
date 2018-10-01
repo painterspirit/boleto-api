@@ -37,17 +37,18 @@ func DefaultHTTPClient() *http.Client {
 }
 
 //Post faz um requisição POST para uma URL e retorna o response, status e erro
-func Post(url, body string, header map[string]string) (string, int, error) {
-	return doRequest("POST", url, body, header)
+func Post(url, body, timeout string, header map[string]string) (string, int, error) {
+	return doRequest("POST", url, body, timeout, header)
 }
 
 //Get faz um requisição GET para uma URL e retorna o response, status e erro
-func Get(url, body string, header map[string]string) (string, int, error) {
-	return doRequest("GET", url, body, header)
+func Get(url, body, timeout string, header map[string]string) (string, int, error) {
+	return doRequest("GET", url, body, timeout, header)
 }
 
-func doRequest(method, url, body string, header map[string]string) (string, int, error) {
+func doRequest(method, url, body, timeout string, header map[string]string) (string, int, error) {
 	client := DefaultHTTPClient()
+	client.Timeout = GetDurationTimeoutRequest(timeout) * time.Second
 	message := strings.NewReader(body)
 	req, err := http.NewRequest(method, url, message)
 	if err != nil {
@@ -173,10 +174,11 @@ func parseChainCertificates() (*x509.Certificate, error) {
 	return cert, nil
 }
 
-func doRequestTLS(method, url, body string, header map[string]string, transport *http.Transport) (string, int, error) {
+func doRequestTLS(method, url, body, timeout string, header map[string]string, transport *http.Transport) (string, int, error) {
 	var client *http.Client = &http.Client{
 		Transport: transport,
 	}
+	client.Timeout = GetDurationTimeoutRequest(timeout) * time.Second
 	b := strings.NewReader(body)
 	req, err := http.NewRequest(method, url, b)
 	if err != nil {
@@ -202,8 +204,8 @@ func doRequestTLS(method, url, body string, header map[string]string, transport 
 	return sData, resp.StatusCode, nil
 }
 
-func PostTLS(url, body string, header map[string]string, transport *http.Transport) (string, int, error) {
-	return doRequestTLS("POST", url, body, header, transport)
+func PostTLS(url, body, timeout string, header map[string]string, transport *http.Transport) (string, int, error) {
+	return doRequestTLS("POST", url, body, timeout, header, transport)
 }
 
 //HeaderToMap converte um http Header para um dicionário string -> string
