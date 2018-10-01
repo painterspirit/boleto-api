@@ -70,7 +70,7 @@ func Base64Decode(s string) string {
 }
 
 //Sha256 converts string to hash sha256. Encode default: Base64
-func Sha256(s string, e string) string {
+func Sha256(s, e string) string {
 	var sEnc string
 
 	h := sha256.New()
