@@ -55,7 +55,7 @@ func (b *bankBB) login(boleto *models.BoletoRequest) (string, error) {
 	bod := r.From("message://?source=inline", boleto, from, tmpl.GetFuncMaps())
 	r = r.To("logseq://?type=request&url="+url, b.log)
 	duration := util.Duration(func() {
-		bod = bod.To(url, map[string]string{"method": "POST", "insecureSkipVerify": "true"})
+		bod = bod.To(url, map[string]string{"method": "POST", "insecureSkipVerify": "true", "timeout": config.Get().TimeoutToken})
 	})
 	timing.Push("bb-login-time", duration.Seconds())
 	r = r.To("logseq://?type=response&url="+url, b.log)
@@ -95,7 +95,7 @@ func (b bankBB) RegisterBoleto(boleto *models.BoletoRequest) (models.BoletoRespo
 	r = r.From("message://?source=inline", boleto, from, tmpl.GetFuncMaps())
 	r.To("logseq://?type=request&url="+url, b.log)
 	duration := util.Duration(func() {
-		r.To(url, map[string]string{"method": "POST", "insecureSkipVerify": "true"})
+		r.To(url, map[string]string{"method": "POST", "insecureSkipVerify": "true", "timeout": config.Get().TimeoutRegister})
 	})
 	timing.Push("bb-register-boleto-time", duration.Seconds())
 	r.To("logseq://?type=response&url="+url, b.log)
