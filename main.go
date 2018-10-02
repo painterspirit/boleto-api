@@ -4,12 +4,11 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"os/signal"
 	"runtime"
 	"strconv"
 	"syscall"
-
-	"os"
 
 	"github.com/mundipagg/boleto-api/app"
 	"github.com/mundipagg/boleto-api/config"
@@ -19,7 +18,6 @@ import (
 var (
 	env          string
 	processID    = os.Getpid()
-	totalProcs   = runtime.NumCPU()
 	devMode      = flag.Bool("dev", false, "-dev To run in dev mode")
 	mockMode     = flag.Bool("mock", false, "-mock To run mock requests")
 	disableLog   = flag.Bool("nolog", false, "-nolog disable seq log")
