@@ -89,23 +89,18 @@ func (e *MongoDb) GetBoletoByID(id, pk string) (models.BoletoView, error) {
 		err = c.Find(bson.M{"id": id}).One(&result)
 	}
 
-	if err != nil || hasInvalidKey(result, pk) {
+	if err != nil || !hasValidKey(result, pk) {
 		return models.BoletoView{}, models.NewHTTPNotFound("MP404", "Not Found")
 	}
 
 	return result, nil
 }
 
+//Close Fecha a conexão
 func (e *MongoDb) Close() {
 	fmt.Println("Close Database Connection")
 }
 
-func hasInvalidKey(r models.BoletoView, pk string) bool {
-	if r.SecretKey == "" {
-		return false
-	}
-	if r.PublicKey != pk {
-		return true
-	}
-	return false
+func hasValidKey(r models.BoletoView, pk string) bool {
+	return (r.SecretKey == "" || r.PublicKey == pk)
 }
