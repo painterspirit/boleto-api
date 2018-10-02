@@ -74,7 +74,7 @@ func (b bankBradescoNetEmpresa) RegisterBoleto(boleto *models.BoletoRequest) (mo
 	}
 
 	duration := util.Duration(func() {
-		bod.To(serviceURL, map[string]string{"method": "POST", "insecureSkipVerify": "true"})
+		bod.To(serviceURL, map[string]string{"method": "POST", "insecureSkipVerify": "true", "timeout": config.Get().TimeoutDefault})
 	})
 
 	timing.Push("bradesco-netempresa-register-boleto-online", duration.Seconds())

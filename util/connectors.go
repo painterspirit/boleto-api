@@ -61,18 +61,22 @@ func TlsConector(e *flow.ExchangeMessage, u flow.URI, params ...interface{}) err
 		b = fmt.Sprintln(t)
 	}
 	if len(params) > 0 {
+
+		var timeout = params[1].(map[string]string)["timeout"]
+
 		switch t := params[0].(type) {
 		case *http.Transport:
 			var url string
 			var response string
 			var status int
 			var err error
+
 			if config.Get().MockMode {
 				url = strings.Replace(u.GetRaw(), "tls", "http", 1)
-				response, status, err = Post(url, b, e.GetHeaderMap())
+				response, status, err = Post(url, b, timeout, e.GetHeaderMap())
 			} else {
 				url = strings.Replace(u.GetRaw(), "tls", "https", 1)
-				response, status, err = PostTLS(url, b, e.GetHeaderMap(), t)
+				response, status, err = PostTLS(url, b, timeout, e.GetHeaderMap(), t)
 			}
 			if err != nil {
 				e.SetHeader("error", err.Error())

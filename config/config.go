@@ -56,6 +56,9 @@ type Config struct {
 	URLRegisterBoletoItau           string
 	RecoveryRobotExecutionEnabled   string
 	RecoveryRobotExecutionInMinutes string
+	TimeoutRegister                 string
+	TimeoutToken                    string
+	TimeoutDefault                  string
 }
 
 var cnf Config
@@ -118,6 +121,9 @@ func Install(mockMode, devMode, disableLog bool) {
 		InfluxDBPort:                    os.Getenv("INFLUXDB_PORT"),
 		RecoveryRobotExecutionEnabled:   os.Getenv("RECOVERYROBOT_EXECUTION_ENABLED"),
 		RecoveryRobotExecutionInMinutes: os.Getenv("RECOVERYROBOT_EXECUTION_IN_MINUTES"),
+		TimeoutRegister:                 os.Getenv("TIMEOUT_REGISTER"),
+		TimeoutToken:                    os.Getenv("TIMEOUT_TOKEN"),
+		TimeoutDefault:                  os.Getenv("TIMEOUT_DEFAULT"),
 	}
 }
 

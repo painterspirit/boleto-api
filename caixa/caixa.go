@@ -47,7 +47,7 @@ func (b bankCaixa) RegisterBoleto(boleto *models.BoletoRequest) (models.BoletoRe
 	bod := r.From("message://?source=inline", boleto, getRequestCaixa(), tmpl.GetFuncMaps())
 	bod = bod.To("logseq://?type=request&url="+urlCaixa, b.log)
 	duration := util.Duration(func() {
-		bod = bod.To(urlCaixa, map[string]string{"method": "POST", "insecureSkipVerify": "true"})
+		bod = bod.To(urlCaixa, map[string]string{"method": "POST", "insecureSkipVerify": "true", "timeout": config.Get().TimeoutDefault})
 	})
 	timing.Push("caixa-register-time", duration.Seconds())
 	bod = bod.To("logseq://?type=response&url="+urlCaixa, b.log)

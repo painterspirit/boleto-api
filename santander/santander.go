@@ -58,7 +58,7 @@ func (b bankSantander) GetTicket(boleto *models.BoletoRequest) (string, error) {
 	pipe.From("message://?source=inline", boleto, getRequestTicket(), tmpl.GetFuncMaps())
 	pipe.To("logseq://?type=request&url="+url, b.log)
 	duration := util.Duration(func() {
-		pipe.To(tlsURL, b.transport)
+		pipe.To(tlsURL, b.transport, map[string]string{"timeout": config.Get().TimeoutToken})
 	})
 	timing.Push("santander-get-ticket-boleto-time", duration.Seconds())
 	pipe.To("logseq://?type=response&url="+url, b.log)
@@ -92,7 +92,7 @@ func (b bankSantander) RegisterBoleto(input *models.BoletoRequest) (models.Bolet
 	exec := NewFlow().From("message://?source=inline", input, inputTemplate, tmpl.GetFuncMaps())
 	exec.To("logseq://?type=request&url="+serviceURL, b.log)
 	duration := util.Duration(func() {
-		exec.To(santanderURL, b.transport, map[string]string{"method": "POST", "insecureSkipVerify": "true"})
+		exec.To(santanderURL, b.transport, map[string]string{"method": "POST", "insecureSkipVerify": "true", "timeout": config.Get().TimeoutRegister})
 	})
 	timing.Push("santander-register-boleto-time", duration.Seconds())
 	exec.To("logseq://?type=response&url="+serviceURL, b.log)

@@ -85,6 +85,9 @@ func configFlags(devMode, mockMode, disableLog bool) {
 		os.Setenv("URL_BRADESCO_NET_EMPRESA", "https://cobranca.bradesconetempresa.b.br/ibpjregistrotitulows/registrotitulohomologacao")
 		os.Setenv("RECOVERYROBOT_EXECUTION_ENABLED", "true")
 		os.Setenv("RECOVERYROBOT_EXECUTION_IN_MINUTES", "2")
+		os.Setenv("TIMEOUT_REGISTER", "30")
+		os.Setenv("TIMEOUT_TOKEN", "20")
+		os.Setenv("TIMEOUT_DEFAULT", "50")
 	}
 	config.Install(mockMode, devMode, disableLog)
 }
