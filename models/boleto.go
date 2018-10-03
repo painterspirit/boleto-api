@@ -52,7 +52,7 @@ type BoletoView struct {
 	ID            bson.ObjectId `bson:"_id,omitempty"`
 	UID           string
 	SecretKey     string
-	PublicKey     string
+	PublicKey     string        `json:"pk,omitempty"`
 	Format        string        `json:"format,omitempty"`
 	Boleto        BoletoRequest `json:"boleto,omitempty"`
 	BankID        BankNumber    `json:"bankId,omitempty"`

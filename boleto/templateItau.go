@@ -165,7 +165,7 @@ const templateBoletoItau = `
                 <i class="icss-print"></i>
                 <span class="align">&nbspImprimir</span>
             </button>
-            <button class="no-print btnDefault print" onclick="window.location='./boleto?fmt=pdf&id={{bsonMongoToString .View.ID}}'">
+            <button class="no-print btnDefault print" onclick="window.location='./boleto?fmt=pdf&id={{bsonMongoToString .View.ID}}&pk={{.View.PublicKey}}'">
                 <i class="icss-files"></i>
                 <span class="align">&nbspGerar PDF</span>
             </button>            
