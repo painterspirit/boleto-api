@@ -43,13 +43,13 @@ func (r *Redis) closeConnection() {
 }
 
 //SetBoletoHTML Grava um boleto em formato Html no Redis
-func (r *Redis) SetBoletoHTML(b, mID string, lg *log.Log) {
+func (r *Redis) SetBoletoHTML(b, mID, pk string, lg *log.Log) {
 	err := r.openConnection()
 	if err != nil {
 		lg.Warn(err, fmt.Sprintf("OpenConnection [SetBoletoHTML] - Could not connection to Redis Database "))
 	} else {
 
-		key := fmt.Sprintf("%s:%s", "HTML", mID)
+		key := fmt.Sprintf("%s:%s:%s", "HTML", mID, pk)
 		ret, err := r.conn.Do("SETEX", key, config.Get().RedisExpirationTime, b)
 
 		res := fmt.Sprintf("%s", ret)
@@ -63,7 +63,7 @@ func (r *Redis) SetBoletoHTML(b, mID string, lg *log.Log) {
 }
 
 //GetBoletoHTMLByID busca um boleto pelo ID que vem na URL
-func (r *Redis) GetBoletoHTMLByID(id string, lg *log.Log) string {
+func (r *Redis) GetBoletoHTMLByID(id string, pk string, lg *log.Log) string {
 
 	err := r.openConnection()
 
@@ -72,7 +72,7 @@ func (r *Redis) GetBoletoHTMLByID(id string, lg *log.Log) string {
 		return ""
 	}
 
-	key := fmt.Sprintf("%s:%s", "HTML", id)
+	key := fmt.Sprintf("%s:%s:%s", "HTML", id, pk)
 	ret, _ := r.conn.Do("GET", key)
 	r.closeConnection()
 
@@ -84,7 +84,7 @@ func (r *Redis) GetBoletoHTMLByID(id string, lg *log.Log) string {
 }
 
 //SetBoletoJSON Grava um boleto em formato JSON no Redis
-func (r *Redis) SetBoletoJSON(b, mID string, lg *log.Log) error {
+func (r *Redis) SetBoletoJSON(b, mID, pk string, lg *log.Log) error {
 	err := r.openConnection()
 
 	if err != nil {
@@ -92,7 +92,7 @@ func (r *Redis) SetBoletoJSON(b, mID string, lg *log.Log) error {
 		return err
 	}
 
-	key := fmt.Sprintf("%s:%s", "JSON", mID)
+	key := fmt.Sprintf("%s:%s:%s", "JSON", mID, pk)
 	ret, err := r.conn.Do("SET", key, b)
 	r.closeConnection()
 
@@ -128,7 +128,7 @@ func (r *Redis) GetBoletoJSONByKey(key string, lg *log.Log) (models.BoletoView, 
 	return models.BoletoView{}, err
 }
 
-// DeleteBoletoJSONByKey Recupera um boleto do tipo JSON do Redis
+// DeleteBoletoJSONByKey Deleta um boleto do tipo JSON do Redis
 func (r *Redis) DeleteBoletoJSONByKey(key string, lg *log.Log) {
 	err := r.openConnection()
 

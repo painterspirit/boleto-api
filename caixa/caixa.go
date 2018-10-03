@@ -107,7 +107,7 @@ func (b bankCaixa) getCheckSumCode(boleto models.BoletoRequest) string {
 }
 
 func (b bankCaixa) getAuthToken(info string) string {
-	return util.Sha256(info)
+	return util.Sha256(info, "base64")
 }
 
 //GetBankNumber retorna o codigo do banco

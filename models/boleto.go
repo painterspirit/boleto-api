@@ -3,10 +3,11 @@ package models
 import (
 	"time"
 
+	"github.com/mundipagg/boleto-api/util"
+
 	"gopkg.in/mgo.v2/bson"
 
 	"github.com/mundipagg/boleto-api/config"
-	
 
 	"github.com/PMoneda/flow"
 	"github.com/google/uuid"
@@ -47,9 +48,11 @@ type Link struct {
 }
 
 // BoletoView contem as informações que serão preenchidas no boleto
-type BoletoView struct {	
+type BoletoView struct {
 	ID            bson.ObjectId `bson:"_id,omitempty"`
 	UID           string
+	SecretKey     string
+	PublicKey     string
 	Format        string        `json:"format,omitempty"`
 	Boleto        BoletoRequest `json:"boleto,omitempty"`
 	BankID        BankNumber    `json:"bankId,omitempty"`
@@ -70,6 +73,7 @@ func NewBoletoView(boleto BoletoRequest, response BoletoResponse, bankName strin
 	view := BoletoView{
 		ID:            id,
 		UID:           uid.String(),
+		SecretKey:     uid.String(),
 		BankID:        boleto.BankNumber,
 		Boleto:        boleto,
 		Barcode:       response.BarCodeNumber,
@@ -78,6 +82,7 @@ func NewBoletoView(boleto BoletoRequest, response BoletoResponse, bankName strin
 		BankNumber:    boleto.BankNumber.GetBoletoBankNumberAndDigit(),
 		CreateDate:    time.Now(),
 	}
+	view.GeneratePublicKey()
 	view.Links = view.CreateLinks()
 	if len(response.Links) > 0 && bankName == "BradescoShopFacil" {
 		view.Links = append(view.Links, response.Links[0])
@@ -88,7 +93,7 @@ func NewBoletoView(boleto BoletoRequest, response BoletoResponse, bankName strin
 //EncodeURL tranforma o boleto view na forma que será escrito na url
 func (b *BoletoView) EncodeURL(format string) string {
 	idBson, _ := b.ID.MarshalText()
-	_url := fmt.Sprintf("%s?fmt=%s&id=%s", config.Get().AppURL, format, string(idBson))
+	_url := fmt.Sprintf("%s?fmt=%s&id=%s&pk=%s", config.Get().AppURL, format, string(idBson), b.PublicKey)
 
 	return _url
 }
@@ -106,6 +111,12 @@ func (b *BoletoView) CreateLinks() []Link {
 func (b BoletoView) ToJSON() string {
 	json, _ := json.Marshal(b)
 	return string(json)
+}
+
+//GeneratePublicKey Gera a chave pública criptografada para geração da URL do boleto
+func (b *BoletoView) GeneratePublicKey() {
+	s := b.SecretKey + b.CreateDate.String() + b.Barcode + b.Boleto.Buyer.Document.Number + strconv.FormatUint(b.Boleto.Title.AmountInCents, 10)
+	b.PublicKey = util.Sha256(s, "hex")
 }
 
 // BankNumber número de identificação do banco
@@ -157,6 +168,7 @@ const (
 	// Citibank constante do Citi
 	Citibank = 745
 
+	//Real constante do REal
 	Real = 9
 )
 

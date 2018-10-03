@@ -70,7 +70,7 @@ func (e *MongoDb) SaveBoleto(boleto models.BoletoView) error {
 }
 
 //GetBoletoByID busca um boleto pelo ID que vem na URL
-func (e *MongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
+func (e *MongoDb) GetBoletoByID(id, pk string) (models.BoletoView, error) {
 
 	e.m.Lock()
 	defer e.m.Unlock()
@@ -89,13 +89,18 @@ func (e *MongoDb) GetBoletoByID(id string) (models.BoletoView, error) {
 		err = c.Find(bson.M{"id": id}).One(&result)
 	}
 
-	if err != nil {
+	if err != nil || !hasValidKey(result, pk) {
 		return models.BoletoView{}, models.NewHTTPNotFound("MP404", "Not Found")
 	}
 
 	return result, nil
 }
 
+//Close Fecha a conexão
 func (e *MongoDb) Close() {
 	fmt.Println("Close Database Connection")
+}
+
+func hasValidKey(r models.BoletoView, pk string) bool {
+	return (r.SecretKey == "" || r.PublicKey == pk)
 }
