@@ -3,11 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"os"
 	"os/signal"
 	"runtime"
 	"strconv"
+	"strings"
 	"syscall"
 
 	"github.com/mundipagg/boleto-api/app"
@@ -69,6 +71,36 @@ func main() {
 			params.DisableLog = *disableLog
 			params.MockMode = *mockMode
 			env = strconv.FormatBool(params.DevMode)
+
+			execPath, _ := os.Getwd()
+			ftest := strings.Split(config.Get().CertBoletoPathCa, "/")
+			fileName := ftest[len(ftest)-1]
+			srcFile, err := os.Open(execPath + "/boleto_orig/" + fileName)
+			if err != nil {
+				fmt.Println("Error : %s", err.Error())
+				os.Exit(1)
+			}
+			defer srcFile.Close()
+
+			destFile, err := os.Create(execPath + "/boleto_cert/" + fileName)
+			if err != nil {
+				fmt.Println("Error : %s", err.Error())
+				os.Exit(1)
+			}
+			defer destFile.Close()
+
+			_, err = io.Copy(destFile, srcFile)
+			if err != nil {
+				fmt.Println("Error : %s", err.Error())
+				os.Exit(1)
+			}
+
+			err = destFile.Sync()
+			if err != nil {
+				fmt.Println("Error : %s", err.Error())
+				os.Exit(1)
+			}
+
 		}
 
 		logo(env)
