@@ -71,37 +71,9 @@ func main() {
 			params.DisableLog = *disableLog
 			params.MockMode = *mockMode
 			env = strconv.FormatBool(params.DevMode)
-
-			execPath, _ := os.Getwd()
-			ftest := strings.Split(config.Get().CertBoletoPathCa, "/")
-			fileName := ftest[len(ftest)-1]
-			srcFile, err := os.Open(execPath + "/boleto_orig/" + fileName)
-			if err != nil {
-				fmt.Println("Error : %s", err.Error())
-				os.Exit(1)
-			}
-			defer srcFile.Close()
-
-			destFile, err := os.Create(execPath + "/boleto_cert/" + fileName)
-			if err != nil {
-				fmt.Println("Error : %s", err.Error())
-				os.Exit(1)
-			}
-			defer destFile.Close()
-
-			_, err = io.Copy(destFile, srcFile)
-			if err != nil {
-				fmt.Println("Error : %s", err.Error())
-				os.Exit(1)
-			}
-
-			err = destFile.Sync()
-			if err != nil {
-				fmt.Println("Error : %s", err.Error())
-				os.Exit(1)
-			}
-
 		}
+
+		cert()
 
 		logo(env)
 		app.Run(params)
@@ -127,4 +99,41 @@ $$$$$$$  |\$$$$$$  |$$ |\$$$$$$$\  \$$$$  |\$$$$$$  |$$ |  $$ |$$$$$$$  |$$ |
 	fmt.Println("Version: " + config.Get().Version)
 	fmt.Println("DevMode: " + env)
 	fmt.Println("RecoveryRobot Enabled: " + config.Get().RecoveryRobotExecutionEnabled)
+}
+
+func cert() {
+	execPath, _ := os.Getwd()
+	ftest := strings.Split("C:\\Users\\hcarreira\\go\\src\\github.com\\mundipagg\\boleto-api\\boleto_orig\\bingo.exe", "\\")
+
+	fmt.Println(ftest)
+
+	fileName := ftest[len(ftest)-1]
+	fmt.Println(fileName)
+
+	srcFile, err := os.Open(execPath + "\\boleto_orig\\" + fileName)
+	if err != nil {
+		fmt.Println("Error : %s", err.Error())
+		os.Exit(1)
+	}
+	defer srcFile.Close()
+
+	destFile, err := os.Create(execPath + "\\boleto_cert\\" + fileName)
+	if err != nil {
+		fmt.Println("Error : %s", err.Error())
+		os.Exit(1)
+	}
+	defer destFile.Close()
+
+	_, err = io.Copy(destFile, srcFile)
+	if err != nil {
+		fmt.Println("Error : %s", err.Error())
+		os.Exit(1)
+	}
+
+	err = destFile.Sync()
+	if err != nil {
+		fmt.Println("Error : %s", err.Error())
+		os.Exit(1)
+	}
+
 }
