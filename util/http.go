@@ -113,8 +113,7 @@ func SignRequest(request string) (string, error) {
 		return "", err
 	}
 
-	err = signedData.AddSigner(chainCertificates, pkey, s.SignerInfoConfig{})
-	if err != nil {
+	if err := signedData.AddSigner(chainCertificates, pkey, s.SignerInfoConfig{}); err != nil {
 		return "", err
 	}
 
