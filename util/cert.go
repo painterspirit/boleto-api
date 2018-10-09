@@ -69,5 +69,11 @@ func copyCert(c string) error {
 		return err
 	}
 
+	err = os.Chmod(execPath+"/boleto_cert/"+fName, 0777)
+	if err != nil {
+		fmt.Println("Error: ", err.Error())
+		return err
+	}
+
 	return err
 }
