@@ -9,6 +9,7 @@ import (
 	"github.com/mundipagg/boleto-api/config"
 )
 
+//ListCert Lista os Certificados necessários e chama o método que faz a cópia
 func ListCert() error {
 
 	list := []string{
