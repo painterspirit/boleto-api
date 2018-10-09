@@ -23,7 +23,6 @@ func ListCert() error {
 
 	for _, v := range list {
 
-		fmt.Println(v)
 		err = copyCert(v)
 
 		if err != nil {
@@ -43,6 +42,8 @@ func copyCert(c string) error {
 
 	fName := f[len(f)-1]
 
+	destwd := fmt.Sprintf("%s/boleto_cert/%s", execPath, fName)
+
 	srcFile, err := os.Open(execPath + "/boleto_orig/" + fName)
 	if err != nil {
 		fmt.Println("Error:", err.Error())
@@ -50,7 +51,7 @@ func copyCert(c string) error {
 	}
 	defer srcFile.Close()
 
-	destFile, err := os.Create(execPath + "/boleto_cert/" + fName)
+	destFile, err := os.Create(destwd)
 	if err != nil {
 		fmt.Println("Error:", err.Error())
 		return err
@@ -69,11 +70,13 @@ func copyCert(c string) error {
 		return err
 	}
 
-	err = os.Chmod(execPath+"/boleto_cert/"+fName, 0777)
+	err = os.Chmod(destwd, 0777)
 	if err != nil {
 		fmt.Println("Error: ", err.Error())
 		return err
 	}
+
+	fmt.Println("Cert Copy Sucessful: ", destwd)
 
 	return err
 }
