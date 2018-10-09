@@ -22,7 +22,9 @@ func ListCert() error {
 	var err error
 
 	for _, v := range list {
-		err = copyCert(v)
+
+		fmt.Println(v)
+		// err = copyCert(v)
 		return err
 	}
 
@@ -32,6 +34,7 @@ func ListCert() error {
 
 func copyCert(c string) error {
 	execPath, _ := os.Getwd()
+
 	f := strings.Split(c, "/")
 
 	fName := f[len(f)-1]
