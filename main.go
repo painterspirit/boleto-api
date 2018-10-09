@@ -13,7 +13,6 @@ import (
 	"github.com/mundipagg/boleto-api/app"
 	"github.com/mundipagg/boleto-api/config"
 	"github.com/mundipagg/boleto-api/log"
-	"github.com/mundipagg/boleto-api/util"
 )
 
 var (
@@ -72,15 +71,9 @@ func main() {
 			env = strconv.FormatBool(params.DevMode)
 		}
 
-		var err error
-		if params.DevMode == false {
-			err = util.ListCert()
-		}
+		logo(env)
+		app.Run(params)
 
-		if err == nil {
-			logo(env)
-			app.Run(params)
-		}
 	}
 
 }

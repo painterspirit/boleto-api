@@ -31,6 +31,15 @@ func NewParams() *Params {
 func Run(params *Params) {
 	env.Config(params.DevMode, params.MockMode, params.DisableLog)
 
+	if config.Get().DevMode == false {
+		err := util.ListCert()
+
+		if err != nil {
+			fmt.Println("Copy Cert Fails")
+			os.Exit(-1)
+		}
+	}
+
 	if config.Get().MockMode {
 		go mock.Run("9091")
 	}
