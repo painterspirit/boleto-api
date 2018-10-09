@@ -43,14 +43,14 @@ func copyCert(c string) error {
 
 	fName := f[len(f)-1]
 
-	srcFile, err := os.Open(execPath + "\\boleto_orig\\" + fName)
+	srcFile, err := os.Open(execPath + "/boleto_orig/" + fName)
 	if err != nil {
 		fmt.Println("Error:", err.Error())
 		return err
 	}
 	defer srcFile.Close()
 
-	destFile, err := os.Create(execPath + "\\boleto_cert\\" + fName)
+	destFile, err := os.Create(execPath + "/boleto_cert/" + fName)
 	if err != nil {
 		fmt.Println("Error:", err.Error())
 		return err
