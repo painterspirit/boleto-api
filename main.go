@@ -70,7 +70,6 @@ func main() {
 			params.MockMode = *mockMode
 			env = strconv.FormatBool(params.DevMode)
 		}
-
 		logo(env)
 		app.Run(params)
 
