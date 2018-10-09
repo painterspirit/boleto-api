@@ -24,8 +24,12 @@ func ListCert() error {
 	for _, v := range list {
 
 		fmt.Println(v)
-		// err = copyCert(v)
-		return err
+		err = copyCert(v)
+
+		if err != nil {
+			return err
+		}
+
 	}
 
 	return err
