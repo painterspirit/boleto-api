@@ -1,68 +1,66 @@
 package util
 
 import (
-	"crypto"
-	"crypto/x509"
-	"encoding/pem"
-	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
+	"os"
+	"strings"
 
-	s "github.com/fullsailor/pkcs7"
 	"github.com/mundipagg/boleto-api/config"
 )
 
-//Read privatekey and parse to PKCS#1
-func parsePrivateKey() (crypto.PrivateKey, error) {
+func ListCert() error {
 
-	pkeyBytes, err := ioutil.ReadFile(config.Get().CertICP_PathPkey)
-	if err != nil {
-		return nil, err
+	list := []string{
+		config.Get().CertBoletoPathCrt,
+		config.Get().CertBoletoPathKey,
+		config.Get().CertBoletoPathCa,
+		config.Get().CertICP_PathPkey,
+		config.Get().CertICP_PathChainCertificates,
 	}
 
-	block, _ := pem.Decode(pkeyBytes)
-	if block == nil {
-		return nil, errors.New("Key Not Found")
+	var err error
+
+	for _, v := range list {
+		err = copyCert(v)
+		return err
 	}
 
-	switch block.Type {
-	case "RSA PRIVATE KEY":
-		rsa, err := x509.ParsePKCS1PrivateKey(block.Bytes)
-		if err != nil {
-			return nil, err
-		}
-		return rsa, nil
-	default:
-		return nil, fmt.Errorf("SSH: Unsupported key type %q", block.Type)
-	}
+	return err
 
 }
 
-///Read chainCertificates and adapter to x509.Certificate
-func parseChainCertificates() (*x509.Certificate, error) {
+func copyCert(c string) error {
+	execPath, _ := os.Getwd()
+	f := strings.Split(c, "/")
 
-	chainCertsBytes, err := ioutil.ReadFile(config.Get().CertICP_PathChainCertificates)
+	fName := f[len(f)-1]
+
+	srcFile, err := os.Open(execPath + "\\boleto_orig\\" + fName)
 	if err != nil {
-		return nil, err
+		fmt.Println("Error:", err.Error())
+		return err
 	}
+	defer srcFile.Close()
 
-	block, _ := pem.Decode(chainCertsBytes)
-	if block == nil {
-		return nil, errors.New("Key Not Found")
-	}
-
-	cert, err := x509.ParseCertificate(block.Bytes)
+	destFile, err := os.Create(execPath + "\\boleto_cert\\" + fName)
 	if err != nil {
-		return nil, err
+		fmt.Println("Error:", err.Error())
+		return err
+	}
+	defer destFile.Close()
+
+	_, err = io.Copy(destFile, srcFile)
+	if err != nil {
+		fmt.Println("Error:", err.Error())
+		return err
 	}
 
-	return cert, nil
-}
+	err = destFile.Sync()
+	if err != nil {
+		fmt.Println("Error:", err.Error())
+		return err
+	}
 
-// Read signedData and parse to *x509.Certificate
-func parseSignedData(request string) (*s.SignedData, error) {
-
-	sig, err := s.NewSignedData([]byte(request))
-
-	return sig, err
+	return err
 }
