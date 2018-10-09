@@ -108,7 +108,7 @@ func SignRequest(request string) (string, error) {
 		return "", err
 	}
 
-	signedData, err := parseSignedData(request)
+	signedData, err := s.NewSignedData([]byte(request))
 	if err != nil {
 		return "", err
 	}
@@ -173,14 +173,6 @@ func parseChainCertificates() (*x509.Certificate, error) {
 	}
 
 	return cert, nil
-}
-
-// Read signedData and parse to *x509.Certificate
-func parseSignedData(request string) (*s.SignedData, error) {
-
-	sig, err := s.NewSignedData([]byte(request))
-
-	return sig, err
 }
 
 func doRequestTLS(method, url, body, timeout string, header map[string]string, transport *http.Transport) (string, int, error) {
