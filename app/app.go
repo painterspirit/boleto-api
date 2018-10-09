@@ -31,18 +31,11 @@ func NewParams() *Params {
 func Run(params *Params) {
 	env.Config(params.DevMode, params.MockMode, params.DisableLog)
 
-	if config.Get().DevMode == false {
-		err := util.ListCert()
-
-		if err != nil {
-			fmt.Println("Copy Cert Fails")
-			os.Exit(-1)
-		}
-	}
-
 	if config.Get().MockMode {
 		go mock.Run("9091")
 	}
+
+	installCertificates()
 
 	installLog()
 
@@ -57,6 +50,17 @@ func installLog() {
 	if err != nil {
 		fmt.Println("Log SEQ Fails")
 		os.Exit(-1)
+	}
+}
+
+func installCertificates() {
+	if config.Get().DevMode == false {
+		err := util.ListCert()
+
+		if err != nil {
+			fmt.Println("Copy Cert Fails")
+			os.Exit(-1)
+		}
 	}
 }
 
