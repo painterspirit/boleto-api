@@ -295,7 +295,7 @@ To restore a backup:
     % cd devops
     % ./doRestore.sh
 
-To do the restoration of the database it'll be asked for the restoration file date in the following pattern: `YYYY-MM-DD`.
+To restore the database, you will be asked for the restoration file date in the following format: `YYYY-MM-DD`.
     
 Contributing
 -----------------
